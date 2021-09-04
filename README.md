@@ -1,4 +1,5 @@
 # CPing
 An android app to remind you of upcoming coding contests.
 - Web API
--   1
+  - Endpoints
+    - /api/codechef/contests
