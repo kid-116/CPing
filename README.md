@@ -1,2 +1,2 @@
 # CPing
-An app to remind you of upcoming coding contests.
+An android app to remind you of upcoming coding contests.
