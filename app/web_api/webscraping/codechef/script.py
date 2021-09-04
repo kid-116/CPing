@@ -1,4 +1,3 @@
-import requests
 from bs4 import BeautifulSoup
 from scrapingant_client import ScrapingAntClient
 
