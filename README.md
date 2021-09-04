@@ -4,3 +4,4 @@ An android app to remind you of upcoming coding contests.
   - Endpoints
     - /api/codechef/contests
     - /api/codeforces/contests
+    - /api/atcoder/contests
