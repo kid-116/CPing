@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "482736807178",
+    "project_id": "cping-348fb",
+    "storage_bucket": "cping-348fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482736807178:android:039f336251106a96c8eef3",
+        "android_client_info": {
+          "package_name": "com.kid116sashank.cp_ing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "482736807178-2dnfsef17vj1b8goa2nuam27k8r93qqn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC87TxPLx_oNThSSZqcoHwebN0RdtDwdrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "482736807178-2dnfsef17vj1b8goa2nuam27k8r93qqn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
