@@ -1,4 +1,4 @@
-part of 'authentication_bloc.dart';
+part of '../../AuthenticationBloc/bloc/bloc.dart';
 
 abstract class AuthenticationEvent extends Equatable {
   const AuthenticationEvent();

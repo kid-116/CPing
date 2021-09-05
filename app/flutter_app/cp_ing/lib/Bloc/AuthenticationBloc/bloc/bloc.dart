@@ -4,8 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-part 'authentication_event.dart';
-part 'authentication_state.dart';
+part '../../AuthenticationBloc/bloc/event.dart';
+part 'state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {

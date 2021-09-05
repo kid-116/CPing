@@ -1,4 +1,4 @@
-import 'package:cp_ing/Bloc/Authentication_bloc/bloc/authentication_bloc.dart';
+import '../Bloc/AuthenticationBloc/bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,11 +30,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                         accountEmail: Text(
                           user!.email!,
-                          style: TextStyle(color: Colors.black, fontSize: 16),
+                          style: const TextStyle(color: Colors.black, fontSize: 16),
                         ),
                         accountName: Text(
                           user.displayName!,
-                          style: TextStyle(color: Colors.black, fontSize: 22),
+                          style: const TextStyle(color: Colors.black, fontSize: 22),
                         ),
                         currentAccountPicture: CircleAvatar(
                           backgroundImage: NetworkImage(user.photoURL!),
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                   selectedTileColor: Colors.grey[700],
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[500],
-                    child: Icon(
+                    child: const Icon(
                       Icons.assignment,
                       color: Colors.black,
                     ),
@@ -55,39 +55,39 @@ class _HomePageState extends State<HomePage> {
                   title: Text('CODECHEF'),
                   onTap: () {},
                 ),
-                Divider(), // add a line
+                const Divider(), // add a line
                 ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.grey[500],
-                      child: Icon(
+                      child: const Icon(
                         Icons.check_box_outlined,
                         color: Colors.black,
                       ),
                     ),
                     title: Text('CODECHEF'),
                     onTap: () {}),
-                Divider(),
+                const Divider(),
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[500],
-                    child: Icon(
+                    child: const Icon(
                       Icons.assignment,
                       color: Colors.black,
                     ),
                   ),
-                  title: Text('ATCODER'),
+                  title: const Text('ATCODER'),
                   onTap: () {},
                 ),
-                Divider(), // add a line
+                const Divider(), // add a line
                 ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.grey[500],
-                    child: Icon(
+                    child: const Icon(
                       Icons.settings,
                       color: Colors.black,
                     ),
                   ),
-                  title: Text("LOGOUT"),
+                  title: const Text("LOGOUT"),
                   onTap: () {
                     BlocProvider.of<AuthenticationBloc>(context)
                         .add(AuthenticationLogOut());
@@ -98,32 +98,33 @@ class _HomePageState extends State<HomePage> {
           ),
           appBar: AppBar(
             backgroundColor: Colors.black,
-            title: Text('HOME'),
+            title: const Text('HOME'),
           ),
           body: Container(
-              alignment: Alignment.center,
-              color: Colors.grey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Profile',
-                  ),
-                  SizedBox(height: 32),
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(user.photoURL!),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    user.displayName!,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    user.email!,
-                  )
-                ],
-              )),
+            alignment: Alignment.center,
+            color: Colors.grey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Profile',
+                ),
+                const SizedBox(height: 32),
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(user.photoURL!),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  user.displayName!,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  user.email!,
+                )
+              ],
+            )
+          ),
         );
       },
     );
