@@ -7,7 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 // flutter packages
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// custom blocs
+// blocs
 import 'blocs/authentication/bloc.dart';
 
 Future main() async {

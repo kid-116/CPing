@@ -1,10 +1,20 @@
 from bs4 import BeautifulSoup
 from scrapingant_client import ScrapingAntClient
+from datetime import datetime, timezone
+
+def datetime_parser(dt):
+    year = int(dt[0:4])
+    date = int(dt[8:10])
+    month = int(dt[5:7])
+    hr = int(dt[16:18])
+    min = int(dt[19:21])
+    dt = datetime(year, month, date, hr, min, tzinfo=timezone.utc)
+    return dt
 
 def parse_row(row):
     tds = row.find_all('td')
     name = tds[1].a.get_text()
-    start = tds[0].get_text()
+    start = datetime_parser(tds[0].get_text())
     length = tds[2].get_text()
     contest = {
         'name': name,
