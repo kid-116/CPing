@@ -1,5 +1,7 @@
+import 'package:cp_ing/blocs/atcoder/bloc/atcoder_bloc.dart';
 import 'package:cp_ing/blocs/codechef/bloc/codechef_bloc.dart';
 import 'package:cp_ing/blocs/codeforces/bloc/codeforces_bloc.dart';
+import 'package:cp_ing/pages/atcoder.dart';
 import 'package:cp_ing/pages/codechef.dart';
 import 'package:cp_ing/pages/codeforces.dart';
 
@@ -97,7 +99,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   title: const Text('ATCODER'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => BlocProvider.value(
+                        value: BlocProvider.of<AtcoderBloc>(context),
+                        child: AtcoderPage(),
+                      ),
+                    ));
+                  },
                 ),
                 const Divider(), // add a line
                 ListTile(
