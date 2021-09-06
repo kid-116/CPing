@@ -1,3 +1,6 @@
+import 'package:cp_ing/blocs/codechef/bloc/codechef_bloc.dart';
+import 'package:cp_ing/pages/codechef.dart';
+
 import '../blocs/authentication/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,11 +33,13 @@ class _HomePageState extends State<HomePage> {
                         ),
                         accountEmail: Text(
                           user!.email!,
-                          style: const TextStyle(color: Colors.black, fontSize: 16),
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 16),
                         ),
                         accountName: Text(
                           user.displayName!,
-                          style: const TextStyle(color: Colors.black, fontSize: 22),
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 22),
                         ),
                         currentAccountPicture: CircleAvatar(
                           backgroundImage: NetworkImage(user.photoURL!),
@@ -52,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black,
                     ),
                   ),
-                  title: Text('CODECHEF'),
+                  title: Text('CODEFORCES'),
                   onTap: () {},
                 ),
                 const Divider(), // add a line
@@ -65,7 +70,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     title: Text('CODECHEF'),
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => BlocProvider.value(
+                          value: BlocProvider.of<CodechefBloc>(context),
+                          child: CodechefPage(),
+                        ),
+                      ));
+                    }),
                 const Divider(),
                 ListTile(
                   leading: CircleAvatar(
@@ -101,30 +113,29 @@ class _HomePageState extends State<HomePage> {
             title: const Text('HOME'),
           ),
           body: Container(
-            alignment: Alignment.center,
-            color: Colors.grey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Profile',
-                ),
-                const SizedBox(height: 32),
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: NetworkImage(user.photoURL!),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  user.displayName!,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  user.email!,
-                )
-              ],
-            )
-          ),
+              alignment: Alignment.center,
+              color: Colors.grey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Profile',
+                  ),
+                  const SizedBox(height: 32),
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundImage: NetworkImage(user.photoURL!),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    user.displayName!,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    user.email!,
+                  )
+                ],
+              )),
         );
       },
     );

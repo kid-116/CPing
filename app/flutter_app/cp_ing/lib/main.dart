@@ -8,7 +8,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // blocs
+import 'Repositories/codechef_repository.dart';
 import 'blocs/authentication/bloc.dart';
+import 'blocs/codechef/bloc/codechef_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +28,11 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
           create: (context) => AuthenticationBloc(),
         ),
+        BlocProvider<CodechefBloc>(
+          create: (context) => CodechefBloc(
+              initialState: CodechefInitial(),
+              repository: CodechefRepository()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -34,23 +41,22 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return const Center(
-                child: Text('Error'),
-              );
-            } else if (snapshot.hasData) {
-              return const HomePage();
-            } else {
-              return const SignInPage();
-            }
-          }
-        ),
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text('Error'),
+                );
+              } else if (snapshot.hasData) {
+                return const HomePage();
+              } else {
+                return const SignInPage();
+              }
+            }),
       ),
     );
   }
