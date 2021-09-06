@@ -1,4 +1,5 @@
 // pages
+import 'package:cp_ing/Repositories/codeforces_repository.dart';
 import 'package:cp_ing/pages/home.dart';
 import 'package:cp_ing/pages/sign_in.dart';
 // firebase
@@ -11,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Repositories/codechef_repository.dart';
 import 'blocs/authentication/bloc.dart';
 import 'blocs/codechef/bloc/codechef_bloc.dart';
+import 'blocs/codeforces/bloc/codeforces_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +34,11 @@ class MyApp extends StatelessWidget {
           create: (context) => CodechefBloc(
               initialState: CodechefInitial(),
               repository: CodechefRepository()),
+        ),
+        BlocProvider<CodeforcesBloc>(
+          create: (context) => CodeforcesBloc(
+              initialState: CodeforcesInitial(),
+              repository: CodeforcesRepository()),
         ),
       ],
       child: MaterialApp(

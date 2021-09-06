@@ -1,5 +1,7 @@
 import 'package:cp_ing/blocs/codechef/bloc/codechef_bloc.dart';
+import 'package:cp_ing/blocs/codeforces/bloc/codeforces_bloc.dart';
 import 'package:cp_ing/pages/codechef.dart';
+import 'package:cp_ing/pages/codeforces.dart';
 
 import '../blocs/authentication/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,7 +60,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   title: Text('CODEFORCES'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => BlocProvider.value(
+                        value: BlocProvider.of<CodeforcesBloc>(context),
+                        child: CodeforcesPage(),
+                      ),
+                    ));
+                  },
                 ),
                 const Divider(), // add a line
                 ListTile(
