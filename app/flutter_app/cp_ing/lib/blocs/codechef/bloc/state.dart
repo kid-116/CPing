@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 part of 'bloc.dart';
 
 abstract class CodechefState extends Equatable {

@@ -1,19 +1,19 @@
 class CodeforcesModel {
-  late List<Contests> Contest;
+  late List<Contests> contest;
 
-  CodeforcesModel({required this.Contest});
+  CodeforcesModel({required this.contest});
 
   CodeforcesModel.fromJson(Map<String, dynamic> json) {
     if (true) {
-      Contest = <Contests>[];
-      Contest.add(new Contests.fromJson(json));
+      contest = <Contests>[];
+      contest.add(Contests.fromJson(json));
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.Contest != null) {
-      data['future-contests'] = this.Contest.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    if (this.contest != null) {
+      data['future-contests'] = this.contest.map((v) => v.toJson()).toList();
     }
 
     return data;
@@ -34,7 +34,7 @@ class Contests {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['length'] = this.length;
     data['name'] = this.name;
     data['start'] = this.start;

@@ -24,7 +24,6 @@ class CodeforcesBloc extends Bloc<CodeforcesEvent, CodeforcesState> {
     if (event is ActiveContestEvent) {
       try {
         List<CodeforcesModel> listPresent = [];
-        // ignore: unused_local_variable
         List<CodeforcesModel> listFuture = [];
         yield LoadingState();
         listPresent = await repository.getCodeforcesData('active-contests');

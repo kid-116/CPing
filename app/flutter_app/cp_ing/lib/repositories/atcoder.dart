@@ -8,19 +8,19 @@ class AtcoderRepository {
     var response =
         await http.get(Uri.parse("http://10.0.2.2:5000/api/atcoder/contests/"));
     var data = json.decode(response.body);
-    List<AtcoderModel> _AtcoderModelList = [];
+    List<AtcoderModel> _atcoderModelList = [];
     print(data['future-contests']);
     print(response.statusCode);
     if (response.statusCode == 200) {
       for (var item in data[a]) {
-        AtcoderModel _AtcoderModel = AtcoderModel.fromJson(item);
-        _AtcoderModelList.add(_AtcoderModel);
+        AtcoderModel _atcoderModel = AtcoderModel.fromJson(item);
+        _atcoderModelList.add(_atcoderModel);
       }
-      print(_AtcoderModelList.length);
-      return _AtcoderModelList;
+      print(_atcoderModelList.length);
+      return _atcoderModelList;
     } else {
       print("error");
-      return _AtcoderModelList;
+      return _atcoderModelList;
     }
   }
 }

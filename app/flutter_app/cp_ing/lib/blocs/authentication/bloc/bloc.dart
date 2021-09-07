@@ -37,7 +37,6 @@ class AuthenticationBloc
         yield AuthenticationSuccess();
       } catch (e) {
         yield AuthenticationFailure();
-        // ignore: avoid_print
         print(e.toString());
       }
     } else if (event is AuthenticationLogOut) {

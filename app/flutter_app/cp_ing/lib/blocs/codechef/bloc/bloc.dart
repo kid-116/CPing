@@ -23,7 +23,6 @@ class CodechefBloc extends Bloc<CodechefEvent, CodechefState> {
     if (event is ActiveContestEvent) {
       try {
         List<CodechefModel> listPresent = [];
-        // ignore: unused_local_variable
         List<CodechefModel> listFuture = [];
         yield LoadingState();
         listPresent = await repository.getCodechefData('active-contests');

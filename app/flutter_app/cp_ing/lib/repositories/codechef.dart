@@ -8,19 +8,19 @@ class CodechefRepository {
     var response = await http
         .get(Uri.parse("http://10.0.2.2:5000/api/codechef/contests/"));
     var data = json.decode(response.body);
-    List<CodechefModel> _CodechefModelList = [];
+    List<CodechefModel> _codechefModelList = [];
     print(data['future-contests']);
     print(response.statusCode);
     if (response.statusCode == 200) {
       for (var item in data[a]) {
-        CodechefModel _CodechefModel = CodechefModel.fromJson(item);
-        _CodechefModelList.add(_CodechefModel);
+        CodechefModel _codechefModel = CodechefModel.fromJson(item);
+        _codechefModelList.add(_codechefModel);
       }
-      print(_CodechefModelList.length);
-      return _CodechefModelList;
+      print(_codechefModelList.length);
+      return _codechefModelList;
     } else {
       print("error");
-      return _CodechefModelList;
+      return _codechefModelList;
     }
   }
 }

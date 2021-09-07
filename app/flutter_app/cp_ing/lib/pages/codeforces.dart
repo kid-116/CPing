@@ -1,5 +1,4 @@
 import 'package:cp_ing/blocs/codeforces/bloc/bloc.dart';
-import 'package:cp_ing/blocs/codeforces/bloc/bloc.dart';
 import 'package:cp_ing/models/codeforces.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,7 @@ class CodeforcesPage extends StatefulWidget {
 }
 
 class _CodeforcesPageState extends State<CodeforcesPage> {
-  bool active_contest = true;
+  bool activeContest = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +28,7 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InkWell(
-                onTap: () => active_contests(),
+                onTap: () => activeContests(),
                 child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -50,7 +49,7 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
                     )),
               ),
               InkWell(
-                onTap: () => future_contests(),
+                onTap: () => futureContests(),
                 child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -86,7 +85,7 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
                 List<CodeforcesModel> _listCurrent = [];
                 _listCurrent = state.listContest;
                 // _list_future = state.list_future;
-                return _listCurrent.length != 0
+                return _listCurrent.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
@@ -95,9 +94,9 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
                               return Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_listCurrent[index].Contest[0].name),
-                                  Text(_listCurrent[index].Contest[0].length),
-                                  Text(_listCurrent[index].Contest[0].start),
+                                  Text(_listCurrent[index].contest[0].name),
+                                  Text(_listCurrent[index].contest[0].length),
+                                  Text(_listCurrent[index].contest[0].start),
                                 ]),
                               );
                             }),
@@ -106,7 +105,7 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
               } else if (state is FutureLoadedState) {
                 List<CodeforcesModel> _listCurrent = [];
                 _listCurrent = state.listContest;
-                return _listCurrent.length > 0
+                return _listCurrent.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
@@ -115,9 +114,9 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
                               return Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_listCurrent[index].Contest[0].name),
-                                  Text(_listCurrent[index].Contest[0].length),
-                                  Text(_listCurrent[index].Contest[0].start),
+                                  Text(_listCurrent[index].contest[0].name),
+                                  Text(_listCurrent[index].contest[0].length),
+                                  Text(_listCurrent[index].contest[0].start),
                                 ]),
                               );
                             }),
@@ -135,69 +134,11 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
         ]));
   }
 
-  void future_contests() {
+  void futureContests() {
     BlocProvider.of<CodeforcesBloc>(context).add(FutureContestEvent());
   }
 
-  void active_contests() {
+  void activeContests() {
     BlocProvider.of<CodeforcesBloc>(context).add(ActiveContestEvent());
   }
 }
-
-
-// BlocBuilder<CodeforcesBloc, CodeforcesState>(
-//         builder: (context, state) {
-//           if (state is LoadingState) {
-//             return Center(child: CircularProgressIndicator());
-//           } else if (state is LoadedState) {
-//             List<CodechefModel> _list_present = [], _list_future = [];
-//             _list_present = state.list_present;
-//             _list_future = state.list_future;
-//             return Column(
-//               children: [
-//                 Expanded(
-//                   child: ListView.builder(
-//                       shrinkWrap: true,
-//                       itemCount: _list_present.length,
-//                       itemBuilder: (context, index) {
-//                         return Container(
-//                           margin: EdgeInsets.all(10),
-//                           child: Column(children: <Widget>[
-//                             Text(_list_present[index].Contest[0].name),
-//                             Text(_list_present[index].Contest[0].code),
-//                             Text(_list_present[index].Contest[0].length),
-//                             Text(_list_present[index].Contest[0].start),
-//                           ]),
-//                         );
-//                       }),
-//                 ),
-//                 Divider(
-//                   color: Colors.black,
-//                 ),
-//                 Expanded(
-//                   child: ListView.builder(
-//                       shrinkWrap: true,
-//                       itemCount: _list_future.length,
-//                       itemBuilder: (context, index) {
-//                         return Container(
-//                           margin: EdgeInsets.all(10),
-//                           child: Column(children: <Widget>[
-//                             Text(_list_future[index].Contest[0].name),
-//                             Text(_list_future[index].Contest[0].code),
-//                             Text(_list_future[index].Contest[0].length),
-//                             Text(_list_future[index].Contest[0].start),
-//                           ]),
-//                         );
-//                       }),
-//                 ),
-//               ],
-//             );
-//           } else if (state is ErrorState) {
-//             print(state.error.toString());
-//             return Center(child: Text(state.error));
-//           }
-//           return Center(
-//             child: Text("error 404"),
-//           );
-//         },
-//       ),

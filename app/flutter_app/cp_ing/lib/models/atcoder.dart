@@ -34,7 +34,7 @@ class Contests {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['length'] = this.length;
     data['name'] = this.name;
     data['start'] = this.start;

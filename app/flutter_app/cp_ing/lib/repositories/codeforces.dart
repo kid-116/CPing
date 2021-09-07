@@ -8,19 +8,19 @@ class CodeforcesRepository {
     var response = await http
         .get(Uri.parse("http://10.0.2.2:5000/api/codeforces/contests/"));
     var data = json.decode(response.body);
-    List<CodeforcesModel> _CodeforcesModelList = [];
+    List<CodeforcesModel> _codeforcesModelList = [];
     print(data['future-contests']);
     print(response.statusCode);
     if (response.statusCode == 200) {
       for (var item in data[a]) {
-        CodeforcesModel _CodeforcesModel = CodeforcesModel.fromJson(item);
-        _CodeforcesModelList.add(_CodeforcesModel);
+        CodeforcesModel _codeforcesModel = CodeforcesModel.fromJson(item);
+        _codeforcesModelList.add(_codeforcesModel);
       }
-      print(_CodeforcesModelList.length);
-      return _CodeforcesModelList;
+      print(_codeforcesModelList.length);
+      return _codeforcesModelList;
     } else {
       print("error");
-      return _CodeforcesModelList;
+      return _codeforcesModelList;
     }
   }
 }
