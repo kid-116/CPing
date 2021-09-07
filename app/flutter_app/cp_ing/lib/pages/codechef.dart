@@ -1,5 +1,5 @@
-import 'package:cp_ing/blocs/codechef/bloc/codechef_bloc.dart';
-import 'package:cp_ing/models/codechef_model.dart';
+import 'package:cp_ing/blocs/codechef/bloc/bloc.dart';
+import 'package:cp_ing/models/codechef.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -82,43 +82,43 @@ class _CodechefPageState extends State<CodechefPage> {
               if (state is LoadingState) {
                 return Center(child: CircularProgressIndicator());
               } else if (state is ActiveLoadedState) {
-                List<CodechefModel> _list_current = [];
-                _list_current = state.list_contest;
+                List<CodechefModel> _listCurrent = [];
+                _listCurrent = state.listContest;
                 // _list_future = state.list_future;
-                return _list_current.length > 0
+                return _listCurrent.length > 0
                     ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: _list_current.length,
+                            itemCount: _listCurrent.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_list_current[index].Contest[0].name),
-                                  Text(_list_current[index].Contest[0].code),
-                                  Text(_list_current[index].Contest[0].length),
-                                  Text(_list_current[index].Contest[0].start),
+                                  Text(_listCurrent[index].Contest[0].name),
+                                  Text(_listCurrent[index].Contest[0].code),
+                                  Text(_listCurrent[index].Contest[0].length),
+                                  Text(_listCurrent[index].Contest[0].start),
                                 ]),
                               );
                             }),
                       )
                     : Center(child: Text("No Active Contests"));
               } else if (state is FutureLoadedState) {
-                List<CodechefModel> _list_current = [];
-                _list_current = state.list_contest;
-                return _list_current.length > 0
+                List<CodechefModel> _listCurrent = [];
+                _listCurrent = state.listContest;
+                return _listCurrent.length > 0
                     ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: _list_current.length,
+                            itemCount: _listCurrent.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_list_current[index].Contest[0].name),
-                                  Text(_list_current[index].Contest[0].code),
-                                  Text(_list_current[index].Contest[0].length),
-                                  Text(_list_current[index].Contest[0].start),
+                                  Text(_listCurrent[index].Contest[0].name),
+                                  Text(_listCurrent[index].Contest[0].code),
+                                  Text(_listCurrent[index].Contest[0].length),
+                                  Text(_listCurrent[index].Contest[0].start),
                                 ]),
                               );
                             }),
@@ -137,11 +137,11 @@ class _CodechefPageState extends State<CodechefPage> {
   }
 
   void future_contests() {
-    BlocProvider.of<CodechefBloc>(context).add(Future_contest_event());
+    BlocProvider.of<CodechefBloc>(context).add(FutureContestEvent());
   }
 
   void active_contests() {
-    BlocProvider.of<CodechefBloc>(context).add(Active_contest_event());
+    BlocProvider.of<CodechefBloc>(context).add(ActiveContestEvent());
   }
 }
 

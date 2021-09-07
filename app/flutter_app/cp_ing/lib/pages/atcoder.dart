@@ -1,5 +1,5 @@
-import 'package:cp_ing/blocs/atcoder/bloc/atcoder_bloc.dart';
-import 'package:cp_ing/models/atcoder_model.dart';
+import 'package:cp_ing/blocs/atcoder/bloc/bloc.dart';
+import 'package:cp_ing/models/atcoder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,7 +83,7 @@ class _AtcoderPageState extends State<AtcoderPage> {
                 return Center(child: CircularProgressIndicator());
               } else if (state is ActiveLoadedState) {
                 List<AtcoderModel> _list_current = [];
-                _list_current = state.list_contest;
+                _list_current = state.listContest;
                 // _list_future = state.list_future;
                 return _list_current.length != 0
                     ? Expanded(
@@ -94,9 +94,9 @@ class _AtcoderPageState extends State<AtcoderPage> {
                               return Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_list_current[index].Contest[0].name),
-                                  Text(_list_current[index].Contest[0].length),
-                                  Text(_list_current[index].Contest[0].start),
+                                  Text(_list_current[index].contest[0].name),
+                                  Text(_list_current[index].contest[0].length),
+                                  Text(_list_current[index].contest[0].start),
                                 ]),
                               );
                             }),
@@ -104,7 +104,7 @@ class _AtcoderPageState extends State<AtcoderPage> {
                     : Center(child: Text("No Active Contests"));
               } else if (state is FutureLoadedState) {
                 List<AtcoderModel> _list_current = [];
-                _list_current = state.list_contest;
+                _list_current = state.listContest;
                 return _list_current.length > 0
                     ? Expanded(
                         child: ListView.builder(
@@ -114,9 +114,9 @@ class _AtcoderPageState extends State<AtcoderPage> {
                               return Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_list_current[index].Contest[0].name),
-                                  Text(_list_current[index].Contest[0].length),
-                                  Text(_list_current[index].Contest[0].start),
+                                  Text(_list_current[index].contest[0].name),
+                                  Text(_list_current[index].contest[0].length),
+                                  Text(_list_current[index].contest[0].start),
                                 ]),
                               );
                             }),
@@ -135,10 +135,10 @@ class _AtcoderPageState extends State<AtcoderPage> {
   }
 
   void future_contests() {
-    BlocProvider.of<AtcoderBloc>(context).add(Future_contest_event());
+    BlocProvider.of<AtcoderBloc>(context).add(FutureContestEvent());
   }
 
   void active_contests() {
-    BlocProvider.of<AtcoderBloc>(context).add(Active_contest_event());
+    BlocProvider.of<AtcoderBloc>(context).add(ActiveContestEvent());
   }
 }

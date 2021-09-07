@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:cp_ing/Repositories/codeforces_repository.dart';
-import 'package:cp_ing/models/codeforces_model.dart';
+import 'package:cp_ing/Repositories/codeforces.dart';
+import 'package:cp_ing/models/codeforces.dart';
 import 'package:equatable/equatable.dart';
 
-part 'codeforces_event.dart';
-part 'codeforces_state.dart';
+part 'event.dart';
+part 'state.dart';
 
 class CodeforcesBloc extends Bloc<CodeforcesEvent, CodeforcesState> {
   CodeforcesRepository repository;
@@ -14,31 +14,32 @@ class CodeforcesBloc extends Bloc<CodeforcesEvent, CodeforcesState> {
   CodeforcesBloc(
       {required CodeforcesState initialState, required this.repository})
       : super(CodeforcesInitial()) {
-    add(Active_contest_event());
+    add(ActiveContestEvent());
   }
 
   @override
   Stream<CodeforcesState> mapEventToState(
     CodeforcesEvent event,
   ) async* {
-    if (event is Active_contest_event) {
+    if (event is ActiveContestEvent) {
       try {
-        List<CodeforcesModel> list_present = [];
-        List<CodeforcesModel> list_future = [];
+        List<CodeforcesModel> listPresent = [];
+        // ignore: unused_local_variable
+        List<CodeforcesModel> listFuture = [];
         yield LoadingState();
-        list_present = await repository.getCodeforcesData('active-contests');
+        listPresent = await repository.getCodeforcesData('active-contests');
         // list_future = await repository.getCodeforcesData('future-contests');
-        yield ActiveLoadedState(list_contest: list_present);
+        yield ActiveLoadedState(listContest: listPresent);
       } catch (e) {
         yield ErrorState(e.toString());
       }
-    } else if (event is Future_contest_event) {
+    } else if (event is FutureContestEvent) {
       try {
-        List<CodeforcesModel> list_future = [];
+        List<CodeforcesModel> listFuture = [];
         yield LoadingState();
-        list_future = await repository.getCodeforcesData('future-contests');
+        listFuture = await repository.getCodeforcesData('future-contests');
         // list_future = await repository.getCodeforcesData('future-contests');
-        yield FutureLoadedState(list_contest: list_future);
+        yield FutureLoadedState(listContest: listFuture);
       } catch (e) {
         yield ErrorState(e.toString());
       }

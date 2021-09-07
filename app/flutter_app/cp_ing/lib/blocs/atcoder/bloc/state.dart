@@ -1,4 +1,6 @@
-part of 'atcoder_bloc.dart';
+// ignore_for_file: must_be_immutable
+
+part of 'bloc.dart';
 
 abstract class AtcoderState extends Equatable {
   const AtcoderState();
@@ -12,21 +14,21 @@ class AtcoderInitial extends AtcoderState {}
 class LoadingState extends AtcoderState {}
 
 class ActiveLoadedState extends AtcoderState {
-  List<AtcoderModel> list_contest;
+  List<AtcoderModel> listContest;
   // List<CodechefModel> list_future;
 
-  ActiveLoadedState({required this.list_contest});
+  ActiveLoadedState({required this.listContest});
   @override
-  List<Object> get props => [list_contest];
+  List<Object> get props => [listContest];
 }
 
 class FutureLoadedState extends AtcoderState {
-  List<AtcoderModel> list_contest;
+  List<AtcoderModel> listContest;
   // List<CodechefModel> list_future;
 
-  FutureLoadedState({required this.list_contest});
+  FutureLoadedState({required this.listContest});
   @override
-  List<Object> get props => [list_contest];
+  List<Object> get props => [listContest];
 }
 
 class ErrorState extends AtcoderState {

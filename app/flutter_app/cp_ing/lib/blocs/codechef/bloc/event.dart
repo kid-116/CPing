@@ -1,4 +1,4 @@
-part of 'codechef_bloc.dart';
+part of 'bloc.dart';
 
 abstract class CodechefEvent extends Equatable {
   const CodechefEvent();
@@ -9,6 +9,6 @@ abstract class CodechefEvent extends Equatable {
 
 class StartEvent extends CodechefEvent {}
 
-class Active_contest_event extends CodechefEvent {}
+class ActiveContestEvent extends CodechefEvent {}
 
-class Future_contest_event extends CodechefEvent {}
+class FutureContestEvent extends CodechefEvent {}

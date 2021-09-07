@@ -1,4 +1,4 @@
-part of 'codeforces_bloc.dart';
+part of 'bloc.dart';
 
 abstract class CodeforcesEvent extends Equatable {
   const CodeforcesEvent();
@@ -9,6 +9,6 @@ abstract class CodeforcesEvent extends Equatable {
 
 class StartEvent extends CodeforcesEvent {}
 
-class Active_contest_event extends CodeforcesEvent {}
+class ActiveContestEvent extends CodeforcesEvent {}
 
-class Future_contest_event extends CodeforcesEvent {}
+class FutureContestEvent extends CodeforcesEvent {}

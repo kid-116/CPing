@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:cp_ing/models/codechef_model.dart';
+import 'package:cp_ing/models/codechef.dart';
 
 class CodechefRepository {
   Future<List<CodechefModel>> getCodechefData(String a) async {

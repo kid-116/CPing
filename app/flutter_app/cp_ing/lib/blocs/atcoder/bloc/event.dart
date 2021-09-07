@@ -1,4 +1,4 @@
-part of 'atcoder_bloc.dart';
+part of 'bloc.dart';
 
 abstract class AtcoderEvent extends Equatable {
   const AtcoderEvent();
@@ -9,6 +9,6 @@ abstract class AtcoderEvent extends Equatable {
 
 class StartEvent extends AtcoderEvent {}
 
-class Active_contest_event extends AtcoderEvent {}
+class ActiveContestEvent extends AtcoderEvent {}
 
-class Future_contest_event extends AtcoderEvent {}
+class FutureContestEvent extends AtcoderEvent {}

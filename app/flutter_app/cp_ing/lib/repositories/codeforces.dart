@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:cp_ing/models/codeforces_model.dart';
+import 'package:cp_ing/models/codeforces.dart';
 
 class CodeforcesRepository {
   Future<List<CodeforcesModel>> getCodeforcesData(String a) async {

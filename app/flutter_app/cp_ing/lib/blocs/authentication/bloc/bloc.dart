@@ -19,6 +19,7 @@ class AuthenticationBloc
       yield AuthenticationLoading();
 
       final googleSignIn = GoogleSignIn();
+      // ignore: unused_local_variable
       GoogleSignInAccount? _user;
       // GoogleSignInAccount get user => _user!;
       try {
@@ -36,6 +37,7 @@ class AuthenticationBloc
         yield AuthenticationSuccess();
       } catch (e) {
         yield AuthenticationFailure();
+        // ignore: avoid_print
         print(e.toString());
       }
     } else if (event is AuthenticationLogOut) {

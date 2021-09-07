@@ -1,6 +1,6 @@
-import 'package:cp_ing/blocs/codeforces/bloc/codeforces_bloc.dart';
-import 'package:cp_ing/blocs/codeforces/bloc/codeforces_bloc.dart';
-import 'package:cp_ing/models/codeforces_model.dart';
+import 'package:cp_ing/blocs/codeforces/bloc/bloc.dart';
+import 'package:cp_ing/blocs/codeforces/bloc/bloc.dart';
+import 'package:cp_ing/models/codeforces.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,41 +83,41 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
               if (state is LoadingState) {
                 return Center(child: CircularProgressIndicator());
               } else if (state is ActiveLoadedState) {
-                List<CodeforcesModel> _list_current = [];
-                _list_current = state.list_contest;
+                List<CodeforcesModel> _listCurrent = [];
+                _listCurrent = state.listContest;
                 // _list_future = state.list_future;
-                return _list_current.length != 0
+                return _listCurrent.length != 0
                     ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: _list_current.length,
+                            itemCount: _listCurrent.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_list_current[index].Contest[0].name),
-                                  Text(_list_current[index].Contest[0].length),
-                                  Text(_list_current[index].Contest[0].start),
+                                  Text(_listCurrent[index].Contest[0].name),
+                                  Text(_listCurrent[index].Contest[0].length),
+                                  Text(_listCurrent[index].Contest[0].start),
                                 ]),
                               );
                             }),
                       )
                     : Center(child: Text("No Active Contests"));
               } else if (state is FutureLoadedState) {
-                List<CodeforcesModel> _list_current = [];
-                _list_current = state.list_contest;
-                return _list_current.length > 0
+                List<CodeforcesModel> _listCurrent = [];
+                _listCurrent = state.listContest;
+                return _listCurrent.length > 0
                     ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: _list_current.length,
+                            itemCount: _listCurrent.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_list_current[index].Contest[0].name),
-                                  Text(_list_current[index].Contest[0].length),
-                                  Text(_list_current[index].Contest[0].start),
+                                  Text(_listCurrent[index].Contest[0].name),
+                                  Text(_listCurrent[index].Contest[0].length),
+                                  Text(_listCurrent[index].Contest[0].start),
                                 ]),
                               );
                             }),
@@ -136,11 +136,11 @@ class _CodeforcesPageState extends State<CodeforcesPage> {
   }
 
   void future_contests() {
-    BlocProvider.of<CodeforcesBloc>(context).add(Future_contest_event());
+    BlocProvider.of<CodeforcesBloc>(context).add(FutureContestEvent());
   }
 
   void active_contests() {
-    BlocProvider.of<CodeforcesBloc>(context).add(Active_contest_event());
+    BlocProvider.of<CodeforcesBloc>(context).add(ActiveContestEvent());
   }
 }
 

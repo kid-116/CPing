@@ -1,11 +1,11 @@
-import 'package:cp_ing/blocs/atcoder/bloc/atcoder_bloc.dart';
-import 'package:cp_ing/blocs/codechef/bloc/codechef_bloc.dart';
-import 'package:cp_ing/blocs/codeforces/bloc/codeforces_bloc.dart';
+import 'package:cp_ing/blocs/atcoder/bloc/bloc.dart';
+import 'package:cp_ing/blocs/codechef/bloc/bloc.dart';
+import 'package:cp_ing/blocs/codeforces/bloc/bloc.dart';
 import 'package:cp_ing/pages/atcoder.dart';
 import 'package:cp_ing/pages/codechef.dart';
 import 'package:cp_ing/pages/codeforces.dart';
 
-import '../blocs/authentication/bloc.dart';
+import '../blocs/authentication/bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
