@@ -1,6 +1,7 @@
 // pages
 import 'package:cp_ing/Repositories/codeforces_repository.dart';
 import 'package:cp_ing/blocs/atcoder/bloc/atcoder_bloc.dart';
+import 'package:cp_ing/calendar/client.dart';
 import 'package:cp_ing/pages/home.dart';
 import 'package:cp_ing/pages/sign_in.dart';
 // firebase
@@ -9,6 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 // flutter packages
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis/chat/v1.dart';
 // blocs
 import 'blocs/authentication/bloc.dart';
 import 'blocs/codechef/bloc/codechef_bloc.dart';
@@ -70,7 +72,21 @@ class MyApp extends StatelessWidget {
               } else {
                 return const SignInPage();
               }
-            }),
+            }
+        ),
+        // home: Column(
+        //   children: [
+        //     SizedBox(height: 300),
+        //     FloatingActionButton(onPressed: () {
+        //       var event = CalendarClient.insert(
+        //         title: "Test",
+        //         startTime: DateTime.parse("2021-09-09 12:00:00"),
+        //         endTime: DateTime.parse("2021-09-09 13:00:00"),
+        //       );
+        //       print(event);
+        //     }),
+        //   ],
+        // )
       ),
     );
   }

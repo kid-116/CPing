@@ -38,6 +38,7 @@ class Contests {
     data['length'] = this.length;
     data['name'] = this.name;
     data['start'] = this.start;
+    data['id'] = 'null';
     return data;
   }
 }
