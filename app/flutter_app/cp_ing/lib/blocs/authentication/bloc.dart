@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:cp_ing/calendar/secrets.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/calendar/v3.dart' as cal;
+import 'package:http/http.dart' as http;
+import 'package:cp_ing/calendar/client.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -18,7 +22,11 @@ class AuthenticationBloc
     if (event is AuthenticationStarted) {
       yield AuthenticationLoading();
 
-      final googleSignIn = GoogleSignIn();
+      final googleSignIn = GoogleSignIn(
+
+        // clientId: "482736807178-jh0rvhabepk03iv28aftbmd2u20vv1e3.apps.googleusercontent.com",
+        scopes: <String>[cal.CalendarApi.calendarScope],
+      );
       GoogleSignInAccount? _user;
       // GoogleSignInAccount get user => _user!;
       try {
@@ -33,6 +41,10 @@ class AuthenticationBloc
 
         await FirebaseAuth.instance.signInWithCredential(credential);
 
+        // calendar
+        final authHeaders = await googleUser.authHeaders;
+        final client = GoogleAuthClient(authHeaders);
+        CalendarClient.calendar = cal.CalendarApi(client);
         yield AuthenticationSuccess();
       } catch (e) {
         yield AuthenticationFailure();
@@ -44,5 +56,17 @@ class AuthenticationBloc
       FirebaseAuth.instance.signOut();
       yield AuthenticationLogout();
     }
+  }
+}
+
+class GoogleAuthClient extends http.BaseClient {
+  final Map<String, String> _headers;
+  final http.Client _client = http.Client();
+
+  GoogleAuthClient(this._headers);
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    return _client.send(request..headers.addAll(_headers));
   }
 }

@@ -9,6 +9,7 @@ import '../blocs/authentication/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cp_ing/calendar/client.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -151,7 +152,43 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 8),
                   Text(
                     user.email!,
-                  )
+                  ),
+                  SizedBox(height: 15),
+                  FloatingActionButton(
+                      onPressed: () async {
+                        // final authHeaders = await user.authHeaders;
+                        // final client = GoogleAuthClient(authHeaders);
+                        // CalendarClient.calendar = cal.CalendarApi(client);
+                        var client = CalendarClient();
+                        var event = await client.insert(
+                          title: '',
+                          startTime: DateTime.parse("2021-09-09 12:00:00"),
+                          endTime: DateTime.parse("2021-09-09 13:00:00"),
+                        );
+                        print(event['id']);
+                      },
+                      child: Text('Add'),
+                  ),
+                  FloatingActionButton(
+                    onPressed: () async {
+                      var client = CalendarClient();
+                      var event = await client.modify(
+                        id: 'b982uic2bl5nsv0kvkn1tgrje4',
+                        title: 'Test',
+                        startTime: DateTime.parse("2021-09-09 12:30:00"),
+                        endTime: DateTime.parse("2021-09-09 13:00:00"),
+                      );
+                      print(event['id']);
+                    },
+                    child: Text('Modify'),
+                  ),
+                  FloatingActionButton(
+                    onPressed: () async {
+                      var client = CalendarClient();
+                      var event = await client.delete('b982uic2bl5nsv0kvkn1tgrje4');
+                    },
+                    child: Text('Del'),
+                  ),
                 ],
               )),
         );
