@@ -1,9 +1,8 @@
 import 'dart:convert';
-
-import 'package:cp_ing/models/atcoder_model.dart';
+import 'package:cp_ing/models/contest.dart';
 import 'package:http/http.dart' as http;
 
-class AtcoderRepository {
+class Repository {
   Future<List<AtcoderModel>> getAtcoderData(String a) async {
     var response =
         await http.get(Uri.parse("http://10.0.2.2:5000/api/atcoder/contests/"));

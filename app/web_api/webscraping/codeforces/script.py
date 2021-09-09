@@ -51,8 +51,9 @@ def main():
         length = tds[3].get_text().strip()
         contest = {
             'name': name,
-            'start': start,
-            'length': length
+            'start': start.strftime('%Y-%m-%d %H:%M:%Sz'),
+            'length': length,
+            'venue': 'codeforces',
         }
         if(start > now):
             contests['future-contests'].append(contest)

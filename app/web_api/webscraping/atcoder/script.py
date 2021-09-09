@@ -9,7 +9,7 @@ def datetime_parser(dt):
     hr = int(dt[16:18])
     min = int(dt[19:21])
     dt = datetime(year, month, date, hr, min, tzinfo=timezone.utc)
-    return dt
+    return dt.strftime('%Y-%m-%d %H:%M:%Sz')
 
 def parse_row(row):
     tds = row.find_all('td')
@@ -19,7 +19,8 @@ def parse_row(row):
     contest = {
         'name': name,
         'start': start,
-        'length': length
+        'length': length,
+        'venue': 'atcoder',
     }
     return contest
 

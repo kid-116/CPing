@@ -1,34 +1,34 @@
-import 'package:cp_ing/blocs/atcoder/bloc/atcoder_bloc.dart';
-import 'package:cp_ing/models/atcoder_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../blocs/website/bloc.dart';
+import '../models/contest.dart';
 
-class AtcoderPage extends StatefulWidget {
-  const AtcoderPage({Key? key}) : super(key: key);
+class CodeforcesPage extends StatefulWidget {
+  const CodeforcesPage({Key? key}) : super(key: key);
 
   @override
-  _AtcoderPageState createState() => _AtcoderPageState();
+  _CodeforcesPageState createState() => _CodeforcesPageState();
 }
 
-class _AtcoderPageState extends State<AtcoderPage> {
-  bool active_contest = true;
+class _CodeforcesPageState extends State<CodeforcesPage> {
+  bool activeContest = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
-          title: Text("Atcoder CONTESTS"),
+          title: const Text("Codeforces Contests"),
           centerTitle: true,
         ),
         body: Column(children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InkWell(
-                onTap: () => active_contests(),
+                onTap: () => activeContests(),
                 child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -36,8 +36,8 @@ class _AtcoderPageState extends State<AtcoderPage> {
                     ),
                     height: 100,
                     width: 150,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(12.0),
                       child: Center(
                           child: Text(
                         "Active Contests",
@@ -49,7 +49,7 @@ class _AtcoderPageState extends State<AtcoderPage> {
                     )),
               ),
               InkWell(
-                onTap: () => future_contests(),
+                onTap: () => futureContests(),
                 child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -57,8 +57,8 @@ class _AtcoderPageState extends State<AtcoderPage> {
                     ),
                     height: 100,
                     width: 150,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(12.0),
                       child: Center(
                           child: Text(
                         "Future Contests",
@@ -71,62 +71,61 @@ class _AtcoderPageState extends State<AtcoderPage> {
               ),
             ],
           ),
-          Divider(
+          const Divider(
             color: Colors.black,
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
-          BlocBuilder<AtcoderBloc, AtcoderState>(
+          BlocBuilder<WebsiteBloc, WebsiteState>(
             builder: (context, state) {
               if (state is LoadingState) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (state is ActiveLoadedState) {
-                List<AtcoderModel> _list_current = [];
-                _list_current = state.list_contest;
-                // _list_future = state.list_future;
-                return _list_current.length != 0
+                List<Contest> activeContests = [];
+                activeContests = state.contests;
+                return activeContests.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: _list_current.length,
+                            itemCount: activeContests.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                margin: EdgeInsets.all(10),
+                                margin: const EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_list_current[index].Contest[0].name),
-                                  Text(_list_current[index].Contest[0].length),
-                                  Text(_list_current[index].Contest[0].start),
+                                  Text(activeContests[index].name),
+                                  Text(activeContests[index].length),
+                                  Text(activeContests[index].start),
                                 ]),
                               );
                             }),
                       )
-                    : Center(child: Text("No Active Contests"));
+                    : const Center(child: Text("No Active Contests"));
               } else if (state is FutureLoadedState) {
-                List<AtcoderModel> _list_current = [];
-                _list_current = state.list_contest;
-                return _list_current.length > 0
+                List<Contest> futureContests = [];
+                futureContests = state.contests;
+                return futureContests.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
                             shrinkWrap: true,
-                            itemCount: _list_current.length,
+                            itemCount: futureContests.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                margin: EdgeInsets.all(10),
+                                margin: const EdgeInsets.all(10),
                                 child: Column(children: <Widget>[
-                                  Text(_list_current[index].Contest[0].name),
-                                  Text(_list_current[index].Contest[0].length),
-                                  Text(_list_current[index].Contest[0].start),
+                                  Text(futureContests[index].name),
+                                  Text(futureContests[index].length),
+                                  Text(futureContests[index].start),
                                 ]),
                               );
                             }),
                       )
-                    : Center(child: Text("No Future Contests"));
+                    : const Center(child: Text("No Future Contests"));
               } else if (state is ErrorState) {
                 print(state.error.toString());
                 return Center(child: Text(state.error));
               }
-              return Center(
+              return const Center(
                 child: Text("error 404"),
               );
             },
@@ -134,11 +133,11 @@ class _AtcoderPageState extends State<AtcoderPage> {
         ]));
   }
 
-  void future_contests() {
-    BlocProvider.of<AtcoderBloc>(context).add(Future_contest_event());
+  void futureContests() {
+    BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEvent());
   }
 
-  void active_contests() {
-    BlocProvider.of<AtcoderBloc>(context).add(Active_contest_event());
+  void activeContests() {
+    BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEvent());
   }
 }
