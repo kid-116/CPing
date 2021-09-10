@@ -7,9 +7,13 @@ def duration_parser(duration):
     seconds = duration.seconds
     minutes = seconds // 60
     seconds = seconds % 60
-    hours = minutes // 60 + days * 24
+    hours = minutes // 60
     minutes = minutes % 60
-    return "%02d:%02d:%02d" % (hours, minutes, seconds)
+    return {
+        'days': days,
+        'hours': hours,
+        'minutes': minutes
+    }
 
 def parse_row(row):
     details = []
@@ -22,8 +26,9 @@ def parse_row(row):
     contest['name'] = details[1]
     start = datetime_parser(details[2])
     end = datetime_parser(details[3])
-    contest['start'] = start
+    contest['start'] = start.strftime('%Y-%m-%d %H:%M:%Sz')
     contest['length'] = duration_parser(end - start)
+    contest['venue'] = 'codechef'
     # print(contest['length'])
     return contest
 
@@ -76,6 +81,7 @@ def main():
     for row in soup.select('tbody#future-contests-data tr'):
         future_contests.append(parse_row(row))
     contests['future-contests'] = future_contests
+    # print(contests)
     return contests
 
 if __name__ == '__main__':
