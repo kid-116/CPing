@@ -1,5 +1,6 @@
 // pages
 import 'package:cp_ing/pages/website.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // blocs
 import '../blocs/authentication/bloc.dart';
 import '../blocs/website/bloc.dart';
@@ -10,6 +11,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // firebase
 import 'package:firebase_auth/firebase_auth.dart';
 
+WebsiteBloc createWebsiteBloc(String endpoint) {
+  return WebsiteBloc(
+    initialState: WebsiteInitial(),
+    repository: WebsiteRepository(
+        endpoint: endpoint
+    ),
+  );
+}
+
+const cyan = Color.fromRGBO(14, 245, 225, 1);
+const deepBlue = Color.fromRGBO(32, 27, 50, 1);
+
+TextStyle drawerOptionTextStyle() {
+  return const TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      // fontFamily: 'Roboto'
+  );
+}
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -18,26 +39,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  WebsiteBloc codeforcesBloc = WebsiteBloc(
-    initialState: WebsiteInitial(),
-    repository: WebsiteRepository(
-      endpoint: 'api/codeforces/contests'
-    ),
-  );
-
-  WebsiteBloc atcoderBloc = WebsiteBloc(
-    initialState: WebsiteInitial(),
-    repository: WebsiteRepository(
-        endpoint: 'api/atcoder/contests'
-    ),
-  );
-
-  WebsiteBloc codechefBloc = WebsiteBloc(
-    initialState: WebsiteInitial(),
-    repository: WebsiteRepository(
-        endpoint: 'api/codechef/contests'
-    ),
-  );
+  WebsiteBloc codeforcesBloc = createWebsiteBloc('api/codeforces/contests');
+  WebsiteBloc atcoderBloc = createWebsiteBloc('api/atcoder/contests');
+  WebsiteBloc codechefBloc = createWebsiteBloc('api/codechef/contests');
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   @override
@@ -47,24 +51,30 @@ class _HomePageState extends State<HomePage> {
       builder: (context, state) {
         return Scaffold(
           drawer: Drawer(
+            backgroundColor: deepBlue,
             child: Column(
               children: <Widget>[
                 Row(
                   children: [
                     Expanded(
                       child: UserAccountsDrawerHeader(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[500],
+                        decoration: const BoxDecoration(
+                          color: deepBlue,
                         ),
                         accountEmail: Text(
                           user!.email!,
                           style: const TextStyle(
-                              color: Colors.black, fontSize: 16),
+                            color: Colors.white,
+                            letterSpacing: 1,
+                            fontSize: 16,
+                          ),
                         ),
                         accountName: Text(
                           user.displayName!,
                           style: const TextStyle(
-                              color: Colors.black, fontSize: 22),
+                              color: Colors.white70,
+                              fontSize: 22
+                          ),
                         ),
                         currentAccountPicture: CircleAvatar(
                           backgroundImage: NetworkImage(user.photoURL!),
@@ -73,16 +83,34 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                ListTile(
-                  selectedTileColor: Colors.grey[700],
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.grey[500],
-                    child: const Icon(
-                      Icons.assignment,
-                      color: Colors.black,
-                    ),
+                // const Divider(color: Colors.white),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 15
                   ),
-                  title: const Text('Codeforces'),
+                  child: const Text(
+                    'WEBSITES',
+                    style: TextStyle(
+                      color: cyan,
+                      letterSpacing: 1,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                ),
+                // const Divider(color: Colors.white),
+                ListTile(
+                  selectedTileColor: Colors.white10,
+                  leading: const Image(
+                    image: AssetImage('assets/images/codeforces_icon.png'),
+                    height: 35,
+                    width: 35,
+                  ),
+                  title: Text(
+                    'Codeforces',
+                    style: drawerOptionTextStyle(),
+                  ),
                   onTap: () {
                     WebsitePage page = const WebsitePage(
                       name: 'Codeforces',
@@ -96,16 +124,16 @@ class _HomePageState extends State<HomePage> {
                     ));
                   },
                 ),
-                const Divider(), // add a line
                 ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.grey[500],
-                      child: const Icon(
-                        Icons.check_box_outlined,
-                        color: Colors.black,
-                      ),
+                    leading: const Image(
+                      image: AssetImage('assets/images/codechef_icon.png'),
+                      height: 35,
+                      width: 35,
                     ),
-                    title: const Text('Codechef'),
+                    title: Text(
+                      'Codechef',
+                      style: drawerOptionTextStyle(),
+                    ),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
@@ -117,16 +145,17 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ));
                     }),
-                const Divider(),
                 ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.grey[500],
-                    child: const Icon(
-                      Icons.assignment,
-                      color: Colors.black,
-                    ),
+                  leading: const Image(
+                    image: AssetImage('assets/images/atcoder_icon.png'),
+                    color: Colors.white,
+                    height: 35,
+                    width: 35,
                   ),
-                  title: const Text('Atcoder'),
+                  title: Text(
+                    'Atcoder',
+                    style: drawerOptionTextStyle(),
+                  ),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => BlocProvider.value(
@@ -139,51 +168,93 @@ class _HomePageState extends State<HomePage> {
                     ));
                   },
                 ),
-                const Divider(), // add a line
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.grey[500],
-                    child: const Icon(
-                      Icons.settings,
-                      color: Colors.black,
+                // const SizedBox(height: 270),
+                const Divider(color: Colors.white),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.grey[500],
+                          child: const Icon(
+                            Icons.logout,
+                            color: Colors.black,
+                          ),
+                        ),
+                        title: Text(
+                          'Logout',
+                          style: drawerOptionTextStyle(),
+                        ),
+                        onTap: () {
+                          BlocProvider.of<AuthenticationBloc>(context)
+                              .add(AuthenticationLogOut());
+                        },
+                      ),
                     ),
                   ),
-                  title: const Text("Logout"),
-                  onTap: () {
-                    BlocProvider.of<AuthenticationBloc>(context)
-                        .add(AuthenticationLogOut());
-                  },
                 )
               ],
             ),
           ),
           appBar: AppBar(
-            backgroundColor: Colors.black,
-            title: const Text('Home'),
+            iconTheme: const IconThemeData(
+              color: Colors.white,
+            ),
+            // backgroundColor: const Color.fromRGBO(32, 27, 50, 1),
+            backgroundColor: deepBlue,
+            title: const Text(
+              'Home',
+              style: TextStyle(
+                color: Colors.white
+              ),
+            ),
+            foregroundColor: const Color.fromRGBO(32, 27, 50, 1),
           ),
           body: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/bg_two.jpg'),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
               alignment: Alignment.center,
-              color: Colors.grey,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Profile',
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(30, 35, 0, 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Hello,',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 65,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 32),
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: NetworkImage(user.photoURL!),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        user.displayName!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 45,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    user.displayName!,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    user.email!,
-                  ),
-                  const SizedBox(height: 15),
                   // FloatingActionButton(
                   //     onPressed: () async {
                   //       // final authHeaders = await user.authHeaders;
