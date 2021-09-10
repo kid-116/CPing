@@ -21,7 +21,7 @@ class ListContests extends StatelessWidget {
     String formatLength(Duration length) {
       int strLen = length.toString().length;
 
-      return length.toString().substring(0, strLen - 7);
+      return length.toString().substring(0, strLen - 10);
     }
 
     return Expanded(
