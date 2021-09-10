@@ -19,10 +19,23 @@ def parse_row(row):
     contest = {
         'name': name,
         'start': start,
-        'length': length,
+        'length': duration_parser(length),
         'venue': 'atcoder',
     }
+    print(contest['length'])
     return contest
+
+def duration_parser(duration):
+    hours, minutes = duration.split(':')
+    hours = int(hours)
+    minutes = int(minutes)
+    days = hours // 24
+    hours = hours % 24
+    return {
+        'days': days,
+        'hours': hours,
+        'minutes': minutes
+    }
 
 # driver code for scraping
 def main():

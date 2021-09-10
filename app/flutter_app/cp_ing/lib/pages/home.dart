@@ -1,15 +1,14 @@
-import 'package:cp_ing/blocs/atcoder/bloc/atcoder_bloc.dart';
-import 'package:cp_ing/blocs/codechef/bloc/codechef_bloc.dart';
-import 'package:cp_ing/blocs/codeforces/bloc/codeforces_bloc.dart';
-import 'package:cp_ing/pages/atcoder.dart';
-import 'package:cp_ing/pages/codechef.dart';
-import 'package:cp_ing/pages/codeforces.dart';
-
+// pages
+import 'package:cp_ing/pages/website.dart';
+// blocs
 import '../blocs/authentication/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../blocs/website/bloc.dart';
+import '../repositories/website.dart';
+// flutter
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cp_ing/calendar/client.dart';
+// firebase
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,6 +18,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  WebsiteBloc codeforcesBloc = WebsiteBloc(
+    initialState: WebsiteInitial(),
+    repository: WebsiteRepository(
+      endpoint: 'api/codeforces/contests'
+    ),
+  );
+
+  WebsiteBloc atcoderBloc = WebsiteBloc(
+    initialState: WebsiteInitial(),
+    repository: WebsiteRepository(
+        endpoint: 'api/atcoder/contests'
+    ),
+  );
+
+  WebsiteBloc codechefBloc = WebsiteBloc(
+    initialState: WebsiteInitial(),
+    repository: WebsiteRepository(
+        endpoint: 'api/codechef/contests'
+    ),
+  );
+
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -62,12 +82,16 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black,
                     ),
                   ),
-                  title: Text('CODEFORCES'),
+                  title: const Text('Codeforces'),
                   onTap: () {
+                    WebsitePage page = const WebsitePage(
+                      name: 'Codeforces',
+                    );
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => BlocProvider.value(
-                        value: BlocProvider.of<CodeforcesBloc>(context),
-                        child: CodeforcesPage(),
+                        value: codeforcesBloc,
+                        // value: BlocProvider.of<WebsiteBloc>(context),
+                        child: page
                       ),
                     ));
                   },
@@ -81,12 +105,15 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.black,
                       ),
                     ),
-                    title: Text('CODECHEF'),
+                    title: const Text('Codechef'),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
-                          value: BlocProvider.of<CodechefBloc>(context),
-                          child: CodechefPage(),
+                          value: codechefBloc,
+                          // value: BlocProvider.of<WebsiteBloc>(context),
+                          child: const WebsitePage(
+                            name: 'Codechef',
+                          ),
                         ),
                       ));
                     }),
@@ -99,12 +126,15 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black,
                     ),
                   ),
-                  title: const Text('ATCODER'),
+                  title: const Text('Atcoder'),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => BlocProvider.value(
-                        value: BlocProvider.of<AtcoderBloc>(context),
-                        child: AtcoderPage(),
+                        value: atcoderBloc,
+                        // value: BlocProvider.of<WebsiteBloc>(context),
+                        child: const WebsitePage(
+                          name: 'Atcoder',
+                        ),
                       ),
                     ));
                   },
@@ -118,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black,
                     ),
                   ),
-                  title: const Text("LOGOUT"),
+                  title: const Text("Logout"),
                   onTap: () {
                     BlocProvider.of<AuthenticationBloc>(context)
                         .add(AuthenticationLogOut());
@@ -129,7 +159,7 @@ class _HomePageState extends State<HomePage> {
           ),
           appBar: AppBar(
             backgroundColor: Colors.black,
-            title: const Text('HOME'),
+            title: const Text('Home'),
           ),
           body: Container(
               alignment: Alignment.center,
@@ -153,44 +183,45 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     user.email!,
                   ),
-                  SizedBox(height: 15),
-                  FloatingActionButton(
-                      onPressed: () async {
-                        // final authHeaders = await user.authHeaders;
-                        // final client = GoogleAuthClient(authHeaders);
-                        // CalendarClient.calendar = cal.CalendarApi(client);
-                        var client = CalendarClient();
-                        var event = await client.insert(
-                          title: '',
-                          startTime: DateTime.parse("2021-09-09 12:00:00"),
-                          endTime: DateTime.parse("2021-09-09 13:00:00"),
-                        );
-                        print(event['id']);
-                      },
-                      child: Text('Add'),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () async {
-                      var client = CalendarClient();
-                      var event = await client.modify(
-                        id: 'b982uic2bl5nsv0kvkn1tgrje4',
-                        title: 'Test',
-                        startTime: DateTime.parse("2021-09-09 12:30:00"),
-                        endTime: DateTime.parse("2021-09-09 13:00:00"),
-                      );
-                      print(event['id']);
-                    },
-                    child: Text('Modify'),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () async {
-                      var client = CalendarClient();
-                      var event = await client.delete('b982uic2bl5nsv0kvkn1tgrje4');
-                    },
-                    child: Text('Del'),
-                  ),
+                  const SizedBox(height: 15),
+                  // FloatingActionButton(
+                  //     onPressed: () async {
+                  //       // final authHeaders = await user.authHeaders;
+                  //       // final client = GoogleAuthClient(authHeaders);
+                  //       // CalendarClient.calendar = cal.CalendarApi(client);
+                  //       var client = CalendarClient();
+                  //       var event = await client.insert(
+                  //         title: '',
+                  //         startTime: DateTime.parse("2021-09-09 12:00:00"),
+                  //         endTime: DateTime.parse("2021-09-09 13:00:00"),
+                  //       );
+                  //       print(event['id']);
+                  //     },
+                  //     child: Text('Add'),
+                  // ),
+                  // FloatingActionButton(
+                  //   onPressed: () async {
+                  //     var client = CalendarClient();
+                  //     var event = await client.modify(
+                  //       id: 'b982uic2bl5nsv0kvkn1tgrje4',
+                  //       title: 'Test',
+                  //       startTime: DateTime.parse("2021-09-09 12:30:00"),
+                  //       endTime: DateTime.parse("2021-09-09 13:00:00"),
+                  //     );
+                  //     print(event['id']);
+                  //   },
+                  //   child: Text('Modify'),
+                  // ),
+                  // FloatingActionButton(
+                  //   onPressed: () async {
+                  //     var client = CalendarClient();
+                  //     var event = await client.delete('b982uic2bl5nsv0kvkn1tgrje4');
+                  //   },
+                  //   child: Text('Del'),
+                  // ),
                 ],
-              )),
+              )
+          ),
         );
       },
     );

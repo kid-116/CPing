@@ -26,6 +26,16 @@ def datetime_parser(dt):
     dt = datetime(year, month, date, hr, min, tzinfo=timezone.utc)
     return dt
 
+def duration_parser(duration):
+    if(len(duration.split(':')) == 2):
+        duration = '00:' + duration
+    days, minutes, seconds = duration.split(':')
+    return {
+        'days': int(days),
+        'hours': int(minutes),
+        'minutes': int(seconds)
+    }
+
 # driver code for scraping
 def main():
     # page url
@@ -52,9 +62,10 @@ def main():
         contest = {
             'name': name,
             'start': start.strftime('%Y-%m-%d %H:%M:%Sz'),
-            'length': length,
+            'length': duration_parser(length),
             'venue': 'codeforces',
         }
+        print(contest['length'])
         if(start > now):
             contests['future-contests'].append(contest)
         else:

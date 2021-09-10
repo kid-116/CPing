@@ -9,7 +9,11 @@ def duration_parser(duration):
     seconds = seconds % 60
     hours = minutes // 60
     minutes = minutes % 60
-    return "%02d:%02d:%02d" % (days, hours, minutes)
+    return {
+        'days': days,
+        'hours': hours,
+        'minutes': minutes
+    }
 
 def parse_row(row):
     details = []
@@ -77,7 +81,7 @@ def main():
     for row in soup.select('tbody#future-contests-data tr'):
         future_contests.append(parse_row(row))
     contests['future-contests'] = future_contests
-    print(contests)
+    # print(contests)
     return contests
 
 if __name__ == '__main__':

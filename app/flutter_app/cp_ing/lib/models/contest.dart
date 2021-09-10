@@ -1,44 +1,53 @@
-class AtcoderModel {
-  late List<Contests> Contest;
+class Contest {
+  late Duration length;
+  late String name;
+  late DateTime start;
+  late DateTime end;
+  late String venue;
+  String id = 'null';
 
-  AtcoderModel({required this.Contest});
-
-  AtcoderModel.fromJson(Map<String, dynamic> json) {
-    if (true) {
-      Contest = <Contests>[];
-      Contest.add(new Contests.fromJson(json));
-    }
+  Contest.fromJson(Map<String, dynamic> json) {
+    // print(json['length']);
+    length = Duration(
+      days: json['length']['days'],
+      hours: json['length']['hours'],
+      minutes: json['length']['minutes']
+    );
+    name = json['name'];
+    start = DateTime.parse(json['start']).toLocal();
+    end = start.add(length);
+    // start = json['start'];
+    venue = json['venue'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.Contest != null) {
-      data['future-contests'] = this.Contest.map((v) => v.toJson()).toList();
-    }
-
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['length'] = length;
+    data['name'] = name;
+    data['start'] = start;
+    data['id'] = id;
+    data['end'] = end;
+    data['venue'] = venue;
     return data;
   }
 }
 
 class Contests {
-  late String length;
-  late String name;
-  late String start;
+  late List<Contest> contests;
 
-  Contests({required this.length, required this.name, required this.start});
+  Contests({required this.contests});
 
   Contests.fromJson(Map<String, dynamic> json) {
-    length = json['length'];
-    name = json['name'];
-    start = json['start'];
+    if (true) {
+      contests = <Contest>[];
+      contests.add(Contest.fromJson(json));
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['length'] = this.length;
-    data['name'] = this.name;
-    data['start'] = this.start;
-    data['id'] = 'null';
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['contests'] = contests.map((v) => v.toJson()).toList();
     return data;
   }
 }
+

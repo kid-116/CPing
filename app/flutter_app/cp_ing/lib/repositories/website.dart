@@ -1,25 +1,33 @@
 import 'dart:convert';
-import 'package:cp_ing/models/contest.dart';
 import 'package:http/http.dart' as http;
+import 'package:cp_ing/models/contest.dart';
 
-class Repository {
-  Future<List<AtcoderModel>> getAtcoderData(String a) async {
-    var response =
-        await http.get(Uri.parse("http://10.0.2.2:5000/api/atcoder/contests/"));
-    var data = json.decode(response.body);
-    List<AtcoderModel> _AtcoderModelList = [];
-    print(data['future-contests']);
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      for (var item in data[a]) {
-        AtcoderModel _AtcoderModel = AtcoderModel.fromJson(item);
-        _AtcoderModelList.add(_AtcoderModel);
-      }
-      print(_AtcoderModelList.length);
-      return _AtcoderModelList;
-    } else {
-      print("error");
-      return _AtcoderModelList;
+class WebsiteRepository {
+  static const String hostUrl = "http://10.0.2.2:5000/";
+  late String endpoint;
+
+  WebsiteRepository({
+    required this.endpoint,
+  });
+
+  Future<List<Contest>> getWebsiteContests(String type) async {
+    List<Contest> contests = [];
+    try {
+      print("fetching contests...");
+      var response = await http.get(Uri.parse(hostUrl + endpoint));
+      print("response served...");
+      var data = json.decode(response.body);
+        for (var item in data[type]) {
+          Contest contest = Contest.fromJson(item);
+          contests.add(contest);
+        }
+    } catch(e) {
+      print("debug: $e");
     }
+    return contests;
+  }
+
+  void setEndpoint(String endpoint) {
+    this.endpoint = endpoint;
   }
 }
