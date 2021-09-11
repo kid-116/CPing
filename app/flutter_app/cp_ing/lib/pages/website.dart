@@ -1,8 +1,10 @@
+import 'package:cp_ing/config/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/website/bloc.dart';
 import '../models/contest.dart';
 import 'package:intl/intl.dart';
+import 'package:cp_ing/widgets/tab_bar.dart';
 
 class ListContests extends StatelessWidget {
   final List<Contest> contests;
@@ -44,7 +46,6 @@ class ListContests extends StatelessWidget {
   }
 }
 
-
 class WebsitePage extends StatefulWidget {
   final String name;
   const WebsitePage({
@@ -62,63 +63,20 @@ class _WebsitePageState extends State<WebsitePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text("${widget.name} Contests"),
+          backgroundColor: MyColors.deepBlue,
+          title: Text(
+            "${widget.name} Contests",
+            style: const TextStyle(
+              fontSize: 25,
+            ),
+          ),
           centerTitle: true,
         ),
         body: Column(children: <Widget>[
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              InkWell(
-                onTap: () => activeContests(),
-                child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey,
-                    ),
-                    height: 100,
-                    width: 150,
-                    child: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Text(
-                        "Active Contests",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
-                      )),
-                    )),
-              ),
-              InkWell(
-                onTap: () => futureContests(),
-                child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey,
-                    ),
-                    height: 100,
-                    width: 150,
-                    child: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Text(
-                        "Future Contests",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
-                      )),
-                    )),
-              ),
-            ],
-          ),
-          const Divider(
-            color: Colors.black,
+          MyTabBar(
+            labels: const ['ACTIVE', 'FUTURE'],
+            callbacks: [activeContests, futureContests],
+            initBar: 0,
           ),
           const SizedBox(
             height: 30,

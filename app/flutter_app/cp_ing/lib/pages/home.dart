@@ -1,4 +1,5 @@
 // pages
+import 'package:cp_ing/config/colors.dart';
 import 'package:cp_ing/pages/website.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // blocs
@@ -19,9 +20,6 @@ WebsiteBloc createWebsiteBloc(String endpoint) {
     ),
   );
 }
-
-const cyan = Color.fromRGBO(14, 245, 225, 1);
-const deepBlue = Color.fromRGBO(32, 27, 50, 1);
 
 TextStyle drawerOptionTextStyle() {
   return const TextStyle(
@@ -53,7 +51,7 @@ class _HomePageState extends State<HomePage> {
           drawer: Drawer(
             // backgroundColor: deepBlue,
             child: Container(
-              color: deepBlue,
+              color: MyColors.deepBlue,
               child: Column(
                 children: <Widget>[
                   Row(
@@ -61,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: UserAccountsDrawerHeader(
                           decoration: const BoxDecoration(
-                            color: deepBlue,
+                            color: MyColors.deepBlue,
                           ),
                           accountEmail: Text(
                             user!.email!,
@@ -95,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                     child: const Text(
                       'WEBSITES',
                       style: TextStyle(
-                        color: cyan,
+                        color: MyColors.cyan,
                         letterSpacing: 1,
                       ),
                       textAlign: TextAlign.justify,
@@ -208,7 +206,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
             ),
             // backgroundColor: const Color.fromRGBO(32, 27, 50, 1),
-            backgroundColor: deepBlue,
+            backgroundColor: MyColors.deepBlue,
             title: const Text(
               'Home',
               style: TextStyle(

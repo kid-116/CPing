@@ -62,7 +62,7 @@ def main():
     # page url
     URL = "https://www.codechef.com/contests/?itm_medium=navmenu&itm_campaign=allcontests#future-contests"
     # scrapingant client
-    client = ScrapingAntClient(token='08195006585c4385956bd98ca77a3f07')
+    client = ScrapingAntClient(token='573cf7140bd4472da81422e3a9383510')
     # sending req
     res = client.general_request(URL)
     # souping
