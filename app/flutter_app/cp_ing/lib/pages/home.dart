@@ -51,153 +51,156 @@ class _HomePageState extends State<HomePage> {
       builder: (context, state) {
         return Scaffold(
           drawer: Drawer(
-            backgroundColor: deepBlue,
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: [
-                    Expanded(
-                      child: UserAccountsDrawerHeader(
-                        decoration: const BoxDecoration(
-                          color: deepBlue,
-                        ),
-                        accountEmail: Text(
-                          user!.email!,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            letterSpacing: 1,
-                            fontSize: 16,
+            // backgroundColor: deepBlue,
+            child: Container(
+              color: deepBlue,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: [
+                      Expanded(
+                        child: UserAccountsDrawerHeader(
+                          decoration: const BoxDecoration(
+                            color: deepBlue,
+                          ),
+                          accountEmail: Text(
+                            user!.email!,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              letterSpacing: 1,
+                              fontSize: 16,
+                            ),
+                          ),
+                          accountName: Text(
+                            user.displayName!,
+                            style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 22
+                            ),
+                          ),
+                          currentAccountPicture: CircleAvatar(
+                            backgroundImage: NetworkImage(user.photoURL!),
                           ),
                         ),
-                        accountName: Text(
-                          user.displayName!,
-                          style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 22
-                          ),
-                        ),
-                        currentAccountPicture: CircleAvatar(
-                          backgroundImage: NetworkImage(user.photoURL!),
-                        ),
                       ),
+                    ],
+                  ),
+                  // const Divider(color: Colors.white),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 5,
+                      horizontal: 15
                     ),
-                  ],
-                ),
-                // const Divider(color: Colors.white),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 15
-                  ),
-                  child: const Text(
-                    'WEBSITES',
-                    style: TextStyle(
-                      color: cyan,
-                      letterSpacing: 1,
-                    ),
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-                // const Divider(color: Colors.white),
-                ListTile(
-                  selectedTileColor: Colors.white10,
-                  leading: const Image(
-                    image: AssetImage('assets/images/codeforces_icon.png'),
-                    height: 35,
-                    width: 35,
-                  ),
-                  title: Text(
-                    'Codeforces',
-                    style: drawerOptionTextStyle(),
-                  ),
-                  onTap: () {
-                    WebsitePage page = const WebsitePage(
-                      name: 'Codeforces',
-                    );
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => BlocProvider.value(
-                        value: codeforcesBloc,
-                        // value: BlocProvider.of<WebsiteBloc>(context),
-                        child: page
+                    child: const Text(
+                      'WEBSITES',
+                      style: TextStyle(
+                        color: cyan,
+                        letterSpacing: 1,
                       ),
-                    ));
-                  },
-                ),
-                ListTile(
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                  // const Divider(color: Colors.white),
+                  ListTile(
+                    selectedTileColor: Colors.white10,
                     leading: const Image(
-                      image: AssetImage('assets/images/codechef_icon.png'),
+                      image: AssetImage('assets/images/codeforces_icon.png'),
                       height: 35,
                       width: 35,
                     ),
                     title: Text(
-                      'Codechef',
+                      'Codeforces',
+                      style: drawerOptionTextStyle(),
+                    ),
+                    onTap: () {
+                      WebsitePage page = const WebsitePage(
+                        name: 'Codeforces',
+                      );
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => BlocProvider.value(
+                          value: codeforcesBloc,
+                          // value: BlocProvider.of<WebsiteBloc>(context),
+                          child: page
+                        ),
+                      ));
+                    },
+                  ),
+                  ListTile(
+                      leading: const Image(
+                        image: AssetImage('assets/images/codechef_icon.png'),
+                        height: 35,
+                        width: 35,
+                      ),
+                      title: Text(
+                        'Codechef',
+                        style: drawerOptionTextStyle(),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: codechefBloc,
+                            // value: BlocProvider.of<WebsiteBloc>(context),
+                            child: const WebsitePage(
+                              name: 'Codechef',
+                            ),
+                          ),
+                        ));
+                      }),
+                  ListTile(
+                    leading: const Image(
+                      image: AssetImage('assets/images/atcoder_icon.png'),
+                      color: Colors.white,
+                      height: 35,
+                      width: 35,
+                    ),
+                    title: Text(
+                      'Atcoder',
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
-                          value: codechefBloc,
+                          value: atcoderBloc,
                           // value: BlocProvider.of<WebsiteBloc>(context),
                           child: const WebsitePage(
-                            name: 'Codechef',
+                            name: 'Atcoder',
                           ),
                         ),
                       ));
-                    }),
-                ListTile(
-                  leading: const Image(
-                    image: AssetImage('assets/images/atcoder_icon.png'),
-                    color: Colors.white,
-                    height: 35,
-                    width: 35,
+                    },
                   ),
-                  title: Text(
-                    'Atcoder',
-                    style: drawerOptionTextStyle(),
-                  ),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => BlocProvider.value(
-                        value: atcoderBloc,
-                        // value: BlocProvider.of<WebsiteBloc>(context),
-                        child: const WebsitePage(
-                          name: 'Atcoder',
-                        ),
+                  // const SizedBox(height: 270),
+                  const Divider(color: Colors.white),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 15,
                       ),
-                    ));
-                  },
-                ),
-                // const SizedBox(height: 270),
-                const Divider(color: Colors.white),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.grey[500],
-                          child: const Icon(
-                            Icons.logout,
-                            color: Colors.black,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.grey[500],
+                            child: const Icon(
+                              Icons.logout,
+                              color: Colors.black,
+                            ),
                           ),
+                          title: Text(
+                            'Logout',
+                            style: drawerOptionTextStyle(),
+                          ),
+                          onTap: () {
+                            BlocProvider.of<AuthenticationBloc>(context)
+                                .add(AuthenticationLogOut());
+                          },
                         ),
-                        title: Text(
-                          'Logout',
-                          style: drawerOptionTextStyle(),
-                        ),
-                        onTap: () {
-                          BlocProvider.of<AuthenticationBloc>(context)
-                              .add(AuthenticationLogOut());
-                        },
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
           appBar: AppBar(
