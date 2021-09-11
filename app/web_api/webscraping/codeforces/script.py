@@ -1,3 +1,4 @@
+from webscraping.config import API_TOKEN
 import requests
 from bs4 import BeautifulSoup
 from scrapingant_client import ScrapingAntClient
@@ -41,7 +42,7 @@ def main():
     # page url
     URL = "https://codeforces.com/contests"
     # scrapingant client
-    client = ScrapingAntClient(token='573cf7140bd4472da81422e3a9383510')
+    client = ScrapingAntClient(token=API_TOKEN)
     # sending req
     res = client.general_request(URL)
     # souping
