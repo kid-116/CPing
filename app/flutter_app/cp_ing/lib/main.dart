@@ -9,12 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // blocs
 import 'blocs/authentication/bloc.dart';
+//hive
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:cp_ing/models/calenderapi.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-
+  await Hive.initFlutter();
+  Hive.registerAdapter(AuthcalenderAdapter());
+  await Hive.openBox("authcalender");
   runApp(const MyApp());
 }
 
@@ -23,6 +29,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = Hive.box("authcalender");
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthenticationBloc>(
@@ -51,8 +58,7 @@ class MyApp extends StatelessWidget {
               } else {
                 return const SignInPage();
               }
-            }
-        ),
+            }),
       ),
     );
   }
