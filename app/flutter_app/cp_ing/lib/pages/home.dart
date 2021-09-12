@@ -2,6 +2,7 @@
 import 'package:cp_ing/config/colors.dart';
 import 'package:cp_ing/pages/website.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 // blocs
 import '../blocs/authentication/bloc.dart';
 import '../blocs/website/bloc.dart';
@@ -15,17 +16,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 WebsiteBloc createWebsiteBloc(String endpoint) {
   return WebsiteBloc(
     initialState: WebsiteInitial(),
-    repository: WebsiteRepository(
-        endpoint: endpoint
-    ),
+    repository: WebsiteRepository(endpoint: endpoint),
   );
 }
 
 TextStyle drawerOptionTextStyle() {
   return const TextStyle(
-      color: Colors.white,
-      fontSize: 20,
-      // fontFamily: 'Roboto'
+    color: Colors.white,
+    fontSize: 20,
+    // fontFamily: 'Roboto'
   );
 }
 
@@ -44,6 +43,11 @@ class _HomePageState extends State<HomePage> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    final box = Hive.box("authcalender");
+    if (box.length != 0) {
+      print("my name is shahsank");
+      print(box.get('auth')!.authHeaders);
+    }
     final user = FirebaseAuth.instance.currentUser;
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
@@ -72,9 +76,7 @@ class _HomePageState extends State<HomePage> {
                           accountName: Text(
                             user.displayName!,
                             style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 22
-                            ),
+                                color: Colors.white70, fontSize: 22),
                           ),
                           currentAccountPicture: CircleAvatar(
                             backgroundImage: NetworkImage(user.photoURL!),
@@ -86,10 +88,8 @@ class _HomePageState extends State<HomePage> {
                   // const Divider(color: Colors.white),
                   Container(
                     alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                      horizontal: 15
-                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                     child: const Text(
                       'WEBSITES',
                       style: TextStyle(
@@ -117,10 +117,9 @@ class _HomePageState extends State<HomePage> {
                       );
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
-                          value: codeforcesBloc,
-                          // value: BlocProvider.of<WebsiteBloc>(context),
-                          child: page
-                        ),
+                            value: codeforcesBloc,
+                            // value: BlocProvider.of<WebsiteBloc>(context),
+                            child: page),
                       ));
                     },
                   ),
@@ -209,9 +208,7 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: MyColors.deepBlue,
             title: const Text(
               'Home',
-              style: TextStyle(
-                color: Colors.white
-              ),
+              style: TextStyle(color: Colors.white),
             ),
             foregroundColor: const Color.fromRGBO(32, 27, 50, 1),
           ),
@@ -292,8 +289,7 @@ class _HomePageState extends State<HomePage> {
                   //   child: Text('Del'),
                   // ),
                 ],
-              )
-          ),
+              )),
         );
       },
     );
