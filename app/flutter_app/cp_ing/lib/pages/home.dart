@@ -43,11 +43,6 @@ class _HomePageState extends State<HomePage> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
-    final box = Hive.box("authcalender");
-    if (box.length != 0) {
-      print("my name is shahsank");
-      print(box.get('auth')!.authHeaders);
-    }
     final user = FirebaseAuth.instance.currentUser;
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {

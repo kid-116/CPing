@@ -1,30 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'calenderapi.dart';
+part of 'auth_header.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AuthcalenderAdapter extends TypeAdapter<Authcalender> {
+class AuthHeaderAdapter extends TypeAdapter<AuthHeader> {
   @override
   final int typeId = 1;
 
   @override
-  Authcalender read(BinaryReader reader) {
+  AuthHeader read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Authcalender()..authHeaders = fields[0] as dynamic;
+    return AuthHeader(
+      header: (fields[0] as Map).cast<String, String>(),
+    );
   }
 
   @override
-  void write(BinaryWriter writer, Authcalender obj) {
+  void write(BinaryWriter writer, AuthHeader obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.authHeaders);
+      ..write(obj.header);
   }
 
   @override
@@ -33,7 +35,7 @@ class AuthcalenderAdapter extends TypeAdapter<Authcalender> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthcalenderAdapter &&
+      other is AuthHeaderAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

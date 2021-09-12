@@ -31,23 +31,3 @@ class Contest {
     return data;
   }
 }
-
-class Contests {
-  late List<Contest> contests;
-
-  Contests({required this.contests});
-
-  Contests.fromJson(Map<String, dynamic> json) {
-    if (true) {
-      contests = <Contest>[];
-      contests.add(Contest.fromJson(json));
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['contests'] = contests.map((v) => v.toJson()).toList();
-    return data;
-  }
-}
-
