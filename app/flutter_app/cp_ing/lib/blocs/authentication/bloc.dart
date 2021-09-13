@@ -1,6 +1,5 @@
 import 'dart:async';
 // packages
-import 'package:cp_ing/models/auth_header.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 import 'package:bloc/bloc.dart';
@@ -42,14 +41,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         );
 
         await FirebaseAuth.instance.signInWithCredential(credential);
-
-        // calendar
-        print('saving authHeader');
-        final authHeaders = await googleUser.authHeaders;
-        var authHeaderBox = Hive.box('authHeader');
-        authHeaderBox.put('authHeader', AuthHeader(header: authHeaders));
-        // final client = GoogleAuthClient(authHeaders);
-        // CalendarClient.calendar = cal.CalendarApi(client);
 
         yield AuthenticationSuccess();
       } catch (e) {

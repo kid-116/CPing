@@ -45,38 +45,46 @@ class _WebsitePageState extends State<WebsitePage> {
           ),
           centerTitle: true,
         ),
-        body: Column(children: <Widget>[
-          MyTabBar(
-            labels: const ['ACTIVE', 'FUTURE'],
-            callbacks: [activeContests, futureContests],
-            initBar: 0,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg_two.jpg'),
+              fit: BoxFit.fill,
+            ),
           ),
-          BlocBuilder<WebsiteBloc, WebsiteState>(
-            builder: (context, state) {
-              if (state is LoadingState) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is ActiveLoadedState) {
-                List<Contest> activeContests = [];
-                activeContests = state.contests;
-                return activeContests.isNotEmpty
-                    ? listContests(activeContests)
-                    : const Center(child: Text("No active contests"));
-              } else if (state is FutureLoadedState) {
-                List<Contest> futureContests = [];
-                futureContests = state.contests;
-                return futureContests.isNotEmpty
-                    ? listContests(futureContests)
-                    : const Center(child: Text("No future contests"));
-              } else if (state is ErrorState) {
-                print(state.error.toString());
-                return Center(child: Text(state.error));
-              }
-              return const Center(
-                child: Text("error 404"),
-              );
-            },
-          ),
-        ]));
+          child: Column(children: <Widget>[
+            MyTabBar(
+              labels: const ['ACTIVE', 'FUTURE'],
+              callbacks: [activeContests, futureContests],
+              initBar: 0,
+            ),
+            BlocBuilder<WebsiteBloc, WebsiteState>(
+              builder: (context, state) {
+                if (state is LoadingState) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is ActiveLoadedState) {
+                  List<Contest> activeContests = [];
+                  activeContests = state.contests;
+                  return activeContests.isNotEmpty
+                      ? listContests(activeContests)
+                      : const Center(child: Text("No active contests"));
+                } else if (state is FutureLoadedState) {
+                  List<Contest> futureContests = [];
+                  futureContests = state.contests;
+                  return futureContests.isNotEmpty
+                      ? listContests(futureContests)
+                      : const Center(child: Text("No future contests"));
+                } else if (state is ErrorState) {
+                  print(state.error.toString());
+                  return Center(child: Text(state.error));
+                }
+                return const Center(
+                  child: Text("error 404"),
+                );
+              },
+            ),
+          ]),
+        ));
   }
 
   void futureContests() {

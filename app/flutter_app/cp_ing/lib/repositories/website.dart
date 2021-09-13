@@ -13,9 +13,9 @@ class WebsiteRepository {
   Future<List<Contest>> getWebsiteContests(String type) async {
     List<Contest> contests = [];
     try {
-      print("fetching contests...");
+      // print("fetching contests...");
       var response = await http.get(Uri.parse(hostUrl + endpoint));
-      print("response served...");
+      // print("response served...");
       var data = json.decode(response.body);
         for (var item in data[type]) {
           Contest contest = Contest.fromJson(item);

@@ -1,6 +1,8 @@
 // pages
 import 'package:cp_ing/config/colors.dart';
+import 'package:cp_ing/models/contest.dart';
 import 'package:cp_ing/pages/website.dart';
+import 'package:cp_ing/widgets/contest_card.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 // blocs
@@ -28,6 +30,37 @@ TextStyle drawerOptionTextStyle() {
   );
 }
 
+Expanded listRegisteredContests() {
+  var contestBox = Hive.box('contests').toMap();
+  List<Contest> contests = <Contest>[];
+  contestBox.forEach((key, hiveContest) {
+    Contest contest = Contest(
+      id: hiveContest.id,
+      name: hiveContest.name,
+      start: DateTime.parse(hiveContest.start),
+      end: DateTime.parse(hiveContest.end),
+      venue: hiveContest.venue,
+      length: const Duration(),
+    );
+    contests.add(contest);
+  });
+  print(contests);
+  return Expanded(
+      child: contests.isEmpty
+          ? const Text('WA')
+          : ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: contests.length,
+            itemBuilder: (context, index) {
+            return ContestCard(
+                contest: contests[index],
+            );
+          }
+      ),
+  );
+}
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -36,6 +69,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   WebsiteBloc codeforcesBloc = createWebsiteBloc('api/codeforces/contests');
   WebsiteBloc atcoderBloc = createWebsiteBloc('api/atcoder/contests');
   WebsiteBloc codechefBloc = createWebsiteBloc('api/codechef/contests');
@@ -211,7 +245,7 @@ class _HomePageState extends State<HomePage> {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/bg_two.jpg'),
-                  fit: BoxFit.fitWidth,
+                  fit: BoxFit.fill,
                 ),
               ),
               alignment: Alignment.center,
@@ -248,41 +282,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  // FloatingActionButton(
-                  //     onPressed: () async {
-                  //       // final authHeaders = await user.authHeaders;
-                  //       // final client = GoogleAuthClient(authHeaders);
-                  //       // CalendarClient.calendar = cal.CalendarApi(client);
-                  //       var client = CalendarClient();
-                  //       var event = await client.insert(
-                  //         title: '',
-                  //         startTime: DateTime.parse("2021-09-09 12:00:00"),
-                  //         endTime: DateTime.parse("2021-09-09 13:00:00"),
-                  //       );
-                  //       print(event['id']);
-                  //     },
-                  //     child: Text('Add'),
-                  // ),
-                  // FloatingActionButton(
-                  //   onPressed: () async {
-                  //     var client = CalendarClient();
-                  //     var event = await client.modify(
-                  //       id: 'b982uic2bl5nsv0kvkn1tgrje4',
-                  //       title: 'Test',
-                  //       startTime: DateTime.parse("2021-09-09 12:30:00"),
-                  //       endTime: DateTime.parse("2021-09-09 13:00:00"),
-                  //     );
-                  //     print(event['id']);
-                  //   },
-                  //   child: Text('Modify'),
-                  // ),
-                  // FloatingActionButton(
-                  //   onPressed: () async {
-                  //     var client = CalendarClient();
-                  //     var event = await client.delete('b982uic2bl5nsv0kvkn1tgrje4');
-                  //   },
-                  //   child: Text('Del'),
-                  // ),
+                  listRegisteredContests(),
                 ],
               )),
         );
