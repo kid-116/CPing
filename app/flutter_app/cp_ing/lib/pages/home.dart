@@ -47,7 +47,7 @@ Expanded listRegisteredContests() {
   print(contests);
   return Expanded(
       child: contests.isEmpty
-          ? const Text('WA')
+          ? noContests("You haven't registered for any contests yet!")
           : ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,

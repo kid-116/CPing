@@ -19,6 +19,22 @@ Expanded listContests(List<Contest> contests) {
   );
 }
 
+Widget noContests(String msg) {
+  return Padding(
+    padding: const EdgeInsets.all(20),
+    child: Text(
+      msg,
+      style: const TextStyle(
+        fontSize: 24,
+        color: Colors.grey,
+        fontFamily: 'Roboto',
+        fontStyle: FontStyle.italic
+      ),
+      // textAlign: TextAlign.left,
+    ),
+  );
+}
+
 class WebsitePage extends StatefulWidget {
   final String name;
   const WebsitePage({
@@ -67,13 +83,13 @@ class _WebsitePageState extends State<WebsitePage> {
                   activeContests = state.contests;
                   return activeContests.isNotEmpty
                       ? listContests(activeContests)
-                      : const Center(child: Text("No active contests"));
+                      : noContests("No active contests to show!");
                 } else if (state is FutureLoadedState) {
                   List<Contest> futureContests = [];
                   futureContests = state.contests;
                   return futureContests.isNotEmpty
                       ? listContests(futureContests)
-                      : const Center(child: Text("No future contests"));
+                      : noContests("No future contests to show!");
                 } else if (state is ErrorState) {
                   print(state.error.toString());
                   return Center(child: Text(state.error));
