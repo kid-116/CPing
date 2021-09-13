@@ -5,12 +5,12 @@ import 'package:googleapis/calendar/v3.dart';
 
 Future loadClient() async {
   try {
-    print('getting client');
+    // print('getting client');
     final user = await GoogleSignIn().signIn();
     final authHeaders = await user!.authHeaders;
     final client = GoogleAuthClient(authHeaders);
     CalendarClient.calendar = cal.CalendarApi(client);
-    print(CalendarClient.calendar);
+    // print(CalendarClient.calendar);
   } catch (e) {
     print('client could not be loaded');
     print(e);
@@ -37,11 +37,10 @@ EventDateTime createEventDateTime(DateTime time) {
 class CalendarClient {
   static dynamic calendar;
 
-  Future<Map<String, String>> insert({
-    required String title,
-    required DateTime startTime,
-    required DateTime endTime
-  }) async {
+  Future<Map<String, String>> insert(
+      {required String title,
+      required DateTime startTime,
+      required DateTime endTime}) async {
     Map<String, String> eventData = {};
 
     String calendarId = 'primary';
@@ -50,20 +49,16 @@ class CalendarClient {
 
     try {
       await loadClient();
-      await calendar.events
-          .insert(event, calendarId)
-          .then((value) {
-             print("Event status: ${value.status}");
-             if (value.status == 'confirmed') {
-               String eventId = value.id;
-               eventData = {
-                 'id': eventId
-               };
-             } else {
-               print("Unable to add event to Google Calendar");
-             }
-          });
-    } catch(e) {
+      await calendar.events.insert(event, calendarId).then((value) {
+        print("Event status: ${value.status}");
+        if (value.status == 'confirmed') {
+          String eventId = value.id;
+          eventData = {'id': eventId};
+        } else {
+          print("Unable to add event to Google Calendar");
+        }
+      });
+    } catch (e) {
       print("Error creating event: $e");
     }
     return eventData;
@@ -108,11 +103,10 @@ class CalendarClient {
 
     try {
       await loadClient();
-      await calendar.events.delete(calendarId, eventId)
-          .then((value) {
-            print("Event deleted from Google Calendar");
-          });
-    } catch(e) {
+      await calendar.events.delete(calendarId, eventId).then((value) {
+        print("Event deleted from Google Calendar");
+      });
+    } catch (e) {
       print("Error deleting event: $e");
     }
   }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hive/hive.dart';
 
 class Contest {
@@ -20,16 +21,16 @@ class Contest {
   Contest.fromJson(Map<String, dynamic> json) {
     // print(json['length']);
     length = Duration(
-      days: json['length']['days'],
-      hours: json['length']['hours'],
-      minutes: json['length']['minutes']
-    );
+        days: json['length']['days'],
+        hours: json['length']['hours'],
+        minutes: json['length']['minutes']);
     name = json['name'];
     start = DateTime.parse(json['start']).toLocal();
     end = start.add(length);
     // start = json['start'];
     venue = json['venue'];
-    var contestBox = Hive.box('contests').toMap();
+    var contestBox =
+        Hive.box(FirebaseAuth.instance.currentUser!.email!).toMap();
     contestBox.forEach((key, contest) {
       if (contest.name == name) {
         id = contest.id;
