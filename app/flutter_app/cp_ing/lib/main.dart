@@ -8,38 +8,27 @@ import 'package:firebase_core/firebase_core.dart';
 // flutter packages
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/widgets.dart';
 // blocs
 import 'blocs/authentication/bloc.dart';
 // hive
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-// models
-// calendar
-import 'package:flutter/widgets.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  // var user = await FirebaseAuth.instance.currentUser!;
-  // print(user.email);
+
   await Hive.initFlutter();
   Hive.registerAdapter(ContestHiveAdapter());
 
-  // await Hive.openBox('shash.sm2003@gmail.com');
-
-  // print('resetting hive boxes');
-  // Hive.deleteFromDisk();
-
   runApp(const MyApp());
-
-  // dynamic dy = DateTime.now();
-  // print(dy);
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  Future<int> temp(String email) async {
+  Future<int> openBox(String email) async {
     await Hive.openBox(email);
     return 1;
   }
@@ -71,7 +60,7 @@ class MyApp extends StatelessWidget {
                 );
               } else if (snapshot.hasData) {
                 return FutureBuilder(
-                  future: temp(FirebaseAuth.instance.currentUser!.email!),
+                  future: openBox(FirebaseAuth.instance.currentUser!.email!),
                   builder: (_, snapshot) {
                     if (snapshot.hasData) {
                       return const HomePage();

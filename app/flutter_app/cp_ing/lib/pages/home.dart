@@ -27,12 +27,10 @@ TextStyle drawerOptionTextStyle() {
   return const TextStyle(
     color: Colors.white,
     fontSize: 20,
-    // fontFamily: 'Roboto'
   );
 }
 
 Expanded listRegisteredContests() {
-  //var box = Hive.box('contests');
   var contestBox = Hive.box(FirebaseAuth.instance.currentUser!.email!).toMap();
   List<Contest> contests = <Contest>[];
   contestBox.forEach((key, hiveContest) {
@@ -46,7 +44,6 @@ Expanded listRegisteredContests() {
     );
     contests.add(contest);
   });
-  //Hive.box('contests').close();
   print(contests);
   return Expanded(
       child: contests.isEmpty
@@ -55,10 +52,8 @@ Expanded listRegisteredContests() {
               valueListenable:
                   Hive.box(FirebaseAuth.instance.currentUser!.email!)
                       .listenable(),
-              // Hive.box<ContestHive>('contests').listenable(),
               builder: (context, box, _) {
                 List<Contest> contests = <Contest>[];
-
                 box.toMap().forEach((key, hiveContest) {
                   Contest contest = Contest(
                     id: hiveContest.id,
@@ -71,15 +66,18 @@ Expanded listRegisteredContests() {
                   contests.add(contest);
                 });
                 return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: contests.length,
-                    itemBuilder: (context, index) {
-                      return ContestCard(
-                        contest: contests[index],
-                      );
-                    });
-              }));
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: contests.length,
+                  itemBuilder: (context, index) {
+                    return ContestCard(
+                      contest: contests[index],
+                    );
+                  }
+                );
+              }
+            )
+  );
 }
 
 class HomePage extends StatefulWidget {
@@ -90,26 +88,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void temp(String email) async {
-    print("Hive box opened");
-    print(email);
-    await Hive.openBox(email);
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    // Hive.openBox(FirebaseAuth.instance.currentUser!.email!);
-    // Future.delayed(Duration.zero, () async {
-    //   await Hive.openBox(FirebaseAuth.instance.currentUser!.email!);
-    //   // temp(FirebaseAuth.instance.currentUser!.email!);
-    // });
-    super.initState();
-    (() async {
-      await Hive.openBox(FirebaseAuth.instance.currentUser!.email!);
-    })();
-  }
-
   WebsiteBloc codeforcesBloc = createWebsiteBloc('api/codeforces/contests');
   WebsiteBloc atcoderBloc = createWebsiteBloc('api/atcoder/contests');
   WebsiteBloc codechefBloc = createWebsiteBloc('api/codechef/contests');
@@ -154,7 +132,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  // const Divider(color: Colors.white),
                   Container(
                     alignment: Alignment.centerLeft,
                     padding:
@@ -168,7 +145,6 @@ class _HomePageState extends State<HomePage> {
                       textAlign: TextAlign.justify,
                     ),
                   ),
-                  // const Divider(color: Colors.white),
                   ListTile(
                     selectedTileColor: Colors.white10,
                     leading: const Image(
@@ -188,7 +164,6 @@ class _HomePageState extends State<HomePage> {
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                             value: codeforcesBloc,
-                            // value: BlocProvider.of<WebsiteBloc>(context),
                             child: page),
                       ));
                     },
@@ -208,7 +183,6 @@ class _HomePageState extends State<HomePage> {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: codechefBloc,
-                            // value: BlocProvider.of<WebsiteBloc>(context),
                             child: const WebsitePage(
                               name: 'Codechef',
                             ),
@@ -228,11 +202,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onTap: () {
                       atcoderBloc.add(ActiveContestsEvent());
-
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                           value: atcoderBloc,
-                          // value: BlocProvider.of<WebsiteBloc>(context),
                           child: const WebsitePage(
                             name: 'Atcoder',
                           ),
@@ -240,7 +212,6 @@ class _HomePageState extends State<HomePage> {
                       ));
                     },
                   ),
-                  // const SizedBox(height: 270),
                   const Divider(color: Colors.white),
                   Expanded(
                     child: Padding(

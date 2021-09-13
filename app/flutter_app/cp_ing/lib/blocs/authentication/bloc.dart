@@ -1,8 +1,6 @@
 import 'dart:async';
 // packages
-import 'package:cp_ing/config/user.dart';
 import 'package:http/http.dart' as http;
-import 'package:hive/hive.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 // sign-in
@@ -29,22 +27,18 @@ class AuthenticationBloc
         scopes: <String>[cal.CalendarApi.calendarScope],
       );
 
-      GoogleSignInAccount? _user;
       try {
         final googleUser = await googleSignIn.signIn();
 
         if (googleUser == null) return;
 
-        _user = googleUser;
         final googleAuth = await googleUser.authentication;
         final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
-
         await FirebaseAuth.instance.signInWithCredential(credential);
-        CpUser.email = _user.email;
-        // await Hive.openBox(_user.email);
+
         yield AuthenticationSuccess();
       } catch (e) {
         yield AuthenticationFailure();
@@ -54,9 +48,6 @@ class AuthenticationBloc
       final googleSignIn = GoogleSignIn();
       await googleSignIn.disconnect();
       FirebaseAuth.instance.signOut();
-      print('deleting authHeader');
-      var authHeaderBox = Hive.box('authHeader');
-      authHeaderBox.delete('authHeader');
       yield AuthenticationLogout();
     }
   }

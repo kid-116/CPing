@@ -14,11 +14,6 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: false,
-        // appBar: AppBar(
-        //   title: const Text('CPing'),
-        //   elevation: 0.1,
-        //   backgroundColor: Colors.tealAccent[400],
-        // ),
         body: Container(
           decoration: const BoxDecoration(
               image: DecorationImage(
@@ -28,14 +23,6 @@ class _SignInPageState extends State<SignInPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(10.0),
-              //   child: const Image(
-              //     image: AssetImage('assets/images/cp_ing.png'),
-              //     height: 150,
-              //     width: 150,
-              //   ),
-              // ),
               const SizedBox(
                 height: 50,
               ),
@@ -79,43 +66,9 @@ class _SignInPageState extends State<SignInPage> {
                   fontFamily: 'Kaisei',
                 ),
               ),
-              // const SizedBox(height: 200),
-              // const Divider(color: Colors.tealAccent,),
-              // const SizedBox(height: 20,),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     ClipRRect(
-              //       borderRadius: BorderRadius.circular(5),
-              //       child: const Image(
-              //         image: AssetImage('assets/images/codechef_icon.png'),
-              //         height: 80,
-              //         colorBlendMode: BlendMode.darken,
-              //       ),
-              //     ),
-              //     const SizedBox(width: 25,),
-              //     ClipRRect(
-              //       borderRadius: BorderRadius.circular(5),
-              //       child: const Image(
-              //         image: AssetImage('assets/images/codeforces_icon.png'),
-              //         height: 80,
-              //         width: 80,
-              //       ),
-              //     ),
-              //     const SizedBox(width: 25,),
-              //     ClipRRect(
-              //       borderRadius: BorderRadius.circular(5),
-              //       child: const Image(
-              //         color: Colors.white,
-              //         image: AssetImage('assets/images/atcoder_icon.png'),
-              //         height: 80,
-              //         width: 80,
-              //       ),
-              //     )
-              //   ],
-              // )
             ],
           ),
-        ));
+        )
+    );
   }
 }

@@ -76,7 +76,9 @@ class _WebsitePageState extends State<WebsitePage> {
                 if (state is LoadingState) {
                   return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(child: CircularProgressIndicator(
+                      color: MyColors.cyan,
+                    )),
                   );
                 } else if (state is ActiveLoadedState) {
                   List<Contest> activeContests = [];

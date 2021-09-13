@@ -64,40 +64,6 @@ class CalendarClient {
     return eventData;
   }
 
-  // Future<Map<String, String>> modify({
-  //   required String id,
-  //   required String title,
-  //   required DateTime startTime,
-  //   required DateTime endTime
-  // }) async {
-  //   Map<String, String> eventData = {};
-  //
-  //   String calendarId = 'primary';
-  //
-  //   Event event = createEvent(title, startTime, endTime);
-  //
-  //   try {
-  //     await loadClient();
-  //     await calendar.events
-  //         .patch(event, calendarId, id)
-  //         .then((value) {
-  //           print("Event status: ${value.status}");
-  //           if (value.status == 'confirmed') {
-  //             String eventId = value.id;
-  //             eventData = {
-  //               'id': eventId
-  //             };
-  //           } else {
-  //             print("Unable to update event to Google Calendar");
-  //           }
-  //         });
-  //   } catch(e) {
-  //     print("Error updating event: $e");
-  //   }
-  //
-  //   return eventData;
-  // }
-
   Future<void> delete(String eventId) async {
     String calendarId = 'primary';
 
