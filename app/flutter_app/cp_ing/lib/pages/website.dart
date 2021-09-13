@@ -9,13 +9,12 @@ import 'package:cp_ing/widgets/tab_bar.dart';
 Expanded listContests(List<Contest> contests) {
   return Expanded(
     child: ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: contests.length,
-      itemBuilder: (context, index) {
-        return ContestCard(contest: contests[index]);
-      }
-    ),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: contests.length,
+        itemBuilder: (context, index) {
+          return ContestCard(contest: contests[index]);
+        }),
   );
 }
 
@@ -25,11 +24,10 @@ Widget noContests(String msg) {
     child: Text(
       msg,
       style: const TextStyle(
-        fontSize: 24,
-        color: Colors.grey,
-        fontFamily: 'Roboto',
-        fontStyle: FontStyle.italic
-      ),
+          fontSize: 24,
+          color: Colors.grey,
+          fontFamily: 'Roboto',
+          fontStyle: FontStyle.italic),
       // textAlign: TextAlign.left,
     ),
   );
@@ -47,7 +45,6 @@ class WebsitePage extends StatefulWidget {
 }
 
 class _WebsitePageState extends State<WebsitePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +74,10 @@ class _WebsitePageState extends State<WebsitePage> {
             BlocBuilder<WebsiteBloc, WebsiteState>(
               builder: (context, state) {
                 if (state is LoadingState) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
                 } else if (state is ActiveLoadedState) {
                   List<Contest> activeContests = [];
                   activeContests = state.contests;

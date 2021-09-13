@@ -3,8 +3,6 @@ import 'package:cp_ing/config/colors.dart';
 import 'package:cp_ing/models/contest.dart';
 import 'package:cp_ing/pages/website.dart';
 import 'package:cp_ing/widgets/contest_card.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hive/hive.dart';
 // blocs
 import '../blocs/authentication/bloc.dart';
 import '../blocs/website/bloc.dart';
@@ -14,6 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // firebase
 import 'package:firebase_auth/firebase_auth.dart';
+// hive
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 WebsiteBloc createWebsiteBloc(String endpoint) {
   return WebsiteBloc(
@@ -31,7 +32,8 @@ TextStyle drawerOptionTextStyle() {
 }
 
 Expanded listRegisteredContests() {
-  var contestBox = Hive.box('contests').toMap();
+  //var box = Hive.box('contests');
+  var contestBox = Hive.box(FirebaseAuth.instance.currentUser!.email!).toMap();
   List<Contest> contests = <Contest>[];
   contestBox.forEach((key, hiveContest) {
     Contest contest = Contest(
@@ -44,21 +46,40 @@ Expanded listRegisteredContests() {
     );
     contests.add(contest);
   });
+  //Hive.box('contests').close();
   print(contests);
   return Expanded(
       child: contests.isEmpty
           ? noContests("You haven't registered for any contests yet!")
-          : ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: contests.length,
-            itemBuilder: (context, index) {
-            return ContestCard(
-                contest: contests[index],
-            );
-          }
-      ),
-  );
+          : ValueListenableBuilder<Box>(
+              valueListenable:
+                  Hive.box(FirebaseAuth.instance.currentUser!.email!)
+                      .listenable(),
+              // Hive.box<ContestHive>('contests').listenable(),
+              builder: (context, box, _) {
+                List<Contest> contests = <Contest>[];
+
+                box.toMap().forEach((key, hiveContest) {
+                  Contest contest = Contest(
+                    id: hiveContest.id,
+                    name: hiveContest.name,
+                    start: DateTime.parse(hiveContest.start),
+                    end: DateTime.parse(hiveContest.end),
+                    venue: hiveContest.venue,
+                    length: const Duration(),
+                  );
+                  contests.add(contest);
+                });
+                return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: contests.length,
+                    itemBuilder: (context, index) {
+                      return ContestCard(
+                        contest: contests[index],
+                      );
+                    });
+              }));
 }
 
 class HomePage extends StatefulWidget {
@@ -69,6 +90,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void temp(String email) async {
+    print("Hive box opened");
+    print(email);
+    await Hive.openBox(email);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // Hive.openBox(FirebaseAuth.instance.currentUser!.email!);
+    // Future.delayed(Duration.zero, () async {
+    //   await Hive.openBox(FirebaseAuth.instance.currentUser!.email!);
+    //   // temp(FirebaseAuth.instance.currentUser!.email!);
+    // });
+    super.initState();
+    (() async {
+      await Hive.openBox(FirebaseAuth.instance.currentUser!.email!);
+    })();
+  }
 
   WebsiteBloc codeforcesBloc = createWebsiteBloc('api/codeforces/contests');
   WebsiteBloc atcoderBloc = createWebsiteBloc('api/atcoder/contests');
@@ -144,6 +184,7 @@ class _HomePageState extends State<HomePage> {
                       WebsitePage page = const WebsitePage(
                         name: 'Codeforces',
                       );
+                      codeforcesBloc.add(ActiveContestsEvent());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                             value: codeforcesBloc,
@@ -163,6 +204,7 @@ class _HomePageState extends State<HomePage> {
                         style: drawerOptionTextStyle(),
                       ),
                       onTap: () {
+                        codechefBloc.add(ActiveContestsEvent());
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: codechefBloc,
@@ -185,6 +227,8 @@ class _HomePageState extends State<HomePage> {
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
+                      atcoderBloc.add(ActiveContestsEvent());
+
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                           value: atcoderBloc,

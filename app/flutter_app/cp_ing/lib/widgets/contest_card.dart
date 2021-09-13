@@ -1,9 +1,9 @@
-import 'package:cp_ing/blocs/authentication/bloc.dart';
 import 'package:cp_ing/calendar/client.dart';
 import 'package:cp_ing/config/colors.dart';
 import 'package:cp_ing/models/contest.dart';
 import 'package:cp_ing/models/contest_hive.dart';
 import 'package:cp_ing/widgets/time.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
@@ -21,10 +21,7 @@ class ContestCard extends StatefulWidget {
     return length.toString().substring(0, strLen - 10);
   }
 
-  const ContestCard({
-    required this.contest,
-    Key? key
-  }) : super(key: key);
+  const ContestCard({required this.contest, Key? key}) : super(key: key);
 
   @override
   _ContestCardState createState() => _ContestCardState();
@@ -42,7 +39,7 @@ class _ContestCardState extends State<ContestCard> {
 
   @override
   void initState() {
-    contestBox = Hive.box('contests');
+    contestBox = Hive.box(FirebaseAuth.instance.currentUser!.email!);
     super.initState();
   }
 
@@ -59,10 +56,7 @@ class _ContestCardState extends State<ContestCard> {
         margin: const EdgeInsets.all(10),
         child: Column(children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 10
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Text(
               widget.contest.name,
               style: contestNameStyle,
@@ -93,81 +87,82 @@ class _ContestCardState extends State<ContestCard> {
           ),
           // Text(widget.contest.id),
           widget.contest.id == 'null'
-          ? TextButton(
-              onPressed: () async {
-                CalendarClient client = CalendarClient();
-                try {
-                  var event = await client.insert(
-                    title: widget.contest.name,
-                    startTime: widget.contest.start,
-                    endTime: widget.contest.end,
-                  );
-                  setState(() {
-                    widget.contest.id = event['id'].toString();
-                  });
-                  contestBox.put(widget.contest.id, ContestHive(
-                    id: widget.contest.id,
-                    start: widget.contest.start.toString(),
-                    end: widget.contest.end.toString(),
-                    name: widget.contest.name,
-                    venue: widget.contest.venue,
-                  ));
-                } catch(e) {
-                  print('event coould not be added');
-                  print(e);
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 0,
-                  vertical: 8,
-                ),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
+              ? TextButton(
+                  onPressed: () async {
+                    CalendarClient client = CalendarClient();
+                    try {
+                      var event = await client.insert(
+                        title: widget.contest.name,
+                        startTime: widget.contest.start,
+                        endTime: widget.contest.end,
+                      );
+                      setState(() {
+                        widget.contest.id = event['id'].toString();
+                      });
+                      contestBox.put(
+                          widget.contest.id,
+                          ContestHive(
+                            id: widget.contest.id,
+                            start: widget.contest.start.toString(),
+                            end: widget.contest.end.toString(),
+                            name: widget.contest.name,
+                            venue: widget.contest.venue,
+                          ));
+                    } catch (e) {
+                      print('event coould not be added');
+                      print(e);
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 8,
+                    ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                      ),
+                      padding: const EdgeInsets.all(4),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ))
+              : TextButton(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 8,
+                    ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      padding: const EdgeInsets.all(4),
+                      child: const Icon(
+                        Icons.remove,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                  padding: const EdgeInsets.all(4),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                  ),
-                ),
-              )
-          )
-          : TextButton(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 0,
-                vertical: 8,
-              ),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
-                ),
-                padding: const EdgeInsets.all(4),
-                child: const Icon(
-                  Icons.remove,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-            onPressed: () async {
-              try {
-                CalendarClient client = CalendarClient();
-                await client.delete(widget.contest.id);
-                print('deleting contest');
-                contestBox.delete(widget.contest.id);
-                setState(() {
-                  widget.contest.id = 'null';
-                });
-              } catch(e) {
-                print('event could not be deleted');
-                print(e);
-              }
-            },
-          )
+                  onPressed: () async {
+                    try {
+                      CalendarClient client = CalendarClient();
+                      await client.delete(widget.contest.id);
+                      print('deleting contest');
+                      contestBox.delete(widget.contest.id);
+                      setState(() {
+                        widget.contest.id = 'null';
+                      });
+                    } catch (e) {
+                      print('event could not be deleted');
+                      print(e);
+                    }
+                  },
+                )
         ]),
       ),
     );

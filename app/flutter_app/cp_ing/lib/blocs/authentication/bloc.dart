@@ -1,5 +1,6 @@
 import 'dart:async';
 // packages
+import 'package:cp_ing/config/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 import 'package:bloc/bloc.dart';
@@ -13,7 +14,8 @@ import 'package:googleapis/calendar/v3.dart' as cal;
 part 'event.dart';
 part 'state.dart';
 
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc() : super(AuthenticationInitial());
 
   @override
@@ -41,7 +43,8 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         );
 
         await FirebaseAuth.instance.signInWithCredential(credential);
-
+        CpUser.email = _user.email;
+        // await Hive.openBox(_user.email);
         yield AuthenticationSuccess();
       } catch (e) {
         yield AuthenticationFailure();
