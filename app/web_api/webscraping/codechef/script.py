@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from scrapingant_client import ScrapingAntClient
 from datetime import datetime, timezone, timedelta
-from config import API_TOKEN
+from ..config import API_TOKEN
 
 def duration_parser(duration):
     days = duration.days

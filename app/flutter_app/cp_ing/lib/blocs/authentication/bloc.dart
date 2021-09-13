@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:http/http.dart' as http;
 // packages
+import 'package:http/http.dart' as http;
+import 'package:hive/hive.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 // sign-in
@@ -8,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 // calendar
 import 'package:googleapis/calendar/v3.dart' as cal;
-import 'package:cp_ing/calendar/client.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -42,11 +42,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-        // calendar
-        final authHeaders = await googleUser.authHeaders;
-        final client = GoogleAuthClient(authHeaders);
-        CalendarClient.calendar = cal.CalendarApi(client);
-
         yield AuthenticationSuccess();
       } catch (e) {
         yield AuthenticationFailure();
@@ -56,6 +51,9 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       final googleSignIn = GoogleSignIn();
       await googleSignIn.disconnect();
       FirebaseAuth.instance.signOut();
+      print('deleting authHeader');
+      var authHeaderBox = Hive.box('authHeader');
+      authHeaderBox.delete('authHeader');
       yield AuthenticationLogout();
     }
   }

@@ -1,30 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'calenderapi.dart';
+part of 'contest_hive.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AuthcalenderAdapter extends TypeAdapter<Authcalender> {
+class ContestHiveAdapter extends TypeAdapter<ContestHive> {
   @override
-  final int typeId = 1;
+  final int typeId = 0;
 
   @override
-  Authcalender read(BinaryReader reader) {
+  ContestHive read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Authcalender()..authHeaders = fields[0] as dynamic;
+    return ContestHive(
+      name: fields[0] as String,
+      id: fields[1] as String,
+      end: fields[2] as String,
+      start: fields[3] as String,
+      venue: fields[4] as String,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, Authcalender obj) {
+  void write(BinaryWriter writer, ContestHive obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.authHeaders);
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.id)
+      ..writeByte(2)
+      ..write(obj.end)
+      ..writeByte(3)
+      ..write(obj.start)
+      ..writeByte(4)
+      ..write(obj.venue);
   }
 
   @override
@@ -33,7 +47,7 @@ class AuthcalenderAdapter extends TypeAdapter<Authcalender> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthcalenderAdapter &&
+      other is ContestHiveAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
