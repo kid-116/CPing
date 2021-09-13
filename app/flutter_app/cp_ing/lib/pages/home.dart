@@ -31,52 +31,39 @@ TextStyle drawerOptionTextStyle() {
 }
 
 Expanded listRegisteredContests() {
-  var contestBox = Hive.box(FirebaseAuth.instance.currentUser!.email!).toMap();
-  List<Contest> contests = <Contest>[];
-  contestBox.forEach((key, hiveContest) {
-    Contest contest = Contest(
-      id: hiveContest.id,
-      name: hiveContest.name,
-      start: DateTime.parse(hiveContest.start),
-      end: DateTime.parse(hiveContest.end),
-      venue: hiveContest.venue,
-      length: const Duration(),
-    );
-    contests.add(contest);
-  });
-  print(contests);
+  // print(contests);
   return Expanded(
-      child: contests.isEmpty
-          ? noContests("You haven't registered for any contests yet!")
-          : ValueListenableBuilder<Box>(
-              valueListenable:
-                  Hive.box(FirebaseAuth.instance.currentUser!.email!)
-                      .listenable(),
-              builder: (context, box, _) {
-                List<Contest> contests = <Contest>[];
-                box.toMap().forEach((key, hiveContest) {
-                  Contest contest = Contest(
-                    id: hiveContest.id,
-                    name: hiveContest.name,
-                    start: DateTime.parse(hiveContest.start),
-                    end: DateTime.parse(hiveContest.end),
-                    venue: hiveContest.venue,
-                    length: const Duration(),
-                  );
-                  contests.add(contest);
-                });
-                return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: contests.length,
-                  itemBuilder: (context, index) {
-                    return ContestCard(
-                      contest: contests[index],
-                    );
-                  }
-                );
-              }
-            )
+    child: ValueListenableBuilder<Box>(
+      valueListenable:
+          Hive.box(FirebaseAuth.instance.currentUser!.email!)
+              .listenable(),
+      builder: (context, box, _) {
+        List<Contest> contests = <Contest>[];
+        box.toMap().forEach((key, hiveContest) {
+          Contest contest = Contest(
+            id: hiveContest.id,
+            name: hiveContest.name,
+            start: DateTime.parse(hiveContest.start),
+            end: DateTime.parse(hiveContest.end),
+            venue: hiveContest.venue,
+            length: const Duration(),
+          );
+          contests.add(contest);
+        });
+        return contests.isNotEmpty
+        ? ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: contests.length,
+            itemBuilder: (context, index) {
+              return ContestCard(
+                contest: contests[index],
+              );
+            }
+          )
+        : noContests("You haven't registered for any contests yet!");
+      }
+    )
   );
 }
 
