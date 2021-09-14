@@ -1,5 +1,6 @@
 import 'dart:async';
 // packages
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -42,7 +43,7 @@ class AuthenticationBloc
         yield AuthenticationSuccess();
       } catch (e) {
         yield AuthenticationFailure();
-        print(e.toString());
+        debugPrint(e.toString());
       }
     } else if (event is AuthenticationLogOut) {
       final googleSignIn = GoogleSignIn();

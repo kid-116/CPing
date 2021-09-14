@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cp_ing/firestore/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter/cupertino.dart';
 
 class Contest {
   late Duration length;
@@ -8,6 +10,7 @@ class Contest {
   late DateTime end;
   late String venue;
   late String id = 'null';
+  late String docId = 'null';
 
   Contest({
     required this.name,
@@ -16,10 +19,10 @@ class Contest {
     required this.end,
     required this.venue,
     required this.id,
+    required this.docId,
   });
 
-  Contest.fromJson(Map<String, dynamic> json) {
-    // print(json['length']);
+  Contest.fromJson(Map<String, dynamic> json, dynamic registeredContests) {
     length = Duration(
         days: json['length']['days'],
         hours: json['length']['hours'],
@@ -27,15 +30,15 @@ class Contest {
     name = json['name'];
     start = DateTime.parse(json['start']).toLocal();
     end = start.add(length);
-    // start = json['start'];
     venue = json['venue'];
-    var contestBox =
-        Hive.box(FirebaseAuth.instance.currentUser!.email!).toMap();
-    contestBox.forEach((key, contest) {
-      if (contest.name == name) {
-        id = contest.id;
+
+    for (final contest in registeredContests) {
+      if (contest['name'] == name) {
+        id = contest['id'];
+        docId = contest.id;
       }
-    });
+    }
+
   }
 
   Map<String, dynamic> toJson() {

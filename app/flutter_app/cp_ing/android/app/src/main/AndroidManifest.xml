@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kid116sashank.cp_ing">
-   <application
+    <application
         android:label="CPing"
         android:icon="@mipmap/ic_launcher">
         <activity

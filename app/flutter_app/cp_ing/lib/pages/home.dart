@@ -1,20 +1,15 @@
-// pages
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/config/colors.dart';
+import 'package:cp_ing/firestore/database.dart';
 import 'package:cp_ing/models/contest.dart';
 import 'package:cp_ing/pages/website.dart';
 import 'package:cp_ing/widgets/contest_card.dart';
-// blocs
 import '../blocs/authentication/bloc.dart';
 import '../blocs/website/bloc.dart';
 import '../repositories/website.dart';
-// flutter
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// firebase
 import 'package:firebase_auth/firebase_auth.dart';
-// hive
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 WebsiteBloc createWebsiteBloc(String endpoint) {
   return WebsiteBloc(
@@ -33,23 +28,57 @@ TextStyle drawerOptionTextStyle() {
 Expanded listRegisteredContests() {
   // print(contests);
   return Expanded(
-    child: ValueListenableBuilder<Box>(
-      valueListenable:
-          Hive.box(FirebaseAuth.instance.currentUser!.email!)
-              .listenable(),
-      builder: (context, box, _) {
+    // child: ValueListenableBuilder<Box>(
+    //   valueListenable:
+    //       Hive.box(FirebaseAuth.instance.currentUser!.email!)
+    //           .listenable(),
+    //   builder: (context, box, _) {
+    //     List<Contest> contests = <Contest>[];
+    //     box.toMap().forEach((key, hiveContest) {
+    //       Contest contest = Contest(
+    //         id: hiveContest.id,
+    //         name: hiveContest.name,
+    //         start: DateTime.parse(hiveContest.start),
+    //         end: DateTime.parse(hiveContest.end),
+    //         venue: hiveContest.venue,
+    //         length: const Duration(),
+    //       );
+    //       contests.add(contest);
+    //     });
+    //     return contests.isNotEmpty
+    //     ? ListView.builder(
+    //         scrollDirection: Axis.vertical,
+    //         shrinkWrap: true,
+    //         itemCount: contests.length,
+    //         itemBuilder: (context, index) {
+    //           return ContestCard(
+    //             contest: contests[index],
+    //           );
+    //         }
+    //       )
+    //     : noContests("You haven't registered for any contests yet!");
+    //   }
+    // )
+    child: StreamBuilder(
+      stream: Database.readContests(),
+      builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) {
+        final collection = snapshot.data?.docs;
+
         List<Contest> contests = <Contest>[];
-        box.toMap().forEach((key, hiveContest) {
+
+        collection?.forEach((item) {
           Contest contest = Contest(
-            id: hiveContest.id,
-            name: hiveContest.name,
-            start: DateTime.parse(hiveContest.start),
-            end: DateTime.parse(hiveContest.end),
-            venue: hiveContest.venue,
+            id: item['id'],
+            name: item['name'],
+            start: DateTime.parse(item['start']),
+            end: DateTime.parse(item['end']),
+            venue: 'null',
             length: const Duration(),
+            docId: item.id,
           );
           contests.add(contest);
         });
+
         return contests.isNotEmpty
         ? ListView.builder(
             scrollDirection: Axis.vertical,
@@ -62,8 +91,8 @@ Expanded listRegisteredContests() {
             }
           )
         : noContests("You haven't registered for any contests yet!");
-      }
-    )
+      },
+    ),
   );
 }
 
