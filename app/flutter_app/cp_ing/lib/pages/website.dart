@@ -93,7 +93,7 @@ class _WebsitePageState extends State<WebsitePage> {
                       ? listContests(futureContests)
                       : noContests("No future contests to show!");
                 } else if (state is ErrorState) {
-                  print(state.error.toString());
+                  debugPrint(state.error.toString());
                   return Center(child: Text(state.error));
                 }
                 return const Center(

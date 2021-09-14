@@ -1,4 +1,5 @@
 import 'package:cp_ing/blocs/authentication/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart' as cal;
 import 'package:googleapis/calendar/v3.dart';
@@ -12,8 +13,8 @@ Future loadClient() async {
     CalendarClient.calendar = cal.CalendarApi(client);
     // print(CalendarClient.calendar);
   } catch (e) {
-    print('client could not be loaded');
-    print(e);
+    debugPrint('client could not be loaded');
+    debugPrint(e.toString());
   }
 }
 
@@ -50,16 +51,16 @@ class CalendarClient {
     try {
       await loadClient();
       await calendar.events.insert(event, calendarId).then((value) {
-        print("Event status: ${value.status}");
+        debugPrint("Event status: ${value.status}");
         if (value.status == 'confirmed') {
           String eventId = value.id;
           eventData = {'id': eventId};
         } else {
-          print("Unable to add event to Google Calendar");
+          debugPrint("Unable to add event to Google Calendar");
         }
       });
     } catch (e) {
-      print("Error creating event: $e");
+      debugPrint("Error creating event: $e");
     }
     return eventData;
   }
@@ -70,10 +71,10 @@ class CalendarClient {
     try {
       await loadClient();
       await calendar.events.delete(calendarId, eventId).then((value) {
-        print("Event deleted from Google Calendar");
+        debugPrint("Event deleted from Google Calendar");
       });
     } catch (e) {
-      print("Error deleting event: $e");
+      debugPrint("Error deleting event: $e");
     }
   }
 }

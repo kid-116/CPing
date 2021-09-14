@@ -1,5 +1,4 @@
 // pages
-import 'package:cp_ing/models/contest_hive.dart';
 import 'package:cp_ing/pages/home.dart';
 import 'package:cp_ing/pages/sign_in.dart';
 // firebase
@@ -11,27 +10,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/widgets.dart';
 // blocs
 import 'blocs/authentication/bloc.dart';
-// hive
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
 
-  await Hive.initFlutter();
-  Hive.registerAdapter(ContestHiveAdapter());
-
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  Future<int> openBox(String email) async {
-    await Hive.openBox(email);
-    return 1;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,22 +48,12 @@ class MyApp extends StatelessWidget {
                   child: Text("Error"),
                 );
               } else if (snapshot.hasData) {
-                return FutureBuilder(
-                  future: openBox(FirebaseAuth.instance.currentUser!.email!),
-                  builder: (_, snapshot) {
-                    if (snapshot.hasData) {
-                      return const HomePage();
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                );
+                return const HomePage();
               } else {
                 return const SignInPage();
               }
-            }),
+            }
+        ),
       ),
     );
   }
