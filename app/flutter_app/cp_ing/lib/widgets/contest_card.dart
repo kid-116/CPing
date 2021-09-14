@@ -100,6 +100,8 @@ class _ContestCardState extends State<ContestCard> {
                       debugPrint('event could not be added');
                       debugPrint(e.toString());
                     }
+                    showActionSnackBar(
+                        context, "Event has been added to your calender");
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -149,10 +151,23 @@ class _ContestCardState extends State<ContestCard> {
                       debugPrint('event could not be deleted');
                       debugPrint(e.toString());
                     }
+                    showActionSnackBar(
+                        context, "Event has been removed from your calender");
                   },
                 )
         ]),
       ),
     );
   }
+}
+
+void showActionSnackBar(BuildContext context, String message) {
+  final SnackBar snackBar = SnackBar(
+    content: Text(message,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+            fontSize: 16, fontFamily: 'Kaisei', fontWeight: FontWeight.bold)),
+    duration: const Duration(seconds: 1),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
