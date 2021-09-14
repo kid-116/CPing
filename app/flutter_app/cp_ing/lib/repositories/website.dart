@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:cp_ing/models/contest.dart';
 
 class WebsiteRepository {
-  static const String hostUrl = "http://10.0.2.2:5000/";
+  static const String hostUrl = "https://kid116shash-cping.herokuapp.com/";
   late String endpoint;
 
   WebsiteRepository({
