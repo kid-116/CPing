@@ -1,8 +1,7 @@
 from webscraping.config import API_TOKEN
-import requests
 from bs4 import BeautifulSoup
 from scrapingant_client import ScrapingAntClient
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 
 def datetime_parser(dt):
     months = {

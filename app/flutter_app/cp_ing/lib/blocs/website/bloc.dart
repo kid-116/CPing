@@ -16,7 +16,7 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
     required WebsiteState initialState,
     required this.repository,
   }) : super(WebsiteInitial()) {
-    add(ActiveContestsEvent());
+    // add(ActiveContestsEvent());
   }
 
   @override

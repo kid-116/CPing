@@ -16,19 +16,17 @@ class WebsiteRepository {
   Future<List<Contest>> getWebsiteContests(String type) async {
     List<Contest> contests = [];
     try {
-      // print("fetching contests...");
       var response = await http.get(Uri.parse(hostUrl + endpoint));
-      // print("response served...");
       final email = FirebaseAuth.instance.currentUser!.email;
-
       FirebaseFirestore.instance
       .collection('contests')
       .doc(email)
       .collection('items')
       .get()
       .then((collection) {
-        // debugPrint(collection.toString());
         final registeredContests = collection.docs;
+
+        debugPrint(registeredContests.toString());
 
         var data = json.decode(response.body);
         for (var item in data[type]) {
