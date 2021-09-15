@@ -23,7 +23,7 @@ def parse_row(row):
         'length': duration_parser(length),
         'venue': 'atcoder',
     }
-    print(contest['length'])
+    # print(contest['length'])
     return contest
 
 def duration_parser(duration):

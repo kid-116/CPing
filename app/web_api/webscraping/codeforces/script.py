@@ -66,7 +66,7 @@ def main():
             'length': duration_parser(length),
             'venue': 'codeforces',
         }
-        print(contest['length'])
+        # print(contest['length'])
         if(start > now):
             contests['future-contests'].append(contest)
         else:
