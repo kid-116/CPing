@@ -3,7 +3,6 @@ import 'package:cp_ing/config/colors.dart';
 import 'package:cp_ing/firestore/database.dart';
 import 'package:cp_ing/models/contest.dart';
 import 'package:cp_ing/widgets/time.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -101,7 +100,9 @@ class _ContestCardState extends State<ContestCard> {
                       debugPrint(e.toString());
                     }
                     showActionSnackBar(
-                        context, "Event has been added to your calender");
+                        context,
+                        "Event has been added to your calender"
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -152,7 +153,9 @@ class _ContestCardState extends State<ContestCard> {
                       debugPrint(e.toString());
                     }
                     showActionSnackBar(
-                        context, "Event has been removed from your calender");
+                        context,
+                        "Event has been removed from your calender"
+                    );
                   },
                 )
         ]),
@@ -163,10 +166,15 @@ class _ContestCardState extends State<ContestCard> {
 
 void showActionSnackBar(BuildContext context, String message) {
   final SnackBar snackBar = SnackBar(
-    content: Text(message,
+    content: Text(
+        message,
         textAlign: TextAlign.center,
         style: const TextStyle(
-            fontSize: 16, fontFamily: 'Kaisei', fontWeight: FontWeight.bold)),
+            fontSize: 16,
+            fontFamily: 'Kaisei',
+            fontWeight: FontWeight.bold
+        )
+    ),
     duration: const Duration(seconds: 1),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);

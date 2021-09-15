@@ -17,8 +17,9 @@ class WebsiteRepository {
     List<Contest> contests = [];
     try {
       var response = await http.get(Uri.parse(hostUrl + endpoint));
+
       final email = FirebaseAuth.instance.currentUser!.email;
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
       .collection('contests')
       .doc(email)
       .collection('items')
@@ -26,19 +27,19 @@ class WebsiteRepository {
       .then((collection) {
         final registeredContests = collection.docs;
 
-        debugPrint(registeredContests.toString());
-
         var data = json.decode(response.body);
+        debugPrint("res: $data.toString()");
         for (var item in data[type]) {
+          // debugPrint("f");
           Contest contest = Contest.fromJson(item, registeredContests);
           contests.add(contest);
         }
       });
-
-
     } catch(e) {
+      // debugPrint("flag");
       debugPrint(e.toString());
     }
+    debugPrint("returned: $contests.toString()");
     return contests;
   }
 
