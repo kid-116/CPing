@@ -26,39 +26,7 @@ TextStyle drawerOptionTextStyle() {
 }
 
 Expanded listRegisteredContests() {
-  // print(contests);
   return Expanded(
-    // child: ValueListenableBuilder<Box>(
-    //   valueListenable:
-    //       Hive.box(FirebaseAuth.instance.currentUser!.email!)
-    //           .listenable(),
-    //   builder: (context, box, _) {
-    //     List<Contest> contests = <Contest>[];
-    //     box.toMap().forEach((key, hiveContest) {
-    //       Contest contest = Contest(
-    //         id: hiveContest.id,
-    //         name: hiveContest.name,
-    //         start: DateTime.parse(hiveContest.start),
-    //         end: DateTime.parse(hiveContest.end),
-    //         venue: hiveContest.venue,
-    //         length: const Duration(),
-    //       );
-    //       contests.add(contest);
-    //     });
-    //     return contests.isNotEmpty
-    //     ? ListView.builder(
-    //         scrollDirection: Axis.vertical,
-    //         shrinkWrap: true,
-    //         itemCount: contests.length,
-    //         itemBuilder: (context, index) {
-    //           return ContestCard(
-    //             contest: contests[index],
-    //           );
-    //         }
-    //       )
-    //     : noContests("You haven't registered for any contests yet!");
-    //   }
-    // )
     child: StreamBuilder(
       stream: Database.readContests(),
       builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -76,7 +44,14 @@ Expanded listRegisteredContests() {
             length: const Duration(),
             docId: item.id,
           );
-          contests.add(contest);
+          if(contest.end.isBefore(DateTime.now())) {
+            debugPrint(contest.name);
+            Database.deleteContest(docId: contest.docId);
+          }
+          else {
+            contests.add(contest);
+          }
+          // contests.add(contest);
         });
 
         return contests.isNotEmpty

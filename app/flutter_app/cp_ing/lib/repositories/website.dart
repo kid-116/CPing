@@ -16,7 +16,9 @@ class WebsiteRepository {
   Future<List<Contest>> getWebsiteContests(String type) async {
     List<Contest> contests = [];
     try {
+      debugPrint("1");
       var response = await http.get(Uri.parse(hostUrl + endpoint));
+      debugPrint("2");
 
       final email = FirebaseAuth.instance.currentUser!.email;
       await FirebaseFirestore.instance
@@ -26,17 +28,15 @@ class WebsiteRepository {
       .get()
       .then((collection) {
         final registeredContests = collection.docs;
-
+        debugPrint("3");
         var data = json.decode(response.body);
         debugPrint("res: $data.toString()");
         for (var item in data[type]) {
-          // debugPrint("f");
           Contest contest = Contest.fromJson(item, registeredContests);
           contests.add(contest);
         }
       });
     } catch(e) {
-      // debugPrint("flag");
       debugPrint(e.toString());
     }
     debugPrint("returned: $contests.toString()");
