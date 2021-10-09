@@ -21,19 +21,21 @@ def parse_row(row):
     for td in row:
         detail = td.get_text()
         details.append(detail)
+    print(details)
     contest = {}
     contest['code'] = details[0]
     # print(contest['code'])
     contest['name'] = details[1]
-    start = datetime_parser(details[2])
-    end = datetime_parser(details[3])
-    contest['start'] = start.strftime('%Y-%m-%d %H:%M:%Sz')
-    contest['length'] = duration_parser(end - start)
+    # start = datetime_parser(details[2])
+    # end = datetime_parser(details[3])
+    # contest['start'] = start.strftime('%Y-%m-%d %H:%M:%Sz')
+    # contest['length'] = duration_parser(end - start)
     contest['venue'] = 'codechef'
     # print(contest['length'])
     return contest
 
 def datetime_parser(dt):
+    print(dt)
     months = {
             'Jan': 1,
             'Feb': 2,
