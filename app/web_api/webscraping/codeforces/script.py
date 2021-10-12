@@ -57,6 +57,9 @@ def main():
     for row in soup.select('div.contestList>div.datatable table tbody tr[data-contestid]'):
         tds = row.find_all('td')
         name = tds[0].get_text().strip()
+        newline = name.find('\n')
+        if(newline != -1):
+            name = name[:newline]
         start = datetime_parser(tds[2].get_text().strip())
         length = tds[3].get_text().strip()
         contest = {

@@ -4,38 +4,39 @@ from datetime import datetime, timezone, timedelta
 from ..config import API_TOKEN
 
 def duration_parser(duration):
-    days = duration.days
-    seconds = duration.seconds
-    minutes = seconds // 60
-    seconds = seconds % 60
-    hours = minutes // 60
-    minutes = minutes % 60
+    tokens = duration.split()
+    days = hours = minutes = 0
+    for i in range(len(tokens)):
+        if tokens[i].isnumeric():
+            if tokens[i + 1].startswith('day'):
+                days = int(tokens[i])
+            elif tokens[i + 1].startswith('hour'):
+                hours = int(tokens[i])
+            elif tokens[i + 1].startswith('minute'):
+                minutes = int(tokens[i])
     return {
         'days': days,
         'hours': hours,
         'minutes': minutes
     }
 
+# print(duration_parser("4 days 2 hours 30 minutes"))
+
 def parse_row(row):
     details = []
     for td in row:
         detail = td.get_text()
         details.append(detail)
-    print(details)
     contest = {}
     contest['code'] = details[0]
-    # print(contest['code'])
     contest['name'] = details[1]
-    # start = datetime_parser(details[2])
-    # end = datetime_parser(details[3])
-    # contest['start'] = start.strftime('%Y-%m-%d %H:%M:%Sz')
-    # contest['length'] = duration_parser(end - start)
+    start = datetime_parser(details[2])
+    contest['start'] = start.strftime('%Y-%m-%d %H:%M:%Sz')
+    contest['length'] = duration_parser(details[3])
     contest['venue'] = 'codechef'
-    # print(contest['length'])
     return contest
 
 def datetime_parser(dt):
-    print(dt)
     months = {
             'Jan': 1,
             'Feb': 2,
