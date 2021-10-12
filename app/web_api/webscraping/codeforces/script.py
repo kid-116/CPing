@@ -57,6 +57,8 @@ def main():
     for row in soup.select('div.contestList>div.datatable table tbody tr[data-contestid]'):
         tds = row.find_all('td')
         name = tds[0].get_text().strip()
+        if(name.find('#TBA') != -1):
+            continue
         newline = name.find('\n')
         if(newline != -1):
             name = name[:newline]
