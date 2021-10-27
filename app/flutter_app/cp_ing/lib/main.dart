@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 // blocs
 import 'blocs/authentication/bloc.dart';
 
+//hello
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -52,8 +53,7 @@ class MyApp extends StatelessWidget {
               } else {
                 return const SignInPage();
               }
-            }
-        ),
+            }),
       ),
     );
   }
