@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/config/colors.dart';
+import 'package:cp_ing/firestore/cache.dart';
 import 'package:cp_ing/firestore/database.dart';
 import 'package:cp_ing/models/contest.dart';
 import 'package:cp_ing/pages/website.dart';
@@ -44,28 +45,26 @@ Expanded listRegisteredContests() {
             length: const Duration(),
             docId: item.id,
           );
-          if(contest.end.isBefore(DateTime.now())) {
+          if (contest.end.isBefore(DateTime.now())) {
             debugPrint(contest.name);
             Database.deleteContest(docId: contest.docId);
-          }
-          else {
+          } else {
             contests.add(contest);
           }
           // contests.add(contest);
         });
 
         return contests.isNotEmpty
-        ? ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: contests.length,
-            itemBuilder: (context, index) {
-              return ContestCard(
-                contest: contests[index],
-              );
-            }
-          )
-        : noContests("You haven't registered for any contests yet!");
+            ? ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: contests.length,
+                itemBuilder: (context, index) {
+                  return ContestCard(
+                    contest: contests[index],
+                  );
+                })
+            : noContests("You haven't registered for any contests yet!");
       },
     ),
   );
@@ -154,8 +153,7 @@ class _HomePageState extends State<HomePage> {
                       codeforcesBloc.add(ActiveContestsEvent());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
-                            value: codeforcesBloc,
-                            child: page),
+                            value: codeforcesBloc, child: page),
                       ));
                     },
                   ),
@@ -246,6 +244,17 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(color: Colors.white),
             ),
             foregroundColor: const Color.fromRGBO(32, 27, 50, 1),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () async {
+                  print("adding contests to database");
+                  await ContestDatabase.addContestCache(
+                      end: 'as', id: 'ds', name: 'das', start: 'das');
+                  await ContestDatabase.deleteContest();
+                },
+              )
+            ],
           ),
           body: Container(
               decoration: const BoxDecoration(
