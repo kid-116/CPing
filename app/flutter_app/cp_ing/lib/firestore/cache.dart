@@ -17,11 +17,12 @@ class ContestDatabase {
     required String type,
   }) async {
     print("process starting");
+    print(type);
     DocumentReference documentReferencer =
         _mainCollection.doc(endpoint).collection(type).doc();
 
     DocumentReference documentReferencer_timestamp = _mainCollection
-        .doc("atcoder")
+        .doc(endpoint)
         .collection('timestamp')
         .doc("bA1j2VegSLpwyqqyqhsK");
 
@@ -35,10 +36,10 @@ class ContestDatabase {
     Map<String, Timestamp> time = <String, Timestamp>{
       "last_updated": Timestamp.now(),
     };
-
+    print(data);
     await documentReferencer
         .set(data)
-        .whenComplete(() => debugPrint('contest added from the database'))
+        .whenComplete(() => debugPrint('contest added to the database'))
         .catchError((e) => debugPrint(e));
 
     await documentReferencer_timestamp
@@ -88,8 +89,8 @@ class ContestDatabase {
     return contests;
   }
 
-  static Future<void> deleteContest() async {
-    _mainCollection.doc("atcoder").collection('items').get().then((snapshot) {
+  static Future<void> deleteContest(String endpoint, String type) async {
+    _mainCollection.doc(endpoint).collection(type).get().then((snapshot) {
       for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }

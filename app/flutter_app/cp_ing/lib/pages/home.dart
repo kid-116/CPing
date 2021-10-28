@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                       WebsitePage page = const WebsitePage(
                         name: 'Codeforces',
                       );
-                      codeforcesBloc.add(ActiveContestsEventCache());
+                      codeforcesBloc.add(FutureContestsEventCache());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                             value: codeforcesBloc, child: page),
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                         style: drawerOptionTextStyle(),
                       ),
                       onTap: () {
-                        codechefBloc.add(ActiveContestsEventCache());
+                        codechefBloc.add(FutureContestsEventCache());
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: codechefBloc,
@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
-                      atcoderBloc.add(ActiveContestsEventCache());
+                      atcoderBloc.add(FutureContestsEventCache());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                           value: atcoderBloc,
