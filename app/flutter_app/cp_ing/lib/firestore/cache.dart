@@ -11,10 +11,13 @@ class ContestDatabase {
     required String id,
     required String end,
     required String start,
+    required String docId,
+    required String endpoint,
+    required String type,
   }) async {
     print("process starting");
     DocumentReference documentReferencer =
-        _mainCollection.doc("atcoder").collection('items').doc();
+        _mainCollection.doc(endpoint).collection(type).doc();
 
     DocumentReference documentReferencer_timestamp = _mainCollection
         .doc("atcoder")
@@ -26,6 +29,7 @@ class ContestDatabase {
       "id": id,
       "end": end,
       "start": start,
+      "docid": docId
     };
     Map<String, Timestamp> time = <String, Timestamp>{
       "last_updated": Timestamp.now(),
@@ -33,7 +37,7 @@ class ContestDatabase {
 
     await documentReferencer
         .set(data)
-        .whenComplete(() => debugPrint('contest deleted from the database'))
+        .whenComplete(() => debugPrint('contest added from the database'))
         .catchError((e) => debugPrint(e));
 
     await documentReferencer_timestamp
@@ -42,11 +46,28 @@ class ContestDatabase {
         .catchError((e) => debugPrint(e));
   }
 
-  static Stream<QuerySnapshot> readContests() {
+  static Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+      readContests({
+    required String endpoint,
+    required String type,
+  }) async {
     CollectionReference contestsItemCollection =
-        _mainCollection.doc("atcoder").collection('items');
-
-    return contestsItemCollection.snapshots();
+        _mainCollection.doc(endpoint).collection(type);
+    var allcontests;
+    await FirebaseFirestore.instance
+        .collection('cache')
+        .doc('atcoder')
+        .collection('future-contests')
+        .get()
+        .then((collection) {
+      final allcontests = collection.docs;
+      // final registeredContests = collection.docs;
+      // print(registeredContests.length);
+      // registeredContests.forEach((element) {
+      //   print(element.data()['start']);
+      // });
+    });
+    return allcontests;
   }
 
   static Future<void> deleteContest() async {
@@ -54,6 +75,7 @@ class ContestDatabase {
       for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
+      ;
     });
   }
 }

@@ -248,10 +248,7 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () async {
-                  print("adding contests to database");
-                  await ContestDatabase.addContestCache(
-                      end: 'as', id: 'ds', name: 'das', start: 'das');
-                  await ContestDatabase.deleteContest();
+                  // await ContestDatabase.readContests();
                 },
               )
             ],
