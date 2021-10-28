@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                       WebsitePage page = const WebsitePage(
                         name: 'Codeforces',
                       );
-                      codeforcesBloc.add(ActiveContestsEvent());
+                      codeforcesBloc.add(ActiveContestsEventCache());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                             value: codeforcesBloc, child: page),
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                         style: drawerOptionTextStyle(),
                       ),
                       onTap: () {
-                        codechefBloc.add(ActiveContestsEvent());
+                        codechefBloc.add(ActiveContestsEventCache());
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: codechefBloc,
@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
-                      atcoderBloc.add(ActiveContestsEvent());
+                      atcoderBloc.add(ActiveContestsEventCache());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                           value: atcoderBloc,
@@ -244,14 +244,6 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(color: Colors.white),
             ),
             foregroundColor: const Color.fromRGBO(32, 27, 50, 1),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () async {
-                  // await ContestDatabase.readContests();
-                },
-              )
-            ],
           ),
           body: Container(
               decoration: const BoxDecoration(

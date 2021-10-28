@@ -57,6 +57,15 @@ class _WebsitePageState extends State<WebsitePage> {
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () async {
+                BlocProvider.of<WebsiteBloc>(context)
+                    .add(RefreshContestsEvent());
+              },
+            )
+          ],
         ),
         body: Container(
           decoration: const BoxDecoration(
@@ -76,7 +85,8 @@ class _WebsitePageState extends State<WebsitePage> {
                 if (state is LoadingState) {
                   return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
-                    child: Center(child: CircularProgressIndicator(
+                    child: Center(
+                        child: CircularProgressIndicator(
                       color: MyColors.cyan,
                     )),
                   );
@@ -95,6 +105,18 @@ class _WebsitePageState extends State<WebsitePage> {
                 } else if (state is ErrorState) {
                   debugPrint(state.error.toString());
                   return Center(child: Text(state.error));
+                } else if (state is ActiveContestsEventStateCache) {
+                  List<Contest> activeContests = [];
+                  activeContests = state.contests;
+                  return activeContests.isNotEmpty
+                      ? listContests(activeContests)
+                      : noContests("No active contests to show!");
+                } else if (state is FutureContestsEventStateCache) {
+                  List<Contest> futureContests = [];
+                  futureContests = state.contests;
+                  return futureContests.isNotEmpty
+                      ? listContests(futureContests)
+                      : noContests("No future contests to show!");
                 }
                 return const Center(
                   child: Text("error 404"),
@@ -106,10 +128,10 @@ class _WebsitePageState extends State<WebsitePage> {
   }
 
   void futureContests() {
-    BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEvent());
+    BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEventCache());
   }
 
   void activeContests() {
-    BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEvent());
+    BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEventCache());
   }
 }

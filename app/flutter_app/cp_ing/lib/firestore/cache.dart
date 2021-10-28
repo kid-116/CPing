@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cp_ing/models/contest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -46,28 +47,45 @@ class ContestDatabase {
         .catchError((e) => debugPrint(e));
   }
 
-  static Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-      readContests({
-    required String endpoint,
-    required String type,
-  }) async {
+  static Future<List<Contest>> readContests(
+      {required String endpoint,
+      required String type,
+      required final registeredcontests}) async {
     CollectionReference contestsItemCollection =
         _mainCollection.doc(endpoint).collection(type);
-    var allcontests;
+    // var allcontests;
+    String id = "null", docId = "null";
+    List<Contest> contests = [];
     await FirebaseFirestore.instance
         .collection('cache')
-        .doc('atcoder')
-        .collection('future-contests')
+        .doc(endpoint)
+        .collection(type)
         .get()
         .then((collection) {
       final allcontests = collection.docs;
-      // final registeredContests = collection.docs;
-      // print(registeredContests.length);
-      // registeredContests.forEach((element) {
-      //   print(element.data()['start']);
-      // });
+      allcontests.forEach((element) {
+        for (var item in registeredcontests) {
+          if (element['name'] == item['name']) {
+            id = item['id'];
+            docId = item.id;
+          } else {
+            id = 'null';
+            docId = 'null';
+          }
+        }
+        // debugPrint(element['start']);
+        Contest c = Contest(
+            name: element['name'],
+            length: const Duration(),
+            start: DateTime.parse(element['start']),
+            end: DateTime.parse(element['end']),
+            venue: "null",
+            id: id,
+            docId: docId);
+        contests.add(c);
+      });
     });
-    return allcontests;
+    return contests;
   }
 
   static Future<void> deleteContest() async {
