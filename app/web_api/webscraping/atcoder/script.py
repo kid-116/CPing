@@ -23,7 +23,6 @@ def parse_row(row):
         'length': duration_parser(length),
         'venue': 'atcoder',
     }
-    # print(contest['length'])
     return contest
 
 def duration_parser(duration):
@@ -38,31 +37,24 @@ def duration_parser(duration):
         'minutes': minutes
     }
 
-# driver code for scraping
 def main():
-    # page url
     URL = "https://atcoder.jp/contests/"
-    # scrapingant client
     client = ScrapingAntClient(token=API_TOKEN)
-    # sending req
     res = client.general_request(URL)
-    # souping
     page = res.content
     soup = BeautifulSoup(page, 'lxml')
-    # print(soup)
     # scraping
     contests = {}
-    # present contests
+    ## present contests
     active_contests = []
     for row in soup.select('div#contest-table-action table tbody tr'):    
         active_contests.append(parse_row(row))
     contests['active-contests'] = active_contests
-    # future contests
+    ## future contests
     future_contests = []
     for row in soup.select('div#contest-table-upcoming table tbody tr'):
         future_contests.append(parse_row(row))
     contests['future-contests'] = future_contests
-    # print(contests)
     return contests
 
 if __name__ == '__main__':
