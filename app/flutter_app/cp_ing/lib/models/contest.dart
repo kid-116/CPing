@@ -35,14 +35,14 @@ class Contest {
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['length'] = length;
-    data['name'] = name;
-    data['start'] = start;
-    data['id'] = id;
-    data['end'] = end;
-    data['venue'] = venue;
-    return data;
-  }
+  // Map<String, dynamic> toJson() {
+  //   final Map<String, dynamic> data = <String, dynamic>{};
+  //   data['length'] = length;
+  //   data['name'] = name;
+  //   data['start'] = start;
+  //   data['id'] = id;
+  //   data['end'] = end;
+  //   data['venue'] = venue;
+  //   return data;
+  // }
 }

@@ -48,6 +48,17 @@ class ContestDatabase {
         .catchError((e) => debugPrint(e));
   }
 
+  static Future<Timestamp> getlastUpdatedTime({
+    required String endpoint,
+  }) async {
+    Timestamp a = await _mainCollection
+        .doc(endpoint)
+        .collection("timestamp")
+        .get()
+        .then((value) => value.docs[0].data()['at']);
+    return a;
+  }
+
   // Function to read contests from the cache
   static Future<List<Contest>> readContests(
       {required String endpoint,
