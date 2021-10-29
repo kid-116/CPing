@@ -20,7 +20,6 @@ def duration_parser(duration):
         'minutes': minutes
     }
 
-# print(duration_parser("4 days 2 hours 30 minutes"))
 
 def parse_row(row):
     details = []
