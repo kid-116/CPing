@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/config/colors.dart';
+import 'package:cp_ing/firestore/cache.dart';
 import 'package:cp_ing/firestore/database.dart';
 import 'package:cp_ing/models/contest.dart';
 import 'package:cp_ing/pages/website.dart';
@@ -44,28 +45,26 @@ Expanded listRegisteredContests() {
             length: const Duration(),
             docId: item.id,
           );
-          if(contest.end.isBefore(DateTime.now())) {
+          if (contest.end.isBefore(DateTime.now())) {
             debugPrint(contest.name);
             Database.deleteContest(docId: contest.docId);
-          }
-          else {
+          } else {
             contests.add(contest);
           }
           // contests.add(contest);
         });
 
         return contests.isNotEmpty
-        ? ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: contests.length,
-            itemBuilder: (context, index) {
-              return ContestCard(
-                contest: contests[index],
-              );
-            }
-          )
-        : noContests("You haven't registered for any contests yet!");
+            ? ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: contests.length,
+                itemBuilder: (context, index) {
+                  return ContestCard(
+                    contest: contests[index],
+                  );
+                })
+            : noContests("You haven't registered for any contests yet!");
       },
     ),
   );
@@ -151,11 +150,10 @@ class _HomePageState extends State<HomePage> {
                       WebsitePage page = const WebsitePage(
                         name: 'Codeforces',
                       );
-                      codeforcesBloc.add(ActiveContestsEvent());
+                      codeforcesBloc.add(FutureContestsEventCache());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
-                            value: codeforcesBloc,
-                            child: page),
+                            value: codeforcesBloc, child: page),
                       ));
                     },
                   ),
@@ -170,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                         style: drawerOptionTextStyle(),
                       ),
                       onTap: () {
-                        codechefBloc.add(ActiveContestsEvent());
+                        codechefBloc.add(FutureContestsEventCache());
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: codechefBloc,
@@ -192,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
-                      atcoderBloc.add(ActiveContestsEvent());
+                      atcoderBloc.add(FutureContestsEventCache());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                           value: atcoderBloc,

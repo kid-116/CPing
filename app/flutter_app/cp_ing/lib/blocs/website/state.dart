@@ -14,9 +14,7 @@ class LoadingState extends WebsiteState {}
 class ActiveLoadedState extends WebsiteState {
   final List<Contest> contests;
 
-  const ActiveLoadedState({
-    required this.contests
-  });
+  const ActiveLoadedState({required this.contests});
 
   @override
   List<Object> get props => [contests];
@@ -25,9 +23,25 @@ class ActiveLoadedState extends WebsiteState {
 class FutureLoadedState extends WebsiteState {
   final List<Contest> contests;
 
-  const FutureLoadedState({
-    required this.contests
-  });
+  const FutureLoadedState({required this.contests});
+
+  @override
+  List<Object> get props => [contests];
+}
+
+class ActiveContestsEventStateCache extends WebsiteState {
+  final List<Contest> contests;
+
+  const ActiveContestsEventStateCache({required this.contests});
+
+  @override
+  List<Object> get props => [contests];
+}
+
+class FutureContestsEventStateCache extends WebsiteState {
+  final List<Contest> contests;
+
+  const FutureContestsEventStateCache({required this.contests});
 
   @override
   List<Object> get props => [contests];

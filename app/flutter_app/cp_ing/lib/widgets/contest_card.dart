@@ -14,10 +14,10 @@ class ContestCard extends StatefulWidget {
     return DateFormat('E, d MMM y - H:mm').format(dateTime);
   }
 
-  String formatLength(Duration length) {
-    int strLen = length.toString().length;
-    return length.toString().substring(0, strLen - 10);
-  }
+  // String formatLength(Duration length) {
+  //   int strLen = length.toString().length;
+  //   return length.toString().substring(0, strLen - 10);
+  // }
 
   const ContestCard({required this.contest, Key? key}) : super(key: key);
 
@@ -100,9 +100,7 @@ class _ContestCardState extends State<ContestCard> {
                       debugPrint(e.toString());
                     }
                     showActionSnackBar(
-                        context,
-                        "Event has been added to your calender"
-                    );
+                        context, "Event has been added to your calender");
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -153,9 +151,7 @@ class _ContestCardState extends State<ContestCard> {
                       debugPrint(e.toString());
                     }
                     showActionSnackBar(
-                        context,
-                        "Event has been removed from your calender"
-                    );
+                        context, "Event has been removed from your calender");
                   },
                 )
         ]),
@@ -166,15 +162,10 @@ class _ContestCardState extends State<ContestCard> {
 
 void showActionSnackBar(BuildContext context, String message) {
   final SnackBar snackBar = SnackBar(
-    content: Text(
-        message,
+    content: Text(message,
         textAlign: TextAlign.center,
         style: const TextStyle(
-            fontSize: 16,
-            fontFamily: 'Kaisei',
-            fontWeight: FontWeight.bold
-        )
-    ),
+            fontSize: 16, fontFamily: 'Kaisei', fontWeight: FontWeight.bold)),
     duration: const Duration(seconds: 1),
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
