@@ -48,15 +48,14 @@ class ContestDatabase {
         .catchError((e) => debugPrint(e));
   }
 
+  // Function to read contests from the cache
   static Future<List<Contest>> readContests(
       {required String endpoint,
       required String type,
       required final registeredcontests}) async {
-    CollectionReference contestsItemCollection =
-        _mainCollection.doc(endpoint).collection(type);
-    // var allcontests;
     String id = "null", docId = "null";
     List<Contest> contests = [];
+    //Getting contests from cache
     await FirebaseFirestore.instance
         .collection('cache')
         .doc(endpoint)
@@ -64,6 +63,7 @@ class ContestDatabase {
         .get()
         .then((collection) {
       final allcontests = collection.docs;
+
       allcontests.forEach((element) {
         for (var item in registeredcontests) {
           if (element['name'] == item['name']) {
@@ -75,11 +75,16 @@ class ContestDatabase {
           }
         }
         // debugPrint(element['start']);
+        var length = Duration(
+            days: element['length']['days'],
+            hours: element['length']['hours'],
+            minutes: element['length']['minutes']);
+        var start = DateTime.parse(element['start']);
         Contest c = Contest(
             name: element['name'],
-            length: const Duration(),
-            start: DateTime.parse(element['start']),
-            end: DateTime.parse(element['end']),
+            length: length,
+            start: start,
+            end: start.add(length),
             venue: "null",
             id: id,
             docId: docId);
@@ -89,12 +94,12 @@ class ContestDatabase {
     return contests;
   }
 
+  //Function to delete all the contests of a site in the cache
   static Future<void> deleteContest(String endpoint, String type) async {
     _mainCollection.doc(endpoint).collection(type).get().then((snapshot) {
       for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
-      ;
     });
   }
 }

@@ -46,7 +46,7 @@ class WebsitePage extends StatefulWidget {
 }
 
 class _WebsitePageState extends State<WebsitePage> {
-  bool isrefreshed = false;
+  dynamic isrefreshed = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,27 +64,38 @@ class _WebsitePageState extends State<WebsitePage> {
                 ? IconButton(
                     icon: const Icon(Icons.refresh),
                     onPressed: () async {
+                      WidgetsBinding.instance!
+                          .addPostFrameCallback((_) => setState(() {
+                                isrefreshed = true;
+                              }));
                       setState(() {
+                        print(isrefreshed);
                         isrefreshed = true;
                       });
+                      print(isrefreshed);
 
                       BlocProvider.of<WebsiteBloc>(context)
                           .add(RefreshContestsEvent());
-                      debugPrint(" Refreshed Completed ");
 
-                      setState(() {
-                        isrefreshed = false;
-                      });
+                      WidgetsBinding.instance!
+                          .addPostFrameCallback((_) => setState(() {
+                                isrefreshed = false;
+                              }));
 
-                      BlocProvider.of<WebsiteBloc>(context)
-                          .add(ActiveContestsEventCache());
+                      // ignore: unrelated_type_equality_checks
+                      BlocProvider.of<WebsiteBloc>(context).state ==
+                              ActiveContestsEventStateCache
+                          ? BlocProvider.of<WebsiteBloc>(context)
+                              .add(ActiveContestsEventCache())
+                          : BlocProvider.of<WebsiteBloc>(context)
+                              .add(FutureContestsEventCache());
                     },
                   )
                 : const Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: SpinKitWave(
                       color: Colors.white,
-                      size: 20,
+                      size: 10,
                     )),
           ],
         ),
@@ -103,9 +114,6 @@ class _WebsitePageState extends State<WebsitePage> {
             ),
             BlocConsumer<WebsiteBloc, WebsiteState>(
               listener: (context, state) {},
-              listenWhen: (previous, current) {
-                return !isrefreshed;
-              },
               builder: (context, state) {
                 if (state is LoadingState) {
                   return const Padding(

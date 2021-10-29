@@ -51,3 +51,5 @@ class ErrorState extends WebsiteState {
   final String error;
   const ErrorState(this.error);
 }
+
+class RefresingAPIState extends WebsiteState {}
