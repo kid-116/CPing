@@ -67,21 +67,24 @@ class _WebsitePageState extends State<WebsitePage> {
                       setState(() {
                         isrefreshed = true;
                       });
-                      await Future.delayed(Duration(seconds: 3));
-                      // BlocProvider.of<WebsiteBloc>(context)
-                      //     .add(RefreshContestsEvent());
-                      // print(" refreshed ");
+
+                      BlocProvider.of<WebsiteBloc>(context)
+                          .add(RefreshContestsEvent());
+                      debugPrint(" Refreshed Completed ");
+
                       setState(() {
                         isrefreshed = false;
                       });
-                      // BlocProvider.of<WebsiteBloc>(context)
-                      //     .add(ActiveContestsEventCache());
+
+                      BlocProvider.of<WebsiteBloc>(context)
+                          .add(ActiveContestsEventCache());
                     },
                   )
-                : Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                : const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: SpinKitWave(
                       color: Colors.white,
+                      size: 20,
                     )),
           ],
         ),

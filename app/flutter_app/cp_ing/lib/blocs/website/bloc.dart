@@ -72,10 +72,14 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
       try {
         await ContestDatabase.deleteContest(
             repository.endpoint.split('/')[1], 'future-contests');
+
         await ContestDatabase.deleteContest(
             repository.endpoint.split('/')[1], 'active-contests');
+
         print("contests deleted");
+
         await repository.addConteststoCache('active-contests');
+
         await repository.addConteststoCache('future-contests');
 
         print("contests added");
