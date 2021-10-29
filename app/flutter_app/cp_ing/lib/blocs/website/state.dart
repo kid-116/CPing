@@ -52,7 +52,7 @@ class ErrorState extends WebsiteState {
   const ErrorState(this.error);
 }
 
-class RefresingAPIState extends WebsiteState {}
+class RefreshedAPIState extends WebsiteState {}
 
 class UserRatingsLoadedState extends WebsiteState implements Equatable {
   final List<UserRating> userRatings;

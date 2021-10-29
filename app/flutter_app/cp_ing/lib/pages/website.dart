@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/config/colors.dart';
+import 'package:cp_ing/firestore/cache.dart';
 import 'package:cp_ing/widgets/contest_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +50,31 @@ class WebsitePage extends StatefulWidget {
 class _WebsitePageState extends State<WebsitePage> {
   dynamic isrefreshed = false;
   @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      checkLastUpdate();
+    });
+    super.initState();
+  }
+
+  Future<bool> checkLastUpdate() async {
+    await ContestDatabase.getlastUpdatedTime(
+            endpoint: widget.name.toLowerCase())
+        .then((value) {
+      if (value != null) {
+        if (Timestamp.now().seconds - value.seconds >= 300) {
+          print("Refresh Started");
+          BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
+          return true;
+        }
+      }
+      return false;
+    });
+    return false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -59,30 +86,6 @@ class _WebsitePageState extends State<WebsitePage> {
             ),
           ),
           centerTitle: true,
-          actions: [
-            !isrefreshed
-                ? IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () async {
-                      BlocProvider.of<WebsiteBloc>(context)
-                          .add(RefreshContestsEvent());
-
-                      // ignore: unrelated_type_equality_checks
-                      BlocProvider.of<WebsiteBloc>(context).state ==
-                              ActiveContestsEventStateCache
-                          ? BlocProvider.of<WebsiteBloc>(context)
-                              .add(ActiveContestsEventCache())
-                          : BlocProvider.of<WebsiteBloc>(context)
-                              .add(FutureContestsEventCache());
-                    },
-                  )
-                : const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: SpinKitWave(
-                      color: Colors.white,
-                      size: 10,
-                    )),
-          ],
         ),
         body: Container(
           decoration: const BoxDecoration(
@@ -135,6 +138,10 @@ class _WebsitePageState extends State<WebsitePage> {
                   return futureContests.isNotEmpty
                       ? listContests(futureContests)
                       : noContests("No future contests to show!");
+                }
+                if (isrefreshed) {
+                  BlocProvider.of<WebsiteBloc>(context)
+                      .add(FutureContestsEventCache());
                 }
                 return const Center(
                   child: Text("error 404"),
