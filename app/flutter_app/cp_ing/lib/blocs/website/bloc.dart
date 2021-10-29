@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:cp_ing/firestore/cache.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:cp_ing/repositories/website.dart';
@@ -21,23 +22,36 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
 
   @override
   Stream<WebsiteState> mapEventToState(
-      WebsiteEvent event,
+    WebsiteEvent event,
   ) async* {
-    if (event is ActiveContestsEvent) {
+    if (event is ActiveContestsEventCache) {
       try {
-        List<Contest> presentContests = [];
+        List<Contest> presentcontests = [];
         yield LoadingState();
-        presentContests = await repository.getWebsiteContests('active-contests');
-        yield ActiveLoadedState(contests: presentContests);
+        // Fetching contests from Firebase (CACHE)
+        presentcontests =
+            await repository.getWebsiteContestsfromCache('active-contests');
+        yield ActiveContestsEventStateCache(contests: presentcontests);
       } catch (e) {
         yield ErrorState(e.toString());
       }
-    } else if (event is FutureContestsEvent) {
+    } else if (event is FutureContestsEventCache) {
       try {
-        List<Contest> futureContests = [];
+        List<Contest> futurecontests = [];
         yield LoadingState();
-        futureContests = await repository.getWebsiteContests('future-contests');
-        yield FutureLoadedState(contests: futureContests);
+        // Fetching contests from Firebase (CACHE)
+        futurecontests =
+            await repository.getWebsiteContestsfromCache('future-contests');
+        yield FutureContestsEventStateCache(contests: futurecontests);
+      } catch (e) {
+        yield ErrorState(e.toString());
+      }
+    }
+    if (event is RefreshContestsEvent) {
+      try {
+        // Calling the API which you update contests in the firebase
+        await repository.addConteststoCache('active-contests');
+        await repository.addConteststoCache('future-contests');
       } catch (e) {
         yield ErrorState(e.toString());
       }

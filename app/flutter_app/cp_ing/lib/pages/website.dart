@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/website/bloc.dart';
 import '../models/contest.dart';
 import 'package:cp_ing/widgets/tab_bar.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 Expanded listContests(List<Contest> contests) {
   return Expanded(
@@ -45,6 +46,7 @@ class WebsitePage extends StatefulWidget {
 }
 
 class _WebsitePageState extends State<WebsitePage> {
+  dynamic isrefreshed = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +59,45 @@ class _WebsitePageState extends State<WebsitePage> {
             ),
           ),
           centerTitle: true,
+          actions: [
+            !isrefreshed
+                ? IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () async {
+                      WidgetsBinding.instance!
+                          .addPostFrameCallback((_) => setState(() {
+                                isrefreshed = true;
+                              }));
+                      setState(() {
+                        print(isrefreshed);
+                        isrefreshed = true;
+                      });
+                      print(isrefreshed);
+
+                      BlocProvider.of<WebsiteBloc>(context)
+                          .add(RefreshContestsEvent());
+
+                      WidgetsBinding.instance!
+                          .addPostFrameCallback((_) => setState(() {
+                                isrefreshed = false;
+                              }));
+
+                      // ignore: unrelated_type_equality_checks
+                      BlocProvider.of<WebsiteBloc>(context).state ==
+                              ActiveContestsEventStateCache
+                          ? BlocProvider.of<WebsiteBloc>(context)
+                              .add(ActiveContestsEventCache())
+                          : BlocProvider.of<WebsiteBloc>(context)
+                              .add(FutureContestsEventCache());
+                    },
+                  )
+                : const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: SpinKitWave(
+                      color: Colors.white,
+                      size: 10,
+                    )),
+          ],
         ),
         body: Container(
           decoration: const BoxDecoration(
@@ -69,14 +110,16 @@ class _WebsitePageState extends State<WebsitePage> {
             MyTabBar(
               labels: const ['ACTIVE', 'FUTURE'],
               callbacks: [activeContests, futureContests],
-              initBar: 0,
+              initBar: 1,
             ),
-            BlocBuilder<WebsiteBloc, WebsiteState>(
+            BlocConsumer<WebsiteBloc, WebsiteState>(
+              listener: (context, state) {},
               builder: (context, state) {
                 if (state is LoadingState) {
                   return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
-                    child: Center(child: CircularProgressIndicator(
+                    child: Center(
+                        child: CircularProgressIndicator(
                       color: MyColors.cyan,
                     )),
                   );
@@ -95,6 +138,18 @@ class _WebsitePageState extends State<WebsitePage> {
                 } else if (state is ErrorState) {
                   debugPrint(state.error.toString());
                   return Center(child: Text(state.error));
+                } else if (state is ActiveContestsEventStateCache) {
+                  List<Contest> activeContests = [];
+                  activeContests = state.contests;
+                  return activeContests.isNotEmpty
+                      ? listContests(activeContests)
+                      : noContests("No active contests to show!");
+                } else if (state is FutureContestsEventStateCache) {
+                  List<Contest> futureContests = [];
+                  futureContests = state.contests;
+                  return futureContests.isNotEmpty
+                      ? listContests(futureContests)
+                      : noContests("No future contests to show!");
                 }
                 return const Center(
                   child: Text("error 404"),
@@ -106,10 +161,10 @@ class _WebsitePageState extends State<WebsitePage> {
   }
 
   void futureContests() {
-    BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEvent());
+    BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEventCache());
   }
 
   void activeContests() {
-    BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEvent());
+    BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEventCache());
   }
 }

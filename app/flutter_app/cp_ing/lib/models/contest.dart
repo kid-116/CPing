@@ -33,7 +33,6 @@ class Contest {
         docId = contest.id;
       }
     }
-
   }
 
   Map<String, dynamic> toJson() {
