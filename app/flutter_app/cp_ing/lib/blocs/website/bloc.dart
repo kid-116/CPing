@@ -53,6 +53,7 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
         // Calling the API which you update contests in the firebase
         await repository.addConteststoCache('active-contests');
         await repository.addConteststoCache('future-contests');
+        yield RefreshedAPIState();
       } catch (e) {
         yield ErrorState(e.toString());
       }

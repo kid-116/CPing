@@ -29,13 +29,15 @@ class _RatingPageState extends State<RatingPage> {
                   width: MediaQuery.of(context).size.width - 40,
                   child: LineChart(
                     LineChartData(
+                        titlesData: FlTitlesData(show: false),
+                        axisTitleData: FlAxisTitleData(show: false),
                         backgroundColor: const Color(0xFF12175F),
                         minX: 0,
                         maxX: state.noofcontests + 1,
                         minY: state.minrating == 0 ? 0 : state.minrating - 100,
                         maxY: state.maxrating + 100,
                         borderData: FlBorderData(
-                          show: true,
+                          show: false,
                           border: Border.all(
                               color: const Color(0xff37434d), width: 1),
                         ),
