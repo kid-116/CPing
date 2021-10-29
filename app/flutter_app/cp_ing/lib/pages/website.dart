@@ -64,23 +64,8 @@ class _WebsitePageState extends State<WebsitePage> {
                 ? IconButton(
                     icon: const Icon(Icons.refresh),
                     onPressed: () async {
-                      WidgetsBinding.instance!
-                          .addPostFrameCallback((_) => setState(() {
-                                isrefreshed = true;
-                              }));
-                      setState(() {
-                        print(isrefreshed);
-                        isrefreshed = true;
-                      });
-                      print(isrefreshed);
-
                       BlocProvider.of<WebsiteBloc>(context)
                           .add(RefreshContestsEvent());
-
-                      WidgetsBinding.instance!
-                          .addPostFrameCallback((_) => setState(() {
-                                isrefreshed = false;
-                              }));
 
                       // ignore: unrelated_type_equality_checks
                       BlocProvider.of<WebsiteBloc>(context).state ==

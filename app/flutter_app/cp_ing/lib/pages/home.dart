@@ -3,6 +3,7 @@ import 'package:cp_ing/config/colors.dart';
 import 'package:cp_ing/firestore/cache.dart';
 import 'package:cp_ing/firestore/database.dart';
 import 'package:cp_ing/models/contest.dart';
+import 'package:cp_ing/pages/rating_page.dart';
 import 'package:cp_ing/pages/website.dart';
 import 'package:cp_ing/widgets/contest_card.dart';
 import '../blocs/authentication/bloc.dart';
@@ -198,6 +199,25 @@ class _HomePageState extends State<HomePage> {
                             name: 'Atcoder',
                           ),
                         ),
+                      ));
+                    },
+                  ),
+                  ListTile(
+                    selectedTileColor: Colors.white10,
+                    leading: const Image(
+                      image: AssetImage('assets/images/codeforces_icon.png'),
+                      height: 35,
+                      width: 35,
+                    ),
+                    title: Text(
+                      'Ratings',
+                      style: drawerOptionTextStyle(),
+                    ),
+                    onTap: () {
+                      codeforcesBloc.add(Getuserrating());
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => BlocProvider.value(
+                            value: codeforcesBloc, child: RatingPage()),
                       ));
                     },
                   ),

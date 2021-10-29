@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/firestore/cache.dart';
+import 'package:cp_ing/models/rating.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:googleapis/compute/v1.dart';
@@ -14,6 +15,28 @@ class WebsiteRepository {
   WebsiteRepository({
     required this.endpoint,
   });
+  Future getUserRating(String username) async {
+    print("getting user rating");
+    var response = await http.get(
+        Uri.parse("https://codeforces.com/api/user.rating?handle=$username"));
+    var data = json.decode(response.body);
+    print(data['result']);
+    List<UserRating> userrating = [];
+    for (var item in data['result']) {
+      userrating.add(UserRating.fromJson(item));
+    }
+    var maxrating = -2;
+    userrating.forEach((element) {
+      maxrating = maxrating > element.oldRating ? maxrating : element.oldRating;
+    });
+    var minrating = 1000000;
+    userrating.forEach((element) {
+      minrating = minrating < element.oldRating ? minrating : element.oldRating;
+    });
+    var no_of_contests = userrating.length;
+    // List<UserRating> userrating = UserRating.fromJson(json);
+    return userrating;
+  }
 
   Future addConteststoCache(String type) async {
     List<Contest> contests = [];
