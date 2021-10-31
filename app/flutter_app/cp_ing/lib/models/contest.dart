@@ -23,12 +23,5 @@ class Contest {
     name = json['name'];
     start = DateTime.parse(json['start']).toLocal();
     end = start.add(length);
-
-    // for (final contest in registeredContests) {
-    //   if (contest['name'] == name) {
-    //     id = contest['id'];
-    //     docId = contest.id;
-    //   }
-    // }
   }
 }

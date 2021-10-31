@@ -60,7 +60,7 @@ class _WebsitePageState extends State<WebsitePage> {
         .then((lastUpdated) {
           debugPrint(lastUpdated.toString());
       if (Timestamp.now().seconds - lastUpdated.seconds >= 300) {
-        debugPrint("outdated");
+        debugPrint("outdated cache");
         BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
         return true;
       }
@@ -122,7 +122,6 @@ class _WebsitePageState extends State<WebsitePage> {
                       ? listContests(futureContests)
                       : noContests("No future contests to show!");
                 } else if (state is RefreshedCacheState) {
-                  debugPrint("refreshed");
                   if(state.currentTab == 'A') {
                     activeContests();
                   }
@@ -140,12 +139,10 @@ class _WebsitePageState extends State<WebsitePage> {
   }
 
   void futureContests() {
-    debugPrint("calling future");
     BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEvent());
   }
 
   void activeContests() {
-    debugPrint("calling active");
     BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEvent());
   }
 }

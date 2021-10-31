@@ -26,13 +26,10 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
     if (event is ActiveContestsEvent) {
       currentTab = 'A';
       try {
-        debugPrint("inside active");
         List<Contest> activeContests = [];
         yield LoadingState();
         activeContests =
             await repository.getContestsFromCache('active-contests');
-        debugPrint("bloc:");
-        debugPrint(activeContests.toString());
         yield ActiveContestsEventState(contests: activeContests);
       } catch (e) {
         yield ErrorState(e.toString());
@@ -44,8 +41,6 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
         yield LoadingState();
         futureContests =
             await repository.getContestsFromCache('future-contests');
-        // debugPrint("bloc:");
-        // debugPrint(futureContests.toString());
         yield FutureContestsEventState(contests: futureContests);
       } catch (e) {
         yield ErrorState(e.toString());
@@ -53,7 +48,6 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
     } else if (event is RefreshContestsEvent) {
       try {
         yield LoadingState();
-        debugPrint("outdated cache");
         await repository.updateCache();
         yield RefreshedCacheState(currentTab: currentTab);
       } catch (e) {

@@ -17,7 +17,6 @@ class WebsiteRepository {
     try {
       debugPrint("updating cache");
       await http.get(Uri.parse(hostUrl + endpoint));
-      // debugPrint(json.decode(response.body));
     } catch(e) {
       debugPrint(e.toString());
       return -1;
@@ -52,16 +51,11 @@ class WebsiteRepository {
               }
             }
           }
-          for (final contest in contests) {
-            debugPrint(contest.calendarId);
-          }
         });
       });
     } catch (e) {
       debugPrint(e.toString());
     }
-    debugPrint("repo:");
-    debugPrint(contests.toString());
     return contests;
   }
 

@@ -93,7 +93,6 @@ class _ContestCardState extends State<ContestCard> {
 
                       setState(() {
                         widget.contest.docId = docId;
-                        // debugPrint(widget.contest.calendarId);
                       });
                     } catch (e) {
                       debugPrint('event could not be added!');
@@ -146,7 +145,7 @@ class _ContestCardState extends State<ContestCard> {
                         widget.contest.calendarId = 'null';
                       });
                     } catch (e) {
-                      debugPrint('event could not be deleted');
+                      debugPrint('event could not be deleted!');
                       debugPrint(e.toString());
                     }
                     showActionSnackBar(

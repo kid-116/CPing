@@ -6,12 +6,10 @@ import 'package:googleapis/calendar/v3.dart';
 
 Future loadClient() async {
   try {
-    // print('getting client');
     final user = await GoogleSignIn().signIn();
     final authHeaders = await user!.authHeaders;
     final client = GoogleAuthClient(authHeaders);
     CalendarClient.calendar = cal.CalendarApi(client);
-    // print(CalendarClient.calendar);
   } catch (e) {
     debugPrint('client could not be loaded');
     debugPrint(e.toString());
@@ -51,16 +49,16 @@ class CalendarClient {
     try {
       await loadClient();
       await calendar.events.insert(event, calendarId).then((value) {
-        debugPrint("Event status: ${value.status}");
+        debugPrint("event status: ${value.status}");
         if (value.status == 'confirmed') {
           String eventId = value.id;
           eventData = {'id': eventId};
         } else {
-          debugPrint("Unable to add event to Google Calendar");
+          debugPrint("unable to add event to Google Calendar");
         }
       });
     } catch (e) {
-      debugPrint("Error creating event: $e");
+      debugPrint("error creating event: $e");
     }
     return eventData;
   }
@@ -71,10 +69,10 @@ class CalendarClient {
     try {
       await loadClient();
       await calendar.events.delete(calendarId, eventId).then((value) {
-        debugPrint("Event deleted from Google Calendar");
+        debugPrint("event deleted from google calendar");
       });
     } catch (e) {
-      debugPrint("Error deleting event: $e");
+      debugPrint("error deleting event: $e");
     }
   }
 }

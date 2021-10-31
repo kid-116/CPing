@@ -1,13 +1,10 @@
 import 'dart:async';
-// packages
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-// sign-in
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// calendar
 import 'package:googleapis/calendar/v3.dart' as cal;
 
 part 'event.dart';

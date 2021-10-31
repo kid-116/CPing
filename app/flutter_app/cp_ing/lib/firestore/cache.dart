@@ -44,7 +44,6 @@ class CacheDatabase {
         contests.add(contest);
       }
     });
-    debugPrint(contests.toString());
     return contests;
   }
 }
