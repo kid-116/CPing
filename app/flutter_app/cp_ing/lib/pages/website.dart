@@ -138,10 +138,15 @@ class _WebsitePageState extends State<WebsitePage> {
                   return futureContests.isNotEmpty
                       ? listContests(futureContests)
                       : noContests("No future contests to show!");
-                }
-                if (isrefreshed) {
-                  BlocProvider.of<WebsiteBloc>(context)
-                      .add(FutureContestsEventCache());
+                } else if (state is RefreshedAPIState) {
+                  futureContests();
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: MyColors.cyan,
+                    )),
+                  );
                 }
                 return const Center(
                   child: Text("error 404"),
