@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/models/contest.dart';
+import 'package:flutter/cupertino.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 final CollectionReference cacheCollection = firestore.collection('cache');
@@ -32,7 +33,7 @@ class CacheDatabase {
             days: json['length']['days'],
             hours: json['length']['hours'],
             minutes: json['length']['minutes']);
-        final start = DateTime.parse(json['start']);
+        final start = DateTime.parse(json['start']).toLocal();
         Contest contest = Contest(
             name: json['name'],
             length: length,
@@ -43,6 +44,7 @@ class CacheDatabase {
         contests.add(contest);
       }
     });
+    debugPrint(contests.toString());
     return contests;
   }
 }

@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 final CollectionReference userCollection = firestore.collection('userData');
 
 class UserDatabase {
-  static Future<void> addContest({
+  static Future<String> addContest({
     required String name,
     required String calendarId,
     required String start,
@@ -16,18 +17,28 @@ class UserDatabase {
     DocumentReference newContestDoc =
       userCollection.doc(email).collection('registeredContests').doc();
 
-    debugPrint(length.toString());
+    int days = length.inDays;
+    int hours = length.inHours - days * 24;
+    int minutes = length.inMinutes - hours * 60 - days * 24 * 60;
+    Map<String, int> lengthMap = <String, int>{
+      "days": days,
+      "hours": hours,
+      "minutes": minutes
+    };
 
     Map<String, dynamic> data = <String, dynamic>{
       "name": name,
       "calendarId": calendarId,
       "start": start,
+      "length": lengthMap
     };
 
-    // await newContestDoc
-    //     .set(data)
-    //     .whenComplete(() => debugPrint("$name added to $email's contests"))
-    //     .catchError((e) => debugPrint(e));
+    await newContestDoc
+        .set(data)
+        .whenComplete(() => debugPrint("$name added to $email's contests"))
+        .catchError((e) => debugPrint(e));
+
+    return newContestDoc.id;
   }
 
   static Stream<QuerySnapshot> readContests() {

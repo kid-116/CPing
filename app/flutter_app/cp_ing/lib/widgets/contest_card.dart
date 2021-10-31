@@ -76,22 +76,27 @@ class _ContestCardState extends State<ContestCard> {
                   onPressed: () async {
                     CalendarClient client = CalendarClient();
                     try {
-                      final event = await client.insert(
+                      final contest = await client.insert(
                         title: widget.contest.name,
                         startTime: widget.contest.start,
                         endTime: widget.contest.end,
                       );
-                      setState(() {
-                        widget.contest.calendarId = event['id'].toString();
-                      });
-                      await UserDatabase.addContest(
+
+                      widget.contest.calendarId = contest['id'].toString();
+
+                      final docId = await UserDatabase.addContest(
                         calendarId: widget.contest.calendarId,
                         start: widget.contest.start.toString(),
                         name: widget.contest.name,
                         length: widget.contest.length,
                       );
+
+                      setState(() {
+                        widget.contest.docId = docId;
+                        // debugPrint(widget.contest.calendarId);
+                      });
                     } catch (e) {
-                      debugPrint('event could not be added');
+                      debugPrint('event could not be added!');
                       debugPrint(e.toString());
                     }
                     showActionSnackBar(
@@ -136,7 +141,6 @@ class _ContestCardState extends State<ContestCard> {
                     try {
                       CalendarClient client = CalendarClient();
                       await client.delete(widget.contest.calendarId);
-                      debugPrint('deleting contest');
                       UserDatabase.deleteContest(docId: widget.contest.docId);
                       setState(() {
                         widget.contest.calendarId = 'null';

@@ -35,12 +35,18 @@ Expanded listRegisteredContests() {
         List<Contest> contests = <Contest>[];
 
         collection?.forEach((json) {
+          final length = Duration(
+            days: json['length']['days'],
+            hours: json['length']['hours'],
+            minutes: json['length']['minutes'],
+          );
+          final DateTime start = DateTime.parse(json['start']).toLocal();
           Contest contest = Contest(
             calendarId: json['calendarId'],
             name: json['name'],
-            start: DateTime.parse(json['start']),
-            end: DateTime.parse(json['end']),
-            length: const Duration(),
+            start: start,
+            end: start.add(length),
+            length: length,
             docId: json.id,
           );
           if (contest.end.isBefore(DateTime.now())) {
@@ -147,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                       WebsitePage page = const WebsitePage(
                         name: 'Codeforces',
                       );
-                      codeforcesBloc.add(FutureContestsEventCache());
+                      codeforcesBloc.add(FutureContestsEvent());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                             value: codeforcesBloc, child: page),
@@ -165,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                         style: drawerOptionTextStyle(),
                       ),
                       onTap: () {
-                        codechefBloc.add(FutureContestsEventCache());
+                        codechefBloc.add(FutureContestsEvent());
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: codechefBloc,
@@ -187,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
-                      atcoderBloc.add(FutureContestsEventCache());
+                      atcoderBloc.add(FutureContestsEvent());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                           value: atcoderBloc,

@@ -48,21 +48,19 @@ class WebsitePage extends StatefulWidget {
 }
 
 class _WebsitePageState extends State<WebsitePage> {
-  dynamic isrefreshed = false;
 
   @override
   void initState() {
-    // TODO: implement initState
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      checkLastUpdate();
-    });
+    checkLastUpdate();
     super.initState();
   }
 
   Future<bool> checkLastUpdate() async {
     await CacheDatabase.getLastUpdated(site: widget.name.toLowerCase())
         .then((lastUpdated) {
+          debugPrint(lastUpdated.toString());
       if (Timestamp.now().seconds - lastUpdated.seconds >= 300) {
+        debugPrint("outdated");
         BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
         return true;
       }
@@ -108,45 +106,32 @@ class _WebsitePageState extends State<WebsitePage> {
                       color: MyColors.cyan,
                     )),
                   );
-                } else if (state is ActiveLoadedState) {
-                  List<Contest> activeContests = [];
-                  activeContests = state.contests;
-                  return activeContests.isNotEmpty
-                      ? listContests(activeContests)
-                      : noContests("No active contests to show!");
-                } else if (state is FutureLoadedState) {
-                  List<Contest> futureContests = [];
-                  futureContests = state.contests;
-                  return futureContests.isNotEmpty
-                      ? listContests(futureContests)
-                      : noContests("No future contests to show!");
-                } else if (state is ErrorState) {
+                } if (state is ErrorState) {
                   debugPrint(state.error.toString());
                   return Center(child: Text(state.error));
-                } else if (state is ActiveContestsEventStateCache) {
+                } else if (state is ActiveContestsEventState) {
                   List<Contest> activeContests = [];
                   activeContests = state.contests;
                   return activeContests.isNotEmpty
                       ? listContests(activeContests)
                       : noContests("No active contests to show!");
-                } else if (state is FutureContestsEventStateCache) {
+                } else if (state is FutureContestsEventState) {
                   List<Contest> futureContests = [];
                   futureContests = state.contests;
                   return futureContests.isNotEmpty
                       ? listContests(futureContests)
                       : noContests("No future contests to show!");
                 } else if (state is RefreshedCacheState) {
-                  futureContests();
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
-                    child: Center(
-                        child: CircularProgressIndicator(
-                      color: MyColors.cyan,
-                    )),
-                  );
+                  debugPrint("refreshed");
+                  if(state.currentTab == 'A') {
+                    activeContests();
+                  }
+                  else {
+                    futureContests();
+                  }
                 }
                 return const Center(
-                  child: Text("error 404"),
+                  child: Text("Error: 404"),
                 );
               },
             ),
@@ -155,10 +140,12 @@ class _WebsitePageState extends State<WebsitePage> {
   }
 
   void futureContests() {
-    BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEventCache());
+    debugPrint("calling future");
+    BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEvent());
   }
 
   void activeContests() {
-    BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEventCache());
+    debugPrint("calling active");
+    BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEvent());
   }
 }
