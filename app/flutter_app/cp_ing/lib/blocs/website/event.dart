@@ -11,6 +11,4 @@ class StartEvent extends WebsiteEvent {}
 
 class RefreshContestsEvent extends WebsiteEvent {}
 
-class FutureContestsEvent extends WebsiteEvent {}
-
-class ActiveContestsEvent extends WebsiteEvent {}
+class GetContestsEvent extends WebsiteEvent {}
