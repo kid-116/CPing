@@ -8,17 +8,16 @@ db = firestore.client()
 cache_ref = db.collection('cache')
 
 def update_cache(contests, site):
+    # delete cache
+    docs = cache_ref.document(site).collection('contests')
+    cache = [contest.to_dict() for contest in docs.get()]
+    for doc in docs.get():
+        docs.document(doc.id).delete()
     for type in ['future-contests', 'active-contests']:
-        # get cache
-        docs = cache_ref.document(site).collection(type)
-        cache = [contest.to_dict() for contest in docs.get()]
-        # delete cache
-        for doc in docs.get():
-            docs.document(doc.id).delete()
         # update cache
         for contest in contests[type]:
             docs.document(contest['name']).set(contest)
     # updating timestamp
-    timestamp = cache_ref.document(site).collection('timestamp').document('last_updated').set({
+    cache_ref.document(site).collection('timestamp').document('last_updated').set({
         'at': datetime.now(timezone.utc)
     })
