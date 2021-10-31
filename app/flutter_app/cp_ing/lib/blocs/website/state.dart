@@ -52,16 +52,4 @@ class ErrorState extends WebsiteState {
   const ErrorState(this.error);
 }
 
-class RefreshedAPIState extends WebsiteState {}
-
-class UserRatingsLoadedState extends WebsiteState implements Equatable {
-  final List<UserRating> userRatings;
-  int maxrating, minrating, noofcontests;
-  UserRatingsLoadedState(
-      {required this.userRatings,
-      required this.maxrating,
-      required this.minrating,
-      required this.noofcontests});
-  @override
-  List<Object> get props => [userRatings];
-}
+class RefreshedCacheState extends WebsiteState {}

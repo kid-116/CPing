@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/config/colors.dart';
-import 'package:cp_ing/firestore/cache.dart';
-import 'package:cp_ing/firestore/database.dart';
+import 'package:cp_ing/firestore/user_data.dart';
 import 'package:cp_ing/models/contest.dart';
-import 'package:cp_ing/pages/rating_page.dart';
 import 'package:cp_ing/pages/website.dart';
 import 'package:cp_ing/widgets/contest_card.dart';
 import '../blocs/authentication/bloc.dart';
@@ -30,29 +28,26 @@ TextStyle drawerOptionTextStyle() {
 Expanded listRegisteredContests() {
   return Expanded(
     child: StreamBuilder(
-      stream: Database.readContests(),
+      stream: UserDatabase.readContests(),
       builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) {
         final collection = snapshot.data?.docs;
 
         List<Contest> contests = <Contest>[];
 
-        collection?.forEach((item) {
+        collection?.forEach((json) {
           Contest contest = Contest(
-            id: item['id'],
-            name: item['name'],
-            start: DateTime.parse(item['start']),
-            end: DateTime.parse(item['end']),
-            venue: 'null',
+            calendarId: json['calendarId'],
+            name: json['name'],
+            start: DateTime.parse(json['start']),
+            end: DateTime.parse(json['end']),
             length: const Duration(),
-            docId: item.id,
+            docId: json.id,
           );
           if (contest.end.isBefore(DateTime.now())) {
-            debugPrint(contest.name);
-            Database.deleteContest(docId: contest.docId);
+            UserDatabase.deleteContest(docId: contest.docId);
           } else {
             contests.add(contest);
           }
-          // contests.add(contest);
         });
 
         return contests.isNotEmpty
@@ -84,6 +79,7 @@ class _HomePageState extends State<HomePage> {
   WebsiteBloc codechefBloc = createWebsiteBloc('api/codechef/contests');
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -199,25 +195,6 @@ class _HomePageState extends State<HomePage> {
                             name: 'Atcoder',
                           ),
                         ),
-                      ));
-                    },
-                  ),
-                  ListTile(
-                    selectedTileColor: Colors.white10,
-                    leading: const Image(
-                      image: AssetImage('assets/images/codeforces_icon.png'),
-                      height: 35,
-                      width: 35,
-                    ),
-                    title: Text(
-                      'Ratings',
-                      style: drawerOptionTextStyle(),
-                    ),
-                    onTap: () {
-                      codeforcesBloc.add(Getuserrating());
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                            value: codeforcesBloc, child: RatingPage()),
                       ));
                     },
                   ),

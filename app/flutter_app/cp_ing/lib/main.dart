@@ -1,22 +1,15 @@
-// pages
 import 'package:cp_ing/pages/home.dart';
 import 'package:cp_ing/pages/sign_in.dart';
-// firebase
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-// flutter packages
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/widgets.dart';
-// blocs
 import 'blocs/authentication/bloc.dart';
 
-//hello
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp();
-
   runApp(const MyApp());
 }
 
@@ -32,7 +25,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: true,
         title: 'CPing',
         theme: ThemeData(
           primarySwatch: Colors.blue,

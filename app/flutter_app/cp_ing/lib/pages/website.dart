@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/website/bloc.dart';
 import '../models/contest.dart';
 import 'package:cp_ing/widgets/tab_bar.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 Expanded listContests(List<Contest> contests) {
   return Expanded(
@@ -38,6 +37,7 @@ Widget noContests(String msg) {
 
 class WebsitePage extends StatefulWidget {
   final String name;
+
   const WebsitePage({
     Key? key,
     required this.name,
@@ -49,6 +49,7 @@ class WebsitePage extends StatefulWidget {
 
 class _WebsitePageState extends State<WebsitePage> {
   dynamic isrefreshed = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -59,15 +60,11 @@ class _WebsitePageState extends State<WebsitePage> {
   }
 
   Future<bool> checkLastUpdate() async {
-    await ContestDatabase.getlastUpdatedTime(
-            endpoint: widget.name.toLowerCase())
-        .then((value) {
-      if (value != null) {
-        if (Timestamp.now().seconds - value.seconds >= 300) {
-          print("Refresh Started");
-          BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
-          return true;
-        }
+    await CacheDatabase.getLastUpdated(site: widget.name.toLowerCase())
+        .then((lastUpdated) {
+      if (Timestamp.now().seconds - lastUpdated.seconds >= 300) {
+        BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
+        return true;
       }
       return false;
     });
@@ -138,7 +135,7 @@ class _WebsitePageState extends State<WebsitePage> {
                   return futureContests.isNotEmpty
                       ? listContests(futureContests)
                       : noContests("No future contests to show!");
-                } else if (state is RefreshedAPIState) {
+                } else if (state is RefreshedCacheState) {
                   futureContests();
                   return const Padding(
                     padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
