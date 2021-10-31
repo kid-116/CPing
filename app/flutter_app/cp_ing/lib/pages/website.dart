@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/website/bloc.dart';
 import '../models/contest.dart';
-import 'package:cp_ing/widgets/tab_bar.dart';
 
 Expanded listContests(List<Contest> contests) {
   return Expanded(
@@ -58,8 +57,8 @@ class _WebsitePageState extends State<WebsitePage> {
   Future<bool> checkLastUpdate() async {
     await CacheDatabase.getLastUpdated(site: widget.name.toLowerCase())
         .then((lastUpdated) {
-          debugPrint(lastUpdated.toString());
-      if (Timestamp.now().seconds - lastUpdated.seconds >= 300) {
+          // debugPrint(lastUpdated.toString());
+      if (Timestamp.now().seconds - lastUpdated.seconds >= 1 * 60 * 60) {
         debugPrint("outdated cache");
         BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
         return true;
@@ -90,11 +89,6 @@ class _WebsitePageState extends State<WebsitePage> {
             ),
           ),
           child: Column(children: <Widget>[
-            MyTabBar(
-              labels: const ['ACTIVE', 'FUTURE'],
-              callbacks: [activeContests, futureContests],
-              initBar: 1,
-            ),
             BlocConsumer<WebsiteBloc, WebsiteState>(
               listener: (context, state) {},
               builder: (context, state) {
@@ -109,25 +103,13 @@ class _WebsitePageState extends State<WebsitePage> {
                 } if (state is ErrorState) {
                   debugPrint(state.error.toString());
                   return Center(child: Text(state.error));
-                } else if (state is ActiveContestsEventState) {
-                  List<Contest> activeContests = [];
-                  activeContests = state.contests;
-                  return activeContests.isNotEmpty
-                      ? listContests(activeContests)
+                } else if (state is ContestsLoadedState) {
+                  List<Contest> contests = state.contests;
+                  return contests.isNotEmpty
+                      ? listContests(contests)
                       : noContests("No active contests to show!");
-                } else if (state is FutureContestsEventState) {
-                  List<Contest> futureContests = [];
-                  futureContests = state.contests;
-                  return futureContests.isNotEmpty
-                      ? listContests(futureContests)
-                      : noContests("No future contests to show!");
                 } else if (state is RefreshedCacheState) {
-                  if(state.currentTab == 'A') {
-                    activeContests();
-                  }
-                  else {
-                    futureContests();
-                  }
+                  BlocProvider.of<WebsiteBloc>(context).add(GetContestsEvent());
                 }
                 return const Center(
                   child: Text("Error: 404"),
@@ -136,13 +118,5 @@ class _WebsitePageState extends State<WebsitePage> {
             ),
           ]),
         ));
-  }
-
-  void futureContests() {
-    BlocProvider.of<WebsiteBloc>(context).add(FutureContestsEvent());
-  }
-
-  void activeContests() {
-    BlocProvider.of<WebsiteBloc>(context).add(ActiveContestsEvent());
   }
 }

@@ -11,19 +11,10 @@ class WebsiteInitial extends WebsiteState {}
 
 class LoadingState extends WebsiteState {}
 
-class ActiveContestsEventState extends WebsiteState {
+class ContestsLoadedState extends WebsiteState {
   final List<Contest> contests;
 
-  const ActiveContestsEventState({required this.contests});
-
-  @override
-  List<Object> get props => [contests];
-}
-
-class FutureContestsEventState extends WebsiteState {
-  final List<Contest> contests;
-
-  const FutureContestsEventState({required this.contests});
+  const ContestsLoadedState({required this.contests});
 
   @override
   List<Object> get props => [contests];
@@ -34,8 +25,4 @@ class ErrorState extends WebsiteState {
   const ErrorState(this.error);
 }
 
-class RefreshedCacheState extends WebsiteState {
-  final String currentTab;
-
-  const RefreshedCacheState({required this.currentTab});
-}
+class RefreshedCacheState extends WebsiteState {}

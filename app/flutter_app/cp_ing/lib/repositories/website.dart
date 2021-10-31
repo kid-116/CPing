@@ -25,7 +25,7 @@ class WebsiteRepository {
     return 0;
   }
 
-  Future<List<Contest>> getContestsFromCache(String type) async {
+  Future<List<Contest>> getContestsFromCache() async {
     List<Contest> contests = <Contest>[];
     try {
       String site = endpoint.split('/')[1];
@@ -39,7 +39,6 @@ class WebsiteRepository {
         final registeredContests = collection.docs;
         await CacheDatabase.getContests(
           site: site,
-          type: type,
         ).then((res) {
           contests = res;
 
@@ -56,6 +55,7 @@ class WebsiteRepository {
     } catch (e) {
       debugPrint(e.toString());
     }
+    contests.sort((a, b) => a.start.compareTo(b.start));
     return contests;
   }
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/calendar/client.dart';
 import 'package:cp_ing/config/colors.dart';
 import 'package:cp_ing/firestore/user_data.dart';
@@ -40,6 +41,27 @@ class _ContestCardState extends State<ContestCard> {
         // width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.all(10),
         child: Column(children: <Widget>[
+          DateTime.now().toLocal().isAfter(widget.contest.start)
+              ? Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  decoration: const BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 8,
+                  ),
+                  child: const Text(
+                    'Ongoing',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic
+                    ),
+                  ),
+                )
+              : const Text(''),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Text(
@@ -48,21 +70,14 @@ class _ContestCardState extends State<ContestCard> {
               textAlign: TextAlign.center,
             ),
           ),
-          const Divider(
-            color: Colors.brown,
-          ),
+          Divider(
+              color: DateTime.now().toLocal().isAfter(widget.contest.start)
+                  ? Colors.green
+                  : Colors.brown),
           const SizedBox(height: 10),
-          // Text(widget.formatLength(widget.contest.length)),
-          // Text(widget.formatDate(widget.contest.start)),
-          // Text(widget.formatDate(widget.contest.end)),
           Row(
             children: [
               Time(time: widget.contest.start),
-              // const VerticalDivider(
-              //   color: Colors.white,
-              //   thickness: 2,
-              //   width: 20,
-              // ),
               const Icon(
                 Icons.arrow_forward_rounded,
                 color: Colors.white,
@@ -70,7 +85,6 @@ class _ContestCardState extends State<ContestCard> {
               Time(time: widget.contest.end),
             ],
           ),
-          // Text(widget.contest.id),
           widget.contest.calendarId == 'null'
               ? TextButton(
                   onPressed: () async {

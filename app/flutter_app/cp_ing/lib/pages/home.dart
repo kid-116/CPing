@@ -54,6 +54,7 @@ Expanded listRegisteredContests() {
           } else {
             contests.add(contest);
           }
+          contests.sort((a, b) => a.start.compareTo(b.start));
         });
 
         return contests.isNotEmpty
@@ -153,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                       WebsitePage page = const WebsitePage(
                         name: 'Codeforces',
                       );
-                      codeforcesBloc.add(FutureContestsEvent());
+                      codeforcesBloc.add(GetContestsEvent());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                             value: codeforcesBloc, child: page),
@@ -171,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                         style: drawerOptionTextStyle(),
                       ),
                       onTap: () {
-                        codechefBloc.add(FutureContestsEvent());
+                        codechefBloc.add(GetContestsEvent());
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: codechefBloc,
@@ -193,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
-                      atcoderBloc.add(FutureContestsEvent());
+                      atcoderBloc.add(GetContestsEvent());
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => BlocProvider.value(
                           value: atcoderBloc,

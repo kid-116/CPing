@@ -19,13 +19,12 @@ class CacheDatabase {
 
   static Future<List<Contest>> getContests({
     required String site,
-    required String type,
   }) async {
     List<Contest> contests = [];
     await FirebaseFirestore.instance
         .collection('cache')
         .doc(site)
-        .collection(type)
+        .collection('contests')
         .get()
         .then((collection) {
       for (final json in collection.docs) {

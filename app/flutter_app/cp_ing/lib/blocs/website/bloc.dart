@@ -3,11 +3,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:cp_ing/repositories/website.dart';
 import 'package:cp_ing/models/contest.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'event.dart';
-
 part 'state.dart';
 
 class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
@@ -23,33 +21,21 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
   Stream<WebsiteState> mapEventToState(
     WebsiteEvent event,
   ) async* {
-    if (event is ActiveContestsEvent) {
-      currentTab = 'A';
+    if (event is GetContestsEvent) {
       try {
-        List<Contest> activeContests = [];
+        List<Contest> contests = [];
         yield LoadingState();
-        activeContests =
-            await repository.getContestsFromCache('active-contests');
-        yield ActiveContestsEventState(contests: activeContests);
-      } catch (e) {
-        yield ErrorState(e.toString());
-      }
-    } else if (event is FutureContestsEvent) {
-      currentTab = 'F';
-      try {
-        List<Contest> futureContests = [];
-        yield LoadingState();
-        futureContests =
-            await repository.getContestsFromCache('future-contests');
-        yield FutureContestsEventState(contests: futureContests);
+        contests =
+            await repository.getContestsFromCache();
+        yield ContestsLoadedState(contests: contests);
       } catch (e) {
         yield ErrorState(e.toString());
       }
     } else if (event is RefreshContestsEvent) {
       try {
-        yield LoadingState();
+        // yield LoadingState();
         await repository.updateCache();
-        yield RefreshedCacheState(currentTab: currentTab);
+        yield RefreshedCacheState();
       } catch (e) {
         yield ErrorState(e.toString());
       }
