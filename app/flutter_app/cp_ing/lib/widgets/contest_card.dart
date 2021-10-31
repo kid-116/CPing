@@ -1,6 +1,6 @@
 import 'package:cp_ing/calendar/client.dart';
 import 'package:cp_ing/config/colors.dart';
-import 'package:cp_ing/firestore/database.dart';
+import 'package:cp_ing/firestore/user_data.dart';
 import 'package:cp_ing/models/contest.dart';
 import 'package:cp_ing/widgets/time.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +13,6 @@ class ContestCard extends StatefulWidget {
   String formatDate(DateTime dateTime) {
     return DateFormat('E, d MMM y - H:mm').format(dateTime);
   }
-
-  // String formatLength(Duration length) {
-  //   int strLen = length.toString().length;
-  //   return length.toString().substring(0, strLen - 10);
-  // }
 
   const ContestCard({required this.contest, Key? key}) : super(key: key);
 
@@ -76,27 +71,32 @@ class _ContestCardState extends State<ContestCard> {
             ],
           ),
           // Text(widget.contest.id),
-          widget.contest.id == 'null'
+          widget.contest.calendarId == 'null'
               ? TextButton(
                   onPressed: () async {
                     CalendarClient client = CalendarClient();
                     try {
-                      var event = await client.insert(
+                      final contest = await client.insert(
                         title: widget.contest.name,
                         startTime: widget.contest.start,
                         endTime: widget.contest.end,
                       );
-                      setState(() {
-                        widget.contest.id = event['id'].toString();
-                      });
-                      await Database.addContest(
-                        id: widget.contest.id,
+
+                      widget.contest.calendarId = contest['id'].toString();
+
+                      final docId = await UserDatabase.addContest(
+                        calendarId: widget.contest.calendarId,
                         start: widget.contest.start.toString(),
-                        end: widget.contest.end.toString(),
                         name: widget.contest.name,
+                        length: widget.contest.length,
                       );
+
+                      setState(() {
+                        widget.contest.docId = docId;
+                        // debugPrint(widget.contest.calendarId);
+                      });
                     } catch (e) {
-                      debugPrint('event could not be added');
+                      debugPrint('event could not be added!');
                       debugPrint(e.toString());
                     }
                     showActionSnackBar(
@@ -140,11 +140,10 @@ class _ContestCardState extends State<ContestCard> {
                   onPressed: () async {
                     try {
                       CalendarClient client = CalendarClient();
-                      await client.delete(widget.contest.id);
-                      debugPrint('deleting contest');
-                      Database.deleteContest(docId: widget.contest.docId);
+                      await client.delete(widget.contest.calendarId);
+                      UserDatabase.deleteContest(docId: widget.contest.docId);
                       setState(() {
-                        widget.contest.id = 'null';
+                        widget.contest.calendarId = 'null';
                       });
                     } catch (e) {
                       debugPrint('event could not be deleted');

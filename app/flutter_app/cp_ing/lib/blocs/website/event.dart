@@ -13,8 +13,4 @@ class RefreshContestsEvent extends WebsiteEvent {}
 
 class FutureContestsEvent extends WebsiteEvent {}
 
-class ActiveContestsEventCache extends WebsiteEvent {}
-
-class FutureContestsEventCache extends WebsiteEvent {}
-
-class Getuserrating extends WebsiteEvent {}
+class ActiveContestsEvent extends WebsiteEvent {}
