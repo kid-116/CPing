@@ -41,6 +41,13 @@ class WebsiteRepository {
           site: site,
         ).then((res) {
           contests = res;
+          // res.forEach((contest) {
+          //   if(contest.end.isBefore(DateTime.now()) {
+          //
+          //   }
+          // });
+          debugPrint("printing cache");
+          debugPrint(contests.toString());
 
           for (final contest in contests) {
             for(final registeredContest in registeredContests) {

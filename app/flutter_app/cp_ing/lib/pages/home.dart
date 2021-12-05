@@ -49,7 +49,11 @@ Expanded listRegisteredContests() {
             length: length,
             docId: json.id,
           );
-          if (contest.end.isBefore(DateTime.now())) {
+          // debugPrint(contest.calendarId);
+          // if(contest.calendarId == 'null') {
+          //   debugPrint("error");
+          // }
+          if (contest.end.isBefore(DateTime.now()) || contest.calendarId == 'null') {
             UserDatabase.deleteContest(docId: contest.docId);
           } else {
             contests.add(contest);

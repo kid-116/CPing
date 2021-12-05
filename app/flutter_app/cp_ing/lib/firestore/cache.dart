@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/models/contest.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:core';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 final CollectionReference cacheCollection = firestore.collection('cache');
@@ -20,7 +20,7 @@ class CacheDatabase {
   static Future<List<Contest>> getContests({
     required String site,
   }) async {
-    List<Contest> contests = [];
+    List<Contest> contests = <Contest>[];
     await FirebaseFirestore.instance
         .collection('cache')
         .doc(site)
@@ -39,8 +39,19 @@ class CacheDatabase {
             start: start,
             end: start.add(length),
             calendarId: 'null',
-            docId: 'null');
-        contests.add(contest);
+            docId: 'null'
+        );
+        // contests.add(contest);
+
+        if (contest.end.isAfter(DateTime.now())) {
+          // print(contest.end);
+          contests.add(contest);
+          // contests.add(contest);
+        }
+        // print(contest.end);
+        // // if(contest.end.isBefore(DateTime.now()) {
+        // //   contests.add(contest);
+        // // }
       }
     });
     return contests;

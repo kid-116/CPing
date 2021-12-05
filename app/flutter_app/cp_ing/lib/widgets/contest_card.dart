@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cp_ing/calendar/client.dart';
 import 'package:cp_ing/config/colors.dart';
 import 'package:cp_ing/firestore/user_data.dart';
