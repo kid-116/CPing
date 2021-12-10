@@ -25,9 +25,10 @@ class WebsiteBloc extends Bloc<WebsiteEvent, WebsiteState> {
       try {
         List<Contest> contests = [];
         yield LoadingState();
-        contests =
-            await repository.getContestsFromCache();
-        yield ContestsLoadedState(contests: contests);
+        contests = await repository.getContestsFromCache();
+        bool a = await repository.checkLastUpdate();
+        print("is outdated = $a");
+        yield ContestsLoadedState(contests: contests, isOutdated: a);
       } catch (e) {
         yield ErrorState(e.toString());
       }

@@ -7,15 +7,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/website/bloc.dart';
 import '../models/contest.dart';
 
-Expanded listContests(List<Contest> contests) {
+Expanded listContests(List<Contest> contests, bool isOutDated) {
   return Expanded(
-    child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: contests.length,
-        itemBuilder: (context, index) {
-          return ContestCard(contest: contests[index]);
-        }),
+    child: Column(
+      children: [
+        isOutDated ? const LinearProgressIndicator() : Container(),
+        Expanded(
+          child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: contests.length,
+              itemBuilder: (context, index) {
+                return ContestCard(contest: contests[index]);
+              }),
+        ),
+      ],
+    ),
   );
 }
 
@@ -47,26 +54,25 @@ class WebsitePage extends StatefulWidget {
 }
 
 class _WebsitePageState extends State<WebsitePage> {
-
   @override
   void initState() {
-    checkLastUpdate();
+    // checkLastUpdate();
     super.initState();
   }
 
-  Future<bool> checkLastUpdate() async {
-    await CacheDatabase.getLastUpdated(site: widget.name.toLowerCase())
-        .then((lastUpdated) {
-          // debugPrint(lastUpdated.toString());
-      if (Timestamp.now().seconds - lastUpdated.seconds >= 1 * 60 * 60) {
-        debugPrint("outdated cache");
-        BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
-        return true;
-      }
-      return false;
-    });
-    return false;
-  }
+  // Future<bool> checkLastUpdate() async {
+  //   await CacheDatabase.getLastUpdated(site: widget.name.toLowerCase())
+  //       .then((lastUpdated) {
+  //         // debugPrint(lastUpdated.toString());
+  //     if (Timestamp.now().seconds - lastUpdated.seconds >= 1 * 60 * 60) {
+  //       debugPrint("outdated cache");
+  //       BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
+  //       return true;
+  //     }
+  //     return false;
+  //   });
+  //   return false;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -100,13 +106,18 @@ class _WebsitePageState extends State<WebsitePage> {
                       color: MyColors.cyan,
                     )),
                   );
-                } if (state is ErrorState) {
+                }
+                if (state is ErrorState) {
                   debugPrint(state.error.toString());
                   return Center(child: Text(state.error));
                 } else if (state is ContestsLoadedState) {
                   List<Contest> contests = state.contests;
+                  if (state.isOutdated) {
+                    BlocProvider.of<WebsiteBloc>(context)
+                        .add(RefreshContestsEvent());
+                  }
                   return contests.isNotEmpty
-                      ? listContests(contests)
+                      ? listContests(contests, state.isOutdated)
                       : noContests("No active contests to show!");
                 } else if (state is RefreshedCacheState) {
                   BlocProvider.of<WebsiteBloc>(context).add(GetContestsEvent());

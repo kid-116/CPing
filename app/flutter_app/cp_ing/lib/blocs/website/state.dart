@@ -13,8 +13,8 @@ class LoadingState extends WebsiteState {}
 
 class ContestsLoadedState extends WebsiteState {
   final List<Contest> contests;
-
-  const ContestsLoadedState({required this.contests});
+  final bool isOutdated;
+  const ContestsLoadedState({required this.contests, required this.isOutdated});
 
   @override
   List<Object> get props => [contests];
