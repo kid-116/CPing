@@ -12,12 +12,26 @@ class WebsiteRepository {
   WebsiteRepository({
     required this.endpoint,
   });
+  Future<bool> checkLastUpdate() async {
+    bool a = await CacheDatabase.getLastUpdated(site: endpoint.split("/")[1])
+        .then((lastUpdated) {
+      // debugPrint(lastUpdated.toString());
+      if (Timestamp.now().seconds - lastUpdated.seconds >= 1 * 60 * 60) {
+        debugPrint("outdated cache");
+        // BlocProvider.of<WebsiteBloc>(context).add(RefreshContestsEvent());
+        return true;
+      }
+      print("returning false");
+      return false;
+    });
+    return a;
+  }
 
   Future<int> updateCache() async {
     try {
       debugPrint("updating cache");
       await http.get(Uri.parse(hostUrl + endpoint));
-    } catch(e) {
+    } catch (e) {
       debugPrint(e.toString());
       return -1;
     }
@@ -50,7 +64,7 @@ class WebsiteRepository {
           debugPrint(contests.toString());
 
           for (final contest in contests) {
-            for(final registeredContest in registeredContests) {
+            for (final registeredContest in registeredContests) {
               if (registeredContest['name'] == contest.name) {
                 contest.calendarId = registeredContest['calendarId'];
                 contest.docId = registeredContest.id;
