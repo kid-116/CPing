@@ -11,7 +11,7 @@ app.debug = True
 @app.route('/api/codechef/contests/', methods=['GET'])
 def get_codechef_contests():
     contests = scrape_codechef()
-    # update_cache(contests, 'codechef')
+    update_cache(contests, 'codechef')
     return jsonify(contests)
 
 @app.route('/api/codeforces/contests/', methods=['GET'])
