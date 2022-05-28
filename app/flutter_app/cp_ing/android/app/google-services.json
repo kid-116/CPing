@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "482736807178-1kop0aqueif8c7js70tfi5l75o58lf6a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kid116sashank.cp_ing",
+            "certificate_hash": "96f1808ca95e84f1154bdf5edab73e07a8e76f0b"
+          }
+        },
+        {
           "client_id": "482736807178-c4lrf051jbusgca8h5hv1vit97tdsf0o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

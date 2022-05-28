@@ -1,0 +1,7 @@
+key.json
+
+venv/
+
+__pycache__/
+
+.fvm/

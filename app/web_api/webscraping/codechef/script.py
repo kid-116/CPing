@@ -53,9 +53,9 @@ def datetime_parser(dt):
     year = int(dt[7:11])
     date = int(dt[0:2])
     month = months[dt[3:6]]
-    hr = int(dt[13:15])
-    min = int(dt[16:18])
-    sec = int(dt[19:21])
+    hr = int(dt[17:19])
+    min = int(dt[20:22])
+    sec = 0
     dt = datetime(year, month, date, hr, min, sec, tzinfo=timezone.utc)
     dt -= timedelta(hours=5, minutes=30)
     return dt
@@ -71,7 +71,6 @@ def main():
     # souping
     page = res.content
     soup = BeautifulSoup(page, 'lxml')
-    # print(soup)
     # scraping
     contests = {}
     # present contests
@@ -79,12 +78,11 @@ def main():
     for row in soup.select('tbody#present-contests-data tr'):    
         present_contests.append(parse_row(row))
     contests['active-contests'] = present_contests
-    # future contests
+    # # future contests
     future_contests = []
     for row in soup.select('tbody#future-contests-data tr'):
         future_contests.append(parse_row(row))
     contests['future-contests'] = future_contests
-    # print(contests)
     return contests
 
 if __name__ == '__main__':
