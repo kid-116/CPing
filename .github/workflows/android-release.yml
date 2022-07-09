@@ -32,15 +32,15 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v1
-      - uses: dart-lang/setup-dart@v1.3
-        with:
-          dart-version: '2.x'
+      # - uses: dart-lang/setup-dart@v1.3
+      #   with:
+      #     sdk: '2.x'
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.17.0'
+          flutter-version: '2.5.x'
       - name: Get version.txt
         uses: actions/download-artifact@v2
         with:
