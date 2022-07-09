@@ -2,7 +2,7 @@ name: Android Release
 
 on:
   push:
-    branches: [ main ]
+    branches: [ prod ]
 jobs:
   version:
     name: Create version number
@@ -32,6 +32,9 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v1
+      - uses: dart-lang/setup-dart@v1.3
+        with:
+          dart-version: '2.x'
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
