@@ -1,5 +1,16 @@
 # CPing
 An app to remind you of upcoming coding contests.
 ## Features
-- Contests from the three major CP sites **Codechef**, **Codeforces**, **Atcoder** can be viewed.
-- User can **schedule** reminder for a contest in their google calendar directly from the app.
+- Google Sign-In
+- Google Calendar API integration
+- Supports
+    - CodeForces
+    - AtCoder
+    - CodeChef
+
+## Roadmap
+- [ ] Setup Firebase Securtiy
+- [ ] Release on PlayStore
+
+## Links
+- [Figma UI](https://www.figma.com/file/TmXK9ZfIX91RZlwguX4O7N/CPing)
