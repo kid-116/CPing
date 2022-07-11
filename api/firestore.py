@@ -1,5 +1,4 @@
 from logging import exception
-from msilib.schema import Error
 from firebase_admin import credentials, firestore, initialize_app
 from datetime import datetime, timezone
 
