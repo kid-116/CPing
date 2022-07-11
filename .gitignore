@@ -1,3 +1,7 @@
 venv/
 
 __pycache__/
+
+# Secrets
+key.json
+config.py

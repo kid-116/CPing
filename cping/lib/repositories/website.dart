@@ -8,7 +8,7 @@ import '../../models/contest.dart';
 
 class WebsiteRepository {
   late String endpoint;
-  static const String hostUrl = "https://kid116shash-cping.herokuapp.com/";
+  static const String hostUrl = "https://neumannics-cping.herokuapp.com/";
 
   WebsiteRepository({
     required this.endpoint,
@@ -16,7 +16,7 @@ class WebsiteRepository {
   Future<bool> checkLastUpdate() async {
     bool a = await CacheDatabase.getLastUpdated(site: endpoint.split("/")[1])
         .then((lastUpdated) {
-      if (Timestamp.now().seconds - lastUpdated.seconds >= 1 * 60 * 60) {
+      if (Timestamp.now().seconds - lastUpdated.seconds >= 12 * 60 * 60) {
         return true;
       }
       return false;
