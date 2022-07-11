@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../config/theme.dart';
 import '../config/colors.dart';
 import '../firestore/user_data.dart';
 import '../models/contest.dart';
@@ -50,10 +51,6 @@ Expanded listRegisteredContests() {
             length: length,
             docId: json.id,
           );
-          // debugPrint(contest.calendarId);
-          // if(contest.calendarId == 'null') {
-          //   debugPrint("error");
-          // }
           if (contest.end.isBefore(DateTime.now()) || contest.calendarId == 'null') {
             UserDatabase.deleteContest(docId: contest.docId);
           } else {
@@ -99,7 +96,6 @@ class _HomePageState extends State<HomePage> {
       builder: (context, state) {
         return Scaffold(
           drawer: Drawer(
-            // backgroundColor: deepBlue,
             child: Container(
               color: MyColors.deepBlue,
               child: Column(
@@ -248,11 +244,10 @@ class _HomePageState extends State<HomePage> {
             ),
             // backgroundColor: const Color.fromRGBO(32, 27, 50, 1),
             backgroundColor: MyColors.deepBlue,
-            title: const Text(
-              'Home',
-              style: TextStyle(color: Colors.white),
+            title: Text(
+              'Home'.toUpperCase(),
+              style: darkTheme.textTheme.headline1,
             ),
-            foregroundColor: const Color.fromRGBO(32, 27, 50, 1),
           ),
           body: Container(
               decoration: const BoxDecoration(

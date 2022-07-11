@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../config/colors.dart';
+import '../config/theme.dart';
 import '../widgets/contest_card.dart';
 import '../blocs/website/bloc.dart';
 import '../models/contest.dart';
@@ -61,24 +62,25 @@ class _WebsitePageState extends State<WebsitePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: MyColors.deepBlue,
-          title: Text(
-            "${widget.name} Contests",
-            style: const TextStyle(
-              fontSize: 25,
-            ),
-          ),
-          centerTitle: true,
-        ),
         body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/bg_two.jpg'),
-              fit: BoxFit.fill,
-            ),
-          ),
+          color: darkTheme.colorScheme.background,
           child: Column(children: <Widget>[
+            Container(
+              padding: const  EdgeInsets.fromLTRB(24, 40, 20, 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.arrow_back_ios, color: Colors.white)
+                  ),
+                  Text(
+                    widget.name.toUpperCase(),
+                    style: darkTheme.textTheme.headline1
+                  )
+                ],
+              ),
+            ),
             BlocConsumer<WebsiteBloc, WebsiteState>(
               listener: (context, state) {},
               builder: (context, state) {
