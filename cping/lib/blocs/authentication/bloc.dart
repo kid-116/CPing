@@ -12,42 +12,39 @@ part 'state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationBloc() : super(AuthenticationInitial());
+  AuthenticationBloc() : super(AuthenticationInitial()) {
+    on<AuthenticationEvent>((event, emit) async {
+      if (event is AuthenticationStarted) {
+        emit(AuthenticationLoading());
 
-  @override
-  Stream<AuthenticationState> mapEventToState(
-    AuthenticationEvent event,
-  ) async* {
-    if (event is AuthenticationStarted) {
-      yield AuthenticationLoading();
-
-      final googleSignIn = GoogleSignIn(
-        scopes: <String>[cal.CalendarApi.calendarScope],
-      );
-
-      try {
-        final googleUser = await googleSignIn.signIn();
-
-        if (googleUser == null) return;
-
-        final googleAuth = await googleUser.authentication;
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
+        final googleSignIn = GoogleSignIn(
+          scopes: <String>[cal.CalendarApi.calendarScope],
         );
-        await FirebaseAuth.instance.signInWithCredential(credential);
 
-        yield AuthenticationSuccess();
-      } catch (e) {
-        yield AuthenticationFailure();
-        debugPrint(e.toString());
+        try {
+          final googleUser = await googleSignIn.signIn();
+
+          if (googleUser == null) return;
+
+          final googleAuth = await googleUser.authentication;
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+          emit(AuthenticationSuccess());
+        } catch (e) {
+          emit(AuthenticationFailure());
+          debugPrint(e.toString());
+        }
+      } else if (event is AuthenticationLogOut) {
+        final googleSignIn = GoogleSignIn();
+        await googleSignIn.disconnect();
+        FirebaseAuth.instance.signOut();
+        emit(AuthenticationLogout());
       }
-    } else if (event is AuthenticationLogOut) {
-      final googleSignIn = GoogleSignIn();
-      await googleSignIn.disconnect();
-      FirebaseAuth.instance.signOut();
-      yield AuthenticationLogout();
-    }
+    });
   }
 }
 

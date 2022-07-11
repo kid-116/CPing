@@ -20,51 +20,60 @@ class _SignInPageState extends State<SignInPage> {
         body: Container(
           width: MediaQuery.of(context).size.width,
           color: darkTheme.colorScheme.background,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 200,
-                child: Text(
-                    "SIGN IN WITH GOOGLE",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                        color: darkTheme.highlightColor,
-                        letterSpacing: 2,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600
-                    )
-                ),
+          child: Stack(clipBehavior: Clip.antiAlias, children: [
+            Align(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 200,
+                    child: Text("SIGN IN WITH GOOGLE",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            color: darkTheme.highlightColor,
+                            letterSpacing: 2,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600)),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .add(AuthenticationStarted());
+                    },
+                    child: const Image(
+                      image: AssetImage('assets/images/google.png'),
+                      height: 50,
+                      width: 50,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text("WELCOME",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          letterSpacing: 4,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w600)),
+                ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextButton(
-                  onPressed: () {
-                    BlocProvider.of<AuthenticationBloc>(context)
-                        .add(AuthenticationStarted());
-                  },
-                child: const Image(
-                  image: AssetImage('assets/images/google.png'),
-                  height: 50,
-                  width: 50,
-                ),
-              ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            "WELCOME",
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-                color: Colors.white,
-                letterSpacing: 4,
-                fontSize: 26,
-                fontWeight: FontWeight.w600
-            ))
-            ],
-          ),
-        )
-    );
+            ),
+            Positioned(
+                bottom: -5,
+                right: -0.584 * MediaQuery.of(context).size.width / 2,
+                child: Opacity(
+                  opacity: 0.6,
+                  child: Image.asset(
+                    "assets/images/robot.png",
+                    scale: 5.0,
+                  ),
+                )),
+          ]),
+        ));
   }
 }

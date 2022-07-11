@@ -51,7 +51,7 @@ jobs:
         with:
           path: version.txt
       - run: cd cping && flutter pub get
-      - run: cd cping && flutter build apk --release --split-per-abi
+      - run: cd cping && flutter build apk --release
       - run: cd cping && flutter build appbundle
       - name: Create a Release in GitHub
         uses: ncipollo/release-action@v1
