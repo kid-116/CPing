@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../config/colors.dart';
 import '../config/theme.dart';
 import '../widgets/contest_card.dart';
 import '../blocs/website/bloc.dart';
@@ -11,7 +10,18 @@ Expanded listContests(List<Contest> contests, bool isOutDated) {
   return Expanded(
     child: Column(
       children: [
-        isOutDated ? const LinearProgressIndicator() : Container(),
+        isOutDated ? const Center(
+            child: SizedBox(
+              height: 25,
+              width: 25,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
+            )) : Container(),
+        SizedBox(
+          height: isOutDated ? 10 : 0,
+        ),
         Expanded(
           child: ListView.builder(
               scrollDirection: Axis.vertical,
@@ -22,21 +32,6 @@ Expanded listContests(List<Contest> contests, bool isOutDated) {
               }),
         ),
       ],
-    ),
-  );
-}
-
-Widget noContests(String msg) {
-  return Padding(
-    padding: const EdgeInsets.all(20),
-    child: Text(
-      msg,
-      style: const TextStyle(
-          fontSize: 24,
-          color: Colors.grey,
-          fontFamily: 'Roboto',
-          fontStyle: FontStyle.italic),
-      // textAlign: TextAlign.left,
     ),
   );
 }
@@ -66,7 +61,7 @@ class _WebsitePageState extends State<WebsitePage> {
           color: darkTheme.colorScheme.background,
           child: Column(children: <Widget>[
             Container(
-              padding: const  EdgeInsets.fromLTRB(24, 40, 20, 16),
+              padding: const  EdgeInsets.fromLTRB(24, 40, 30, 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -86,16 +81,26 @@ class _WebsitePageState extends State<WebsitePage> {
               builder: (context, state) {
                 if (state is LoadingState) {
                   return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 100, horizontal: 0),
+                    padding: EdgeInsets.symmetric(vertical: 200, horizontal: 0),
                     child: Center(
                         child: CircularProgressIndicator(
-                      color: MyColors.cyan,
+                      color: Colors.white,
                     )),
                   );
                 }
                 if (state is ErrorState) {
                   debugPrint(state.error.toString());
-                  return Center(child: Text(state.error));
+                  return const Expanded(
+                    child: Center(
+                      child: Image(
+                        image: AssetImage('assets/images/error.png'),
+                        width: 250,
+                        color: Color.fromRGBO(255, 255, 255, 0.3),
+                        colorBlendMode: BlendMode.modulate,
+                        // color: Colors.white.withOpacity(0.3),
+                      ),
+                    ),
+                  );
                 } else if (state is ContestsLoadedState) {
                   List<Contest> contests = state.contests;
                   if (state.isOutdated) {
@@ -104,12 +109,30 @@ class _WebsitePageState extends State<WebsitePage> {
                   }
                   return contests.isNotEmpty
                       ? listContests(contests, state.isOutdated)
-                      : noContests("No active contests to show!");
+                      : const Expanded(
+                    child: Center(
+                      child: Image(
+                        image: AssetImage('assets/images/empty.png'),
+                        width: 300,
+                        color: Color.fromRGBO(255, 255, 255, 0.3),
+                        colorBlendMode: BlendMode.modulate,
+                        // color: Colors.white.withOpacity(0.3),
+                      ),
+                    ),
+                  );
                 } else if (state is RefreshedCacheState) {
                   BlocProvider.of<WebsiteBloc>(context).add(GetContestsEvent());
                 }
-                return const Center(
-                  child: Text("Error: 404"),
+                return const Expanded(
+                  child: Center(
+                    child: Image(
+                      image: AssetImage('assets/images/error.png'),
+                      width: 250,
+                      color: Color.fromRGBO(255, 255, 255, 0.3),
+                      colorBlendMode: BlendMode.modulate,
+                      // color: Colors.white.withOpacity(0.3),
+                    ),
+                  ),
                 );
               },
             ),

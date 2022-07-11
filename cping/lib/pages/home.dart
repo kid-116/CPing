@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../config/theme.dart';
-import '../config/colors.dart';
 import '../firestore/user_data.dart';
 import '../models/contest.dart';
 import '../pages/website.dart';
@@ -21,10 +21,11 @@ WebsiteBloc createWebsiteBloc(String endpoint) {
 }
 
 TextStyle drawerOptionTextStyle() {
-  return const TextStyle(
-    color: Colors.white,
-    fontSize: 20,
-  );
+  return GoogleFonts.poppins(
+      fontSize: 22,
+      fontWeight: FontWeight.w600,
+      color: darkTheme.colorScheme.secondary,
+      letterSpacing: 2);
 }
 
 Expanded listRegisteredContests() {
@@ -51,7 +52,8 @@ Expanded listRegisteredContests() {
             length: length,
             docId: json.id,
           );
-          if (contest.end.isBefore(DateTime.now()) || contest.calendarId == 'null') {
+          if (contest.end.isBefore(DateTime.now()) ||
+              contest.calendarId == 'null') {
             UserDatabase.deleteContest(docId: contest.docId);
           } else {
             contests.add(contest);
@@ -69,7 +71,17 @@ Expanded listRegisteredContests() {
                     contest: contests[index],
                   );
                 })
-            : noContests("You haven't registered for any contests yet!");
+            : const Expanded(
+          child: Center(
+            child: Image(
+              image: AssetImage('assets/images/empty.png'),
+              width: 250,
+              color: Color.fromRGBO(255, 255, 255, 0.3),
+              colorBlendMode: BlendMode.modulate,
+              // color: Colors.white.withOpacity(0.3),
+            ),
+          ),
+        );
       },
     ),
   );
@@ -97,28 +109,31 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           drawer: Drawer(
             child: Container(
-              color: MyColors.deepBlue,
+              // padding: const EdgeInsets.only(top: 20),
+              color: darkTheme.colorScheme.background.withOpacity(1),
               child: Column(
                 children: <Widget>[
                   Row(
                     children: [
                       Expanded(
                         child: UserAccountsDrawerHeader(
-                          decoration: const BoxDecoration(
-                            color: MyColors.deepBlue,
+                          decoration: BoxDecoration(
+                            color:
+                                darkTheme.colorScheme.background.withOpacity(0),
                           ),
                           accountEmail: Text(
                             user!.email!,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              letterSpacing: 1,
-                              fontSize: 16,
-                            ),
+                            style: GoogleFonts.poppins(
+                                color: darkTheme.colorScheme.secondary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
                           ),
                           accountName: Text(
                             user.displayName!,
-                            style: const TextStyle(
-                                color: Colors.white70, fontSize: 22),
+                            style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600),
                           ),
                           currentAccountPicture: CircleAvatar(
                             backgroundImage: NetworkImage(user.photoURL!),
@@ -131,12 +146,13 @@ class _HomePageState extends State<HomePage> {
                     alignment: Alignment.centerLeft,
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                    child: const Text(
+                    child: Text(
                       'WEBSITES',
-                      style: TextStyle(
-                        color: MyColors.cyan,
-                        letterSpacing: 1,
-                      ),
+                      style: GoogleFonts.poppins(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: darkTheme.highlightColor,
+                          letterSpacing: 2.5),
                       textAlign: TextAlign.justify,
                     ),
                   ),
@@ -144,11 +160,11 @@ class _HomePageState extends State<HomePage> {
                     selectedTileColor: Colors.white10,
                     leading: const Image(
                       image: AssetImage('assets/images/codeforces_icon.png'),
-                      height: 35,
-                      width: 35,
+                      height: 45,
+                      width: 45,
                     ),
                     title: Text(
-                      'Codeforces',
+                      'CODEFORCES',
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
@@ -164,12 +180,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                   ListTile(
                       leading: const Image(
-                        image: AssetImage('assets/images/codechef_icon.png'),
-                        height: 35,
-                        width: 35,
+                        image: AssetImage('assets/images/cc_icon.png'),
+                        height: 45,
+                        width: 45,
                       ),
                       title: Text(
-                        'Codechef',
+                        'CODECHEF',
                         style: drawerOptionTextStyle(),
                       ),
                       onTap: () {
@@ -178,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                           builder: (_) => BlocProvider.value(
                             value: codechefBloc,
                             child: const WebsitePage(
-                              name: 'Codechef',
+                              name: 'CodeChef',
                             ),
                           ),
                         ));
@@ -187,11 +203,11 @@ class _HomePageState extends State<HomePage> {
                     leading: const Image(
                       image: AssetImage('assets/images/atcoder_icon.png'),
                       color: Colors.white,
-                      height: 35,
-                      width: 35,
+                      height: 45,
+                      width: 45,
                     ),
                     title: Text(
-                      'Atcoder',
+                      'ATCODER',
                       style: drawerOptionTextStyle(),
                     ),
                     onTap: () {
@@ -200,31 +216,32 @@ class _HomePageState extends State<HomePage> {
                         builder: (_) => BlocProvider.value(
                           value: atcoderBloc,
                           child: const WebsitePage(
-                            name: 'Atcoder',
+                            name: 'AtCoder',
                           ),
                         ),
                       ));
                     },
                   ),
-                  const Divider(color: Colors.white),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 15,
+                        horizontal: 10,
                       ),
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.grey[500],
-                            child: const Icon(
-                              Icons.logout,
-                              color: Colors.black,
-                            ),
+                          leading: const Icon(
+                            Icons.logout,
+                            color: Colors.white,
                           ),
                           title: Text(
-                            'Logout',
-                            style: drawerOptionTextStyle(),
+                            'LOGOUT',
+                            style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 3),
                           ),
                           onTap: () {
                             BlocProvider.of<AuthenticationBloc>(context)
@@ -243,51 +260,39 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
             ),
             // backgroundColor: const Color.fromRGBO(32, 27, 50, 1),
-            backgroundColor: MyColors.deepBlue,
+            backgroundColor: darkTheme.colorScheme.background,
+            // elevation: 0,
             title: Text(
               'Home'.toUpperCase(),
               style: darkTheme.textTheme.headline1,
             ),
           ),
           body: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/bg_two.jpg'),
-                  fit: BoxFit.fill,
-                ),
-              ),
+              color: darkTheme.colorScheme.background,
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(30, 35, 0, 0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Hello,',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 65,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.5,
-                        ),
-                      ),
+                      child: Text('Hello!',
+                          style: GoogleFonts.damion(
+                            color: Colors.white,
+                            fontSize: 54,
+                          )),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 5, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        user.displayName!,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 45,
-                          letterSpacing: 2,
-                        ),
-                      ),
+                      child: Text(user.displayName!,
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 54,
+                              fontWeight: FontWeight.w500)),
                     ),
                   ),
                   listRegisteredContests(),

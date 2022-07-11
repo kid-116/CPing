@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:toast/toast.dart';
 
 import '../config/theme.dart';
 import '../calendar/client.dart';
@@ -24,6 +25,7 @@ class ContestCard extends StatefulWidget {
 class _ContestCardState extends State<ContestCard> {
   @override
   Widget build(BuildContext context) {
+    ToastContext().init(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Container(
@@ -59,7 +61,7 @@ class _ContestCardState extends State<ContestCard> {
                     Text(
                       widget.contest.start.day.toString(),
                       style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w600,
                         fontSize: 48,
                       ),
                     ),
@@ -147,15 +149,15 @@ class _ContestCardState extends State<ContestCard> {
                           widget.contest.docId = docId;
                         });
                       } catch (e) {
-                        debugPrint('event could not be added!');
                         debugPrint(e.toString());
                       }
                       showActionSnackBar(
                           context, "Event has been added to your calender");
                     },
+                    
             )
                 : IconButton(
-              icon: const Icon(IconData(0xf06ae, fontFamily: 'MaterialIcons'), size: 35),
+              icon: const Icon(Icons.add_alert, size: 30),
               color: darkTheme.highlightColor,
                     onPressed: () async {
                       try {
@@ -166,7 +168,6 @@ class _ContestCardState extends State<ContestCard> {
                           widget.contest.calendarId = 'null';
                         });
                       } catch (e) {
-                        debugPrint('event could not be deleted!');
                         debugPrint(e.toString());
                       }
                       showActionSnackBar(
@@ -181,12 +182,10 @@ class _ContestCardState extends State<ContestCard> {
 }
 
 void showActionSnackBar(BuildContext context, String message) {
-  final SnackBar snackBar = SnackBar(
-    content: Text(message,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-            fontSize: 16, fontFamily: 'Kaisei', fontWeight: FontWeight.bold)),
-    duration: const Duration(seconds: 1),
+  Toast.show(
+      message,
+    duration: 3,
+    // backgroundColor: Colors.grey.withAlpha(200)
+    backgroundColor: darkTheme.colorScheme.secondary.withOpacity(0.90)
   );
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
