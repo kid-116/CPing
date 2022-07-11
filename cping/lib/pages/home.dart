@@ -71,17 +71,14 @@ Expanded listRegisteredContests() {
                     contest: contests[index],
                   );
                 })
-            : const Expanded(
-          child: Center(
-            child: Image(
-              image: AssetImage('assets/images/empty.png'),
-              width: 250,
-              color: Color.fromRGBO(255, 255, 255, 0.3),
-              colorBlendMode: BlendMode.modulate,
-              // color: Colors.white.withOpacity(0.3),
-            ),
-          ),
-        );
+            : const Center(
+              child: Image(
+                image: AssetImage('assets/images/empty.png'),
+                width: 250,
+                color: Color.fromRGBO(255, 255, 255, 0.3),
+                colorBlendMode: BlendMode.modulate,
+              ),
+            );
       },
     ),
   );

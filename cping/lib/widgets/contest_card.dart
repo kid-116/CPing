@@ -34,7 +34,6 @@ class _ContestCardState extends State<ContestCard> {
           color: darkTheme.colorScheme.primary,
           borderRadius: BorderRadius.circular(8)
         ),
-
         margin: const EdgeInsets.symmetric(vertical: 15),
         child: Row(
           children: [
@@ -77,15 +76,15 @@ class _ContestCardState extends State<ContestCard> {
               ),
             ),
             Container(
-              width: 220,
-              padding: const EdgeInsets.fromLTRB(10, 24, 10, 0),
+              width: 190,
+              padding: const EdgeInsets.fromLTRB(6, 24, 6, 0),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                 Text(
                   widget.contest.name,
                   style: GoogleFonts.poppins(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.w800,
                       color: Colors.white),
                 ),
@@ -104,7 +103,7 @@ class _ContestCardState extends State<ContestCard> {
                             fontWeight: FontWeight.w600,
                             letterSpacing: 2)),
                     const SizedBox(
-                      width: 20,
+                      width: 10,
                     ),
                     Text(
                         DateFormat("hh:mm aaa")
@@ -125,7 +124,7 @@ class _ContestCardState extends State<ContestCard> {
             ),
             widget.contest.calendarId == 'null'
                 ? IconButton(
-                  icon: const Icon(Icons.add_alert, size: 35),
+                  icon: const Icon(Icons.add_task_sharp, size: 35),
                     color: darkTheme.indicatorColor,
                     onPressed: () async {
                       CalendarClient client = CalendarClient();
@@ -152,12 +151,12 @@ class _ContestCardState extends State<ContestCard> {
                         debugPrint(e.toString());
                       }
                       showActionSnackBar(
-                          context, "Event has been added to your calender");
+                          context, "Contest added to your calender");
                     },
                     
             )
                 : IconButton(
-              icon: const Icon(Icons.add_alert, size: 30),
+              icon: const Icon(Icons.add_task_sharp, size: 30),
               color: darkTheme.highlightColor,
                     onPressed: () async {
                       try {
@@ -171,7 +170,7 @@ class _ContestCardState extends State<ContestCard> {
                         debugPrint(e.toString());
                       }
                       showActionSnackBar(
-                          context, "Event has been removed from your calender");
+                          context, "Contest removed from your calender");
                     },
                   )
           ],
