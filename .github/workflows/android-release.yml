@@ -52,7 +52,7 @@ jobs:
           path: version.txt
       - run: cd app/flutter_app/cp_ing/ && flutter pub get
       # - run: cd app/flutter_app/cp_ing/ && flutter test
-      - run: cd app/flutter_app/cp_ing/ && flutter build apk --release --split-per-abi
+      - run: cd app/flutter_app/cp_ing/ && flutter build apk --release --split-per-abi --no-shrink
       - run: cd app/flutter_app/cp_ing/ && flutter build appbundle
       - name: Create a Release in GitHub
         uses: ncipollo/release-action@v1
