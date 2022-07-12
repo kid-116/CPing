@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:toast/toast.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../config/theme.dart';
 import '../calendar/client.dart';
@@ -27,7 +26,6 @@ class ContestCard extends StatefulWidget {
 class _ContestCardState extends State<ContestCard> {
   @override
   Widget build(BuildContext context) {
-    ToastContext().init(context);
     return Opacity(
       opacity: 0.9,
       child: Container(
@@ -85,14 +83,14 @@ class _ContestCardState extends State<ContestCard> {
                 ),
                 Container(
                   width: 0.55 * MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.fromLTRB(6, 24, 6, 0),
+                  padding: const EdgeInsets.fromLTRB(8, 24, 6, 0),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           widget.contest.name,
                           style: GoogleFonts.poppins(
-                              fontSize: 16,
+                              fontSize: 18,
                               fontWeight: FontWeight.w800,
                               color: Colors.white),
                         ),
@@ -164,8 +162,7 @@ class _ContestCardState extends State<ContestCard> {
                           } catch (e) {
                             debugPrint(e.toString());
                           }
-                          showActionSnackBar(
-                              context, "Contest added to your calender");
+                          showActionSnackBar("Contest added to your calender");
                         },
                       )
                     : IconButton(
@@ -185,7 +182,7 @@ class _ContestCardState extends State<ContestCard> {
                             debugPrint(e.toString());
                           }
                           showActionSnackBar(
-                              context, "Contest removed from your calender");
+                              "Contest removed from your calender");
                         },
                       ))
           ]),
@@ -195,9 +192,9 @@ class _ContestCardState extends State<ContestCard> {
   }
 }
 
-void showActionSnackBar(BuildContext context, String message) {
-  Toast.show(message,
-      duration: 3,
-      // backgroundColor: Colors.grey.withAlpha(200)
+void showActionSnackBar(String message) {
+  Fluttertoast.showToast(
+      msg: message,
+      timeInSecForIosWeb: 3,
       backgroundColor: darkTheme.colorScheme.secondary.withOpacity(0.90));
 }

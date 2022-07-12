@@ -35,7 +35,6 @@ class UserDatabase {
 
     await newContestDoc
         .set(data)
-        .whenComplete(() => debugPrint("$name added to $email's contests"))
         .catchError((e) => debugPrint(e));
 
     return newContestDoc.id;
@@ -57,7 +56,6 @@ class UserDatabase {
 
     await registeredContest
         .delete()
-        .whenComplete(() => debugPrint("$docId removed from $email's contests"))
         .catchError((e) => debugPrint(e));
   }
 }

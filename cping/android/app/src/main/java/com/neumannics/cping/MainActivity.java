@@ -1,4 +1,4 @@
-package com.kid116sashank.cp_ing;
+package com.neumannics.cping;
 
 import io.flutter.embedding.android.FlutterActivity;
 
