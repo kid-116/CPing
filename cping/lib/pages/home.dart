@@ -71,17 +71,14 @@ Expanded listRegisteredContests() {
                     contest: contests[index],
                   );
                 })
-            : const Expanded(
-          child: Center(
-            child: Image(
-              image: AssetImage('assets/images/empty.png'),
-              width: 250,
-              color: Color.fromRGBO(255, 255, 255, 0.3),
-              colorBlendMode: BlendMode.modulate,
-              // color: Colors.white.withOpacity(0.3),
-            ),
-          ),
-        );
+            : const Center(
+                child: Image(
+                  image: AssetImage('assets/images/empty.png'),
+                  width: 250,
+                  color: Color.fromRGBO(255, 255, 255, 0.3),
+                  colorBlendMode: BlendMode.modulate,
+                ),
+              );
       },
     ),
   );
@@ -270,34 +267,49 @@ class _HomePageState extends State<HomePage> {
           body: Container(
               color: darkTheme.colorScheme.background,
               alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Hello!',
-                          style: GoogleFonts.damion(
-                            color: Colors.white,
-                            fontSize: 54,
-                          )),
-                    ),
+              child: Stack(children: [
+                Positioned(
+                    bottom: -5,
+                    right: -0.584 * MediaQuery.of(context).size.width / 2,
+                    child: Opacity(
+                      opacity: 0.6,
+                      child: Image.asset(
+                        "assets/images/robot.png",
+                        scale: 5.0,
+                      ),
+                    )),
+                Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Hello!',
+                              style: GoogleFonts.damion(
+                                color: Colors.white,
+                                fontSize: 54,
+                              )),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(user.displayName!,
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontSize: 54,
+                                  fontWeight: FontWeight.w500)),
+                        ),
+                      ),
+                      listRegisteredContests(),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(user.displayName!,
-                          style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 54,
-                              fontWeight: FontWeight.w500)),
-                    ),
-                  ),
-                  listRegisteredContests(),
-                ],
-              )),
+                ),
+              ])),
         );
       },
     );
