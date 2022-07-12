@@ -1,3 +1,6 @@
+import 'package:cping/config/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../blocs/authentication/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,57 +18,50 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
         extendBodyBehindAppBar: false,
         body: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage('assets/images/bg_one.jpg'),
-            fit: BoxFit.fill,
-          )),
+          width: MediaQuery.of(context).size.width,
+          color: darkTheme.colorScheme.background,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                width: 200,
+                child: Text(
+                    "SIGN IN WITH GOOGLE",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.poppins(
+                        color: darkTheme.highlightColor,
+                        letterSpacing: 2,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600
+                    )
+                ),
+              ),
               const SizedBox(
-                height: 50,
+                height: 10,
               ),
               TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        const Color.fromRGBO(14, 245, 225, 1)),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.fromLTRB(30, 15, 30, 15)),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30))),
-                  ),
                   onPressed: () {
                     BlocProvider.of<AuthenticationBloc>(context)
                         .add(AuthenticationStarted());
                   },
-                  child: const Text(
-                    'SIGN IN',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: Color.fromRGBO(32, 27, 50, 1),
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 3,
-                    ),
-                  )),
-              const SizedBox(height: 50),
-              const Center(
-                child: Image(
+                child: const Image(
                   image: AssetImage('assets/images/google.png'),
                   height: 50,
                   width: 50,
                 ),
               ),
-              const SizedBox(height: 10),
-              const Text(
-                "Sign In with Google",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 18,
-                  fontFamily: 'Kaisei',
-                ),
-              ),
+          const SizedBox(
+            height: 20,
+          ),
+          Text(
+            "WELCOME",
+            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+                color: Colors.white,
+                letterSpacing: 4,
+                fontSize: 26,
+                fontWeight: FontWeight.w600
+            ))
             ],
           ),
         )
