@@ -50,9 +50,10 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: version.txt
-      - run: cd cping && flutter pub get
-      - run: cd cping && flutter build apk --release
-      - run: cd cping && flutter build appbundle
+      - run: cd app/flutter_app/cp_ing/ && flutter pub get
+      # - run: cd app/flutter_app/cp_ing/ && flutter test
+      - run: cd app/flutter_app/cp_ing/ && flutter build apk --release --split-per-abi --no-shrink
+      - run: cd app/flutter_app/cp_ing/ && flutter build appbundle
       - name: Create a Release in GitHub
         uses: ncipollo/release-action@v1
         with:

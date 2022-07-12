@@ -1,7 +1,5 @@
-from webscraping.config import API_TOKEN
-from bs4 import BeautifulSoup
-from scrapingant_client import ScrapingAntClient
 from datetime import datetime, timezone
+from .scrape import scrape
 
 def datetime_parser(dt):
     months = {
@@ -38,15 +36,8 @@ def duration_parser(duration):
 
 # driver code for scraping
 def main():
-    # page url
     URL = "https://codeforces.com/contests"
-    # scrapingant client
-    client = ScrapingAntClient(token=API_TOKEN)
-    # sending req
-    res = client.general_request(URL)
-    # souping
-    page = res.content
-    soup = BeautifulSoup(page, 'lxml')
+    soup = scrape(URL)
     # print(soup)
     # scraping
     contests = {}

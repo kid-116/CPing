@@ -1,7 +1,5 @@
-from bs4 import BeautifulSoup
-from scrapingant_client import ScrapingAntClient
 from datetime import datetime, timezone, timedelta
-from .config import API_TOKEN
+from .scrape import scrape
 
 def duration_parser(duration):
     tokens = duration.split()
@@ -62,16 +60,8 @@ def datetime_parser(dt):
 
 # driver code for scraping
 def main():
-    # page url
     URL = "https://www.codechef.com/contests/?itm_medium=navmenu&itm_campaign=allcontests#future-contests"
-    # scrapingant client
-    client = ScrapingAntClient(token=API_TOKEN)
-    # sending req
-    res = client.general_request(URL)
-    # souping
-    page = res.content
-    soup = BeautifulSoup(page, 'lxml')
-    # scraping
+    soup = scrape(URL)
     contests = {}
     # present contests
     present_contests = []

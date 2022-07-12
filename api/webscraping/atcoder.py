@@ -1,7 +1,5 @@
-from webscraping.config import API_TOKEN
-from bs4 import BeautifulSoup
-from scrapingant_client import ScrapingAntClient
 from datetime import datetime, timezone
+from .scrape import scrape
 
 def datetime_parser(dt):
     year = int(dt[0:4])
@@ -39,11 +37,7 @@ def duration_parser(duration):
 
 def main():
     URL = "https://atcoder.jp/contests/"
-    client = ScrapingAntClient(token=API_TOKEN)
-    res = client.general_request(URL)
-    page = res.content
-    soup = BeautifulSoup(page, 'lxml')
-    # scraping
+    soup = scrape(URL)
     contests = {}
     ## present contests
     active_contests = []
