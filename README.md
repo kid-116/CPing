@@ -14,10 +14,10 @@ An app to remind you of upcoming coding contests.
 
 ## Setup
 ### Generate Keys
-```
+```bash
 cd android/app
 
-# keytool -genkey -v -keystore release-key.keystore -dname "cn=<cn>, ou=<ou>, o=<o>, c=<c>" -alias key-alias -keypass <keypass> -storepass <storepass> -validity 10000 -keyalg RSA -keysize 2048
+keytool -genkey -v -keystore release-key.keystore -dname "cn=<cn>, ou=<ou>, o=<o>, c=<c>" -alias key-alias -keypass <keypass> -storepass <storepass> -validity 10000 -keyalg RSA -keysize 2048
 ```
 ### Add Keys
 `android/gradle.properties`
