@@ -12,7 +12,6 @@ Future loadClient() async {
     final client = GoogleAuthClient(authHeaders);
     CalendarClient.calendar = cal.CalendarApi(client);
   } catch (e) {
-    debugPrint('client could not be loaded');
     debugPrint(e.toString());
   }
 }
@@ -50,16 +49,13 @@ class CalendarClient {
     try {
       await loadClient();
       await calendar.events.insert(event, calendarId).then((value) {
-        debugPrint("event status: ${value.status}");
         if (value.status == 'confirmed') {
           String eventId = value.id;
           eventData = {'id': eventId};
-        } else {
-          debugPrint("unable to add event to Google Calendar");
         }
       });
     } catch (e) {
-      debugPrint("error creating event: $e");
+      debugPrint(e.toString());
     }
     return eventData;
   }
@@ -69,11 +65,9 @@ class CalendarClient {
 
     try {
       await loadClient();
-      await calendar.events.delete(calendarId, eventId).then((value) {
-        debugPrint("event deleted from google calendar");
-      });
+      await calendar.events.delete(calendarId, eventId).then((value) {});
     } catch (e) {
-      debugPrint("error deleting event: $e");
+      debugPrint(e.toString());
     }
   }
 }
