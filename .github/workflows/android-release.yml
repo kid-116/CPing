@@ -2,26 +2,25 @@ name: Android Release
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches: [ main ]
 jobs:
   version:
     name: Create version number
     runs-on: ubuntu-latest
     steps:
-    # - uses: actions/checkout@v1
-    # - name: Fetch all history for all tags and branches
-    #   run: |
-    #     git fetch --prune --depth=10000
-    # - name: Install GitVersion
-    #   uses: gittools/actions/gitversion/setup@v0.9.7
-    #   with:
-    #       versionSpec: '5.x'
-    # - name: Use GitVersion
-    #   id: gitversion
-    #   uses: gittools/actions/gitversion/execute@v0.9.7
-    - name: Create version.txt
-      run: echo ${GITHUB_REF#refs/*/} > version.txt
+    - uses: actions/checkout@v1
+    - name: Fetch all history for all tags and branches
+      run: |
+        git fetch --prune --depth=10000
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+          versionSpec: '5.x'
+    - name: Use GitVersion
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+    - name: Create version.txt with nuGetVersion
+      run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
     - name: Upload version.txt
       uses: actions/upload-artifact@v2
       with:
@@ -48,6 +47,8 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: version.txt
+      - run: cd cping/android && echo 'RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}' >> gradle.properties
+      - run: cd cping/android && echo 'RELEASE_KEY_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}' >> gradle.properties
       - run: cd cping/ && flutter pub get
       - run: cd cping/ && flutter build apk --release --split-per-abi --no-shrink
       - run: cd cping/ && flutter build appbundle
