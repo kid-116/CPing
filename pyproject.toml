@@ -10,6 +10,7 @@ bs4 = "^0.0.1"
 firebase-admin = "^5.4.0"
 Flask = "^2.2.2"
 selenium = "^4.5.0"
+lxml = "^4.9.1"
 
 [tool.poetry.dev-dependencies]
 
