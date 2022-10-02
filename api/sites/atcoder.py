@@ -1,5 +1,8 @@
+import sys
+sys.path.append('../api')
 from datetime import datetime, timezone
-from .scrape import scrape
+
+from helpers.scrape import scrape
 
 def datetime_parser(dt):
     year = int(dt[0:4])
