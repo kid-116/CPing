@@ -5,5 +5,3 @@ __pycache__/
 # Secrets
 key.json
 config.py
-
-cping/android/gradle.properties
