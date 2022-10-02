@@ -6,4 +6,4 @@ __pycache__/
 key.json
 config.py
 
-gradle.properties
+cping/android/gradle.properties
