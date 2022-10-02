@@ -1,8 +1,8 @@
 from flask import Flask, jsonify
-from webscraping.codechef import main as scrape_codechef
-from webscraping.codeforces import main as scrape_codeforces
-from webscraping.atcoder import main as scrape_atcoder
-from firestore import update_cache
+from sites.codechef import main as scrape_codechef
+from sites.codeforces import main as scrape_codeforces
+from sites.atcoder import main as scrape_atcoder
+from helpers.firestore import update_cache
 
 app = Flask(__name__)
 

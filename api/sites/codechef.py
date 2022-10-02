@@ -1,5 +1,8 @@
-from datetime import datetime, timezone, timedelta
-from .scrape import scrape
+import sys
+sys.path.append('../api')
+from datetime import datetime, timezone
+
+from helpers.scrape import scrape
 
 def duration_parser(duration):
     tokens = duration.split()
