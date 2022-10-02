@@ -26,5 +26,4 @@ jobs:
         with:
           artifacts: "cping/build/app/outputs/apk/release/*.apk,cping/build/app/outputs/bundle/release/app-release.aab"
           token: ${{ secrets.CI_TOKEN }}
-          tag: ${GITHUB_REF#refs/*/}
           commit: ${{ github.sha }}
