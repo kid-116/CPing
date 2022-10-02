@@ -5,3 +5,5 @@ __pycache__/
 # Secrets
 key.json
 config.py
+
+gradle.properties

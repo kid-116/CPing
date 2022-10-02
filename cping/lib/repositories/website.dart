@@ -8,7 +8,7 @@ import '../../models/contest.dart';
 
 class WebsiteRepository {
   late String endpoint;
-  static const String hostUrl = "https://neumannics-cping.herokuapp.com/";
+  static const String hostUrl = "https://cping.mehultodi.repl.co/";
 
   WebsiteRepository({
     required this.endpoint,
