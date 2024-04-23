@@ -1,3 +1,5 @@
+import cachetools
+
 from models.contest import Contest
 from models.contest import Website
 import constants
@@ -5,6 +7,9 @@ from parser_ import atcoder, codeforces
 import scraper
 
 
+@cachetools.cached(
+    cache=cachetools.TTLCache(maxsize=constants.CONTESTS_CACHING_SIZE,
+                              ttl=constants.CONTESTS_CACHING_TIME))
 def get_contests(website: Website) -> list[Contest]:
     url = constants.CONTESTS_PAGE_URL[website]
     soup = scraper.Scraper().get(url)

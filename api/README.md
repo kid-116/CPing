@@ -20,6 +20,8 @@
     flask run --debug
     ```
 
+## Development
+
 ### Linting
 1. yapf
     ```
@@ -35,3 +37,9 @@
     ```
     mypy .
     ```
+
+### Testing
+1. Run tests (from repo root).
+   ```
+   python3 -m pytest
+   ```
