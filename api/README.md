@@ -43,3 +43,20 @@
     ```
     pytest
     ```
+
+### Docker
+1. Execute.
+    ```
+    export DOCKER_BUILDKIT=1
+    ```
+
+#### Development
+1. Build image.
+    ```
+    cd api/
+    docker build -t cping_flask_api:dev --target dev .
+    ```
+2. Run image.
+    ```
+    docker run --rm cping_flask_api:dev
+    ```
