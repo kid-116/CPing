@@ -1,10 +1,12 @@
 import json
+from typing import Any
 
 import dateutil.parser as dateutil_parser
+from flask.testing import FlaskClient
 import pytest
 
 
-def is_valid(body):
+def is_valid(body: list[dict[str, Any]]) -> bool:
     assert isinstance(body, list)
     assert len(body) > 0
 
@@ -22,7 +24,7 @@ def is_valid(body):
 
 
 @pytest.mark.parametrize('website', ['codeforces', 'atcoder'])
-def test_codeforces_contests_api(client, website):
+def test_codeforces_contests_api(client: FlaskClient, website: str) -> None:
     response = client.get(f'/api/contests/?website={website}')
     assert response.status_code == 200
     data = json.loads(response.data)
