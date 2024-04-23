@@ -39,7 +39,7 @@
     ```
 
 ### Testing
-1. Run tests (from repo root).
-   ```
-   python3 -m pytest
-   ```
+1. Run tests.
+    ```
+    pytest
+    ```

@@ -3,8 +3,7 @@ import os
 from flask.testing import FlaskClient
 import pytest
 
-# pylint: disable=import-error
-from api.app import app  # type: ignore[import-not-found]
+from app import app
 
 
 @pytest.fixture()
