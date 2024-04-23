@@ -60,3 +60,5 @@
     ```
     docker run --rm cping_flask_api:dev
     ```
+
+Similarly, the docker image may be built for other targets such as `test` and `prod`.
