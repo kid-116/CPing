@@ -13,7 +13,7 @@ defaults:
     working-directory: ./api
 
 jobs:
-  lint:
+  pytest:
     runs-on: ubuntu-latest
     strategy:
       matrix:
