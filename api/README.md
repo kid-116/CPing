@@ -13,6 +13,10 @@
     ```
     pre-commit install
     ```
+5. Authorize `gcloud` for the project.
+    ```
+    gcloud auth application-default login
+    ```
 
 ### Running
 1. Run the server (in debug mode).
@@ -58,7 +62,9 @@
     ```
 2. Run image.
     ```
-    docker run --rm cping_flask_api:dev
+    docker run --rm \
+        -v ~/.config/gcloud:/root/.config/gcloud \
+        cping_flask_api:dev
     ```
 
 Similarly, the docker image may be built for other targets such as `test` and `prod`.

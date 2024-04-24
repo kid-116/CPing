@@ -2,8 +2,8 @@ from datetime import timedelta
 
 from bs4 import BeautifulSoup
 
+from constants import Website
 from models.contest import Contest
-from models.contest import Website
 from . import utils
 
 

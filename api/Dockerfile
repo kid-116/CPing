@@ -19,6 +19,8 @@ FROM base as dev
 
 ENTRYPOINT [ "flask", "run", "--debug", "-h", "0.0.0.0" ]
 
+ENV GCLOUD_PROJECT=cping-7e228
+
 
 FROM base as test
 

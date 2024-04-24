@@ -1,8 +1,8 @@
 import cachetools
 
 from models.contest import Contest
-from models.contest import Website
 import constants
+from constants import Website
 from parser_ import atcoder, codeforces
 import scraper
 

@@ -6,8 +6,9 @@ from flask import Flask
 from flask import Response
 from flask.json.provider import DefaultJSONProvider
 
-from models.contest import Website
 from models.contest import Contest
+from models.contest import FirestoreWebsiteCache
+from constants import Website
 import constants
 import utils
 
@@ -43,6 +44,10 @@ def get_contests() -> tuple[Response | str, HTTPStatus]:
         error_msg = f'No value provided for `{constants.WEBSITE_QUERY_PARAM}` query parameter'
         return error_msg, HTTPStatus.BAD_REQUEST
     contests = utils.get_contests(website)
+    if flask.request.args.get(
+            constants.CONTESTS_RESULT_CACHE_QUERY_PARAM) is not None:
+        cache = FirestoreWebsiteCache(website)
+        cache.update(contests)
     return flask.jsonify(contests), HTTPStatus.OK
 
 
