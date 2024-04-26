@@ -9,6 +9,7 @@ class Website(Enum):
 
 WEBSITE_QUERY_PARAM = 'website'
 CONTESTS_RESULT_CACHE_QUERY_PARAM = 'cache'
+GET_CACHED_CONTESTS_QUERY_PARAM = 'cached'
 
 CONTESTS_PAGE_URL = {
     Website.CODEFORCES: 'https://codeforces.com/contests',

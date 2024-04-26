@@ -43,11 +43,19 @@ def get_contests() -> tuple[Response | str, HTTPStatus]:
     except ValueError:
         error_msg = f'No value provided for `{constants.WEBSITE_QUERY_PARAM}` query parameter'
         return error_msg, HTTPStatus.BAD_REQUEST
-    contests = utils.get_contests(website)
+
+    if flask.request.args.get(
+            constants.GET_CACHED_CONTESTS_QUERY_PARAM) is not None:
+        cache = FirestoreWebsiteCache(website)
+        contests = cache.get_contests()
+    else:
+        contests = utils.get_contests(website)
+
     if flask.request.args.get(
             constants.CONTESTS_RESULT_CACHE_QUERY_PARAM) is not None:
         cache = FirestoreWebsiteCache(website)
         cache.update(contests)
+
     return flask.jsonify(contests), HTTPStatus.OK
 
 

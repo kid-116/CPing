@@ -1,4 +1,7 @@
+from __future__ import annotations
 import datetime
+
+from firebase_admin import firestore  # type: ignore[import-untyped]
 
 import constants
 from constants import Website
@@ -22,6 +25,18 @@ class Contest:
             'length': self.length.seconds,
         }
 
+    @staticmethod
+    def from_firestore_doc(doc: firestore.DocumentSnapshot,
+                           website: Website) -> Contest:
+        doc_dict = doc.to_dict()
+        name = doc_dict['name']
+        assert isinstance(name, str)
+        start = doc_dict['start']
+        assert isinstance(start, datetime.datetime)
+        length = doc_dict['length']
+        assert isinstance(length, int)
+        return Contest(name, start, datetime.timedelta(seconds=length), website)
+
 
 class FirestoreWebsiteCache(Firestore):
 
@@ -29,7 +44,8 @@ class FirestoreWebsiteCache(Firestore):
         super().__init__()
 
         cache_col = self.db.collection(constants.FIRESTORE_CACHE_COLLECTION)
-        self.website_doc = cache_col.document(website.name.lower())
+        self.website = website
+        self.website_doc = cache_col.document(self.website.name.lower())
         self.contests_col = self.website_doc.collection('contests')
 
     def update(self, contests: list[Contest]) -> None:
@@ -47,3 +63,9 @@ class FirestoreWebsiteCache(Firestore):
                     datetime.datetime.now().astimezone(datetime.timezone.utc)
             })
         batch.commit()
+
+    def get_contests(self) -> list[Contest]:
+        contests = []
+        for doc in self.contests_col.stream():
+            contests.append(Contest.from_firestore_doc(doc, self.website))
+        return contests
