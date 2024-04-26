@@ -1,3 +1,4 @@
+from http import HTTPStatus
 import json
 from typing import Any
 
@@ -24,8 +25,9 @@ def is_valid(body: list[dict[str, Any]]) -> bool:
 
 
 @pytest.mark.parametrize('website', ['codeforces', 'atcoder'])
-def test_codeforces_contests_api(client: FlaskClient, website: str) -> None:
-    response = client.get(f'/api/contests/?website={website}')
-    assert response.status_code == 200
+def test_codeforces_contests_api(signed_client: FlaskClient,
+                                 website: str) -> None:
+    response = signed_client.get(f'/api/contests/?website={website}')
+    assert response.status_code == HTTPStatus.OK
     data = json.loads(response.data)
     assert is_valid(data)

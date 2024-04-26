@@ -9,11 +9,7 @@
     ```
     pip install -r requirements.txt
     ```
-4. Install pre-commit hooks.
-    ```
-    pre-commit install
-    ```
-5. Authorize `gcloud` for the project.
+4. Authorize `gcloud` for the project.
     ```
     gcloud auth application-default login
     ```
@@ -61,10 +57,26 @@
     docker build -t cping_flask_api:dev --target dev .
     ```
 2. Run image.
+- dev
     ```
     docker run --rm \
         -v ~/.config/gcloud:/root/.config/gcloud \
         cping_flask_api:dev
+    ```
+- test
+    ```
+    docker run --rm \
+        -v ~/.config/gcloud:/root/.config/gcloud \
+        --env-file .env \
+        cping_flask_api:test
+    ```
+- prod
+    ```
+    docker run --rm -d \
+        -v ~/.config/gcloud:/root/.config/gcloud \
+        --env-file .env \
+        -p 80:80 \
+        cping_flask_api:prod
     ```
 
 Similarly, the docker image may be built for other targets such as `test` and `prod`.
