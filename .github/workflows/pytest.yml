@@ -20,6 +20,10 @@ jobs:
         python-version: ['3.10']
     steps:
       - uses: actions/checkout@v3
+      - name: Setup .env
+        run: |
+          touch .env
+          echo "API_KEY=gh-test-key" > .env
       - name: Build image
         run: |
           docker build -t cping_flask_api:test --target test .
