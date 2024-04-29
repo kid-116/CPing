@@ -1,5 +1,6 @@
 [![API Tests](https://github.com/kid-116/CPing/actions/workflows/pytest.yml/badge.svg)](https://github.com/kid-116/CPing/actions/workflows/pytest.yml)
 [![Flask Lint](https://github.com/kid-116/CPing/actions/workflows/pylint.yml/badge.svg)](https://github.com/kid-116/CPing/actions/workflows/pylint.yml)
+[![Docker Push](https://github.com/kid-116/CPing/actions/workflows/docker-push.yml/badge.svg)](https://github.com/kid-116/CPing/actions/workflows/docker-push.yml)
 
 # CPing
 An app to remind you of upcoming coding contests.
