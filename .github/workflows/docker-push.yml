@@ -26,5 +26,5 @@ jobs:
         with:
           context: api/
           push: true
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/cping_api:latest
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/${{vars.API_DOCKER_IMAGE_NAME}}:latest
           target: prod
