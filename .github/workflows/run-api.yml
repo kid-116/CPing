@@ -1,0 +1,25 @@
+name: Run API
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0,6,12,18 * * *"
+
+jobs:
+  run-api:
+    runs-on: ubuntu-latest
+    services:
+      api:
+        image: ${{vars.DOCKERHUB_USERNAME}}/${{vars.API_DOCKER_IMAGE_NAME}}
+        credentials:
+          username: "_json_key"
+          password: "${{secrets.FIREBASE_CREDENTIALS}}"
+        env:
+          API_KEY: ${{secrets.API_KEY}}
+        ports:
+          - 80:80
+    steps:
+      - name: Ping check
+        run: |
+          curl --location 'localhost/' \
+          --header 'Authorization: Bearer ${{secrets.API_KEY}}'
