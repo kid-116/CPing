@@ -12,7 +12,7 @@ CONTESTS_RESULT_CACHE_QUERY_PARAM = 'cache'
 GET_CACHED_CONTESTS_QUERY_PARAM = 'cached'
 
 CONTESTS_PAGE_URL = {
-    Website.CODEFORCES: 'https://codeforces.com/contests',
+    Website.CODEFORCES: 'https://codeforces.com/contests?complete=true',
     Website.ATCODER: 'https://atcoder.jp/contests',
 }
 
