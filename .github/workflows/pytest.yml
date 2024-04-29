@@ -13,10 +13,16 @@ on:
     paths:
       - api/**
       - .github/workflows/**
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0,6,12,18 * * *"
 
 defaults:
   run:
     working-directory: ./api
+
+env:
+  CREDENTIAL_FILE_PATH: /gcp/key.json
 
 jobs:
   pytest:
@@ -26,13 +32,17 @@ jobs:
         python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v3
-      - name: Setup .env
-        run: |
-          touch .env
-          echo "API_KEY=gh-test-key" > .env
       - name: Build image
         run: |
-          docker build -t cping_flask_api:test --target test .
+          docker build -t cping_flask_api --target prod .
+      - name: Export credentials
+        run: |
+          echo ${{secrets.FIREBASE_CREDENTIALS}} > $CREDENTIAL_FILE_PATH
       - name: Run tests
         run: |
-          docker run --rm cping_flask_api:test
+          docker run --rm \
+          --env API_KEY=${{secrets.API_KEY}} \
+          -v $CREDENTIAL_FILE_PATH:$CREDENTIAL_FILE_PATH \
+          --env GOOGLE_APPLICATION_CREDENTIALS=$CREDENTIAL_FILE_PATH \
+          --env GOOGLE_CLOUD_PROJECT=${{vars.GCLOUD_PROJECT}} \
+            cping_flask_api
