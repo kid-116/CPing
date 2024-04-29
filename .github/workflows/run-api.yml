@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       api:
-        image: kid116/${{vars.API_DOCKER_IMAGE_NAME}}
+        image: ${{vars.DOCKERHUB_USERNAME}}/${{vars.API_DOCKER_IMAGE_NAME}}
         credentials:
           username: "_json_key"
           password: "${{secrets.FIREBASE_CREDENTIALS}}"
