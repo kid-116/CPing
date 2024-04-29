@@ -27,8 +27,7 @@ def is_valid(body: list[dict[str, Any]]) -> bool:
 
 
 @pytest.mark.parametrize('website', [e.name.lower() for e in Website])
-def test_contests_api(signed_client: FlaskClient,
-                                 website: str) -> None:
+def test_contests_api(signed_client: FlaskClient, website: str) -> None:
     response = signed_client.get(f'/api/contests/?website={website}')
     assert response.status_code == HTTPStatus.OK
     data = json.loads(response.data)
