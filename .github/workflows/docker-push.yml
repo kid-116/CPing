@@ -1,6 +1,8 @@
 name: Docker Push
 
 on:
+  # To trigger the workflow manually.
+  workflow_dispatch:
   workflow_run:
     workflows:
       - Flask Lint
