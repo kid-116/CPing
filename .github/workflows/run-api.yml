@@ -22,3 +22,11 @@ jobs:
         run: |
           curl --location 'localhost/' \
           --header 'Authorization: Bearer ${{secrets.API_KEY}}'
+      - name: Update contest cache for codeforces
+        run: |
+          curl --location 'localhost/api/contests/?website=codeforces&cache' \
+          --header 'Authorization: Bearer ${{secrets.API_KEY}}'
+      - name: Update contest cache for atcoder
+        run: |
+          curl --location 'localhost/api/contests/?website=atcoder&cache' \
+          --header 'Authorization: Bearer ${{secrets.API_KEY}}'
