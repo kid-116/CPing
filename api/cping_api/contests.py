@@ -1,5 +1,7 @@
 from http import HTTPStatus
+from typing import Callable
 
+from bs4 import BeautifulSoup
 import cachetools
 import flask
 from flask import current_app
@@ -19,14 +21,13 @@ def get_contests_util(website: Website) -> list[Contest]:
     url = current_app.config['CONTESTS_PAGE_URL'][website]
     soup = Scraper().get(url)
 
-    contests = None
-    match website:
-        case Website.CODEFORCES:
-            contests = codeforces.get_contests(soup)
-        case Website.ATCODER:
-            contests = atcoder.get_contests(soup)
-        case _:
-            raise NotImplementedError
+    parser_map: dict[Website, Callable[[BeautifulSoup], list[Contest]]] = {
+        Website.CODEFORCES: codeforces.get_contests,
+        Website.ATCODER: atcoder.get_contests,
+    }
+
+    parse = parser_map[website]
+    contests = parse(soup)
 
     return contests
 
