@@ -2,7 +2,7 @@ import datetime
 from http import HTTPStatus
 import json
 
-from flask import current_app
+from flask import current_app, Flask
 from flask.testing import FlaskClient
 import pytest
 
@@ -13,7 +13,7 @@ from cping_api.models.contest import FirestoreWebsiteCache
 
 
 @pytest.mark.parametrize('website', [e.name.lower() for e in Website])
-def test_firebase_caching(app, signed_client: FlaskClient, website: str) -> None:
+def test_firebase_caching(app: Flask, signed_client: FlaskClient, website: str) -> None:
     response = signed_client.get(f'/api/contests/?website={website}&cache')
     assert response.status_code == HTTPStatus.OK
     with app.app_context():

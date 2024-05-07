@@ -77,6 +77,7 @@ class FirestoreWebsiteCache(Firestore):
         return contests
 
     def get_last_updated(self) -> datetime.datetime:
-        return self.website_doc.get().to_dict()[current_app.config['FIRESTORE']['COLLECTIONS']
-                                                ['CACHE']['FIELDS']['LAST_UPDATED']].astimezone(
-                                                    datetime.timezone.utc)
+        last_updated = self.website_doc.get().to_dict()[
+            current_app.config['FIRESTORE']['COLLECTIONS']['CACHE']['FIELDS']['LAST_UPDATED']]
+        assert isinstance(last_updated, datetime.datetime)
+        return last_updated.astimezone(datetime.timezone.utc)
