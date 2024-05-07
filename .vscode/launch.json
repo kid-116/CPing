@@ -13,6 +13,8 @@
                 "FLASK_DEBUG": "1"
             },
             "args": [
+                "--app",
+                "cping_api",
                 "run",
             ],
             "jinja": true,
