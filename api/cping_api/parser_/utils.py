@@ -16,8 +16,7 @@ def parse_datetime(datetime_str: str) -> datetime.datetime:
         if len(minute) == 1:
             minute = minute + '0'
         minute = (int(minute) * 60) // 100
-        datetime_str = datetime_str.replace(decimal_timezone,
-                                            f'{hour:02d}:{minute:02d}')
+        datetime_str = datetime_str.replace(decimal_timezone, f'{hour:02d}:{minute:02d}')
 
     dt = dateutil_parser.parse(datetime_str).astimezone(timezone.utc)
     assert isinstance(dt, datetime.datetime)

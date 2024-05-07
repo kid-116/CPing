@@ -2,8 +2,10 @@ from datetime import timedelta
 
 from bs4 import BeautifulSoup
 
-from constants import Website
-from models.contest import Contest
+from config import Website
+
+from cping_api.models.contest import Contest
+
 from . import utils
 
 
@@ -16,8 +18,7 @@ def parse_duration(duration: str) -> timedelta:
 
 def get_contests(soup: BeautifulSoup) -> list[Contest]:
     contests = []
-    for row in soup.select(
-            'div.contestList>div.datatable table tbody tr[data-contestid]'):
+    for row in soup.select('div.contestList>div.datatable table tbody tr[data-contestid]'):
         tds = row.find_all('td')
 
         name = tds[0].get_text().strip()
