@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask.testing import FlaskClient
 import pytest
@@ -6,9 +8,16 @@ from config import Config
 import cping_api
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='session')
 def app() -> Flask:
-    return cping_api.create_app()
+    os.environ['CONFIG_TYPE'] = 'config.TestingConfig'
+    return cping_api.create_app({
+        'TESTING': {
+            'DURATION': {  # in seconds.
+                'INSTANT': 5,
+            }
+        }
+    })
 
 
 @pytest.fixture(scope='function')

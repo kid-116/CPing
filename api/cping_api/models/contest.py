@@ -75,3 +75,8 @@ class FirestoreWebsiteCache(Firestore):
         for doc in self.contests_col.stream():
             contests.append(Contest.from_firestore_doc(doc, self.website))
         return contests
+
+    def get_last_updated(self) -> datetime.datetime:
+        return self.website_doc.get().to_dict()[current_app.config['FIRESTORE']['COLLECTIONS']
+                                                ['CACHE']['FIELDS']['LAST_UPDATED']].astimezone(
+                                                    datetime.timezone.utc)

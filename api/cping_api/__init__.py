@@ -10,9 +10,8 @@ from . import json, auth, contests
 def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
 
-    if test_config is None:
-        app.config.from_object('config.Config')
-    else:
+    app.config.from_object('config.Config')
+    if test_config:
         app.config.from_mapping(test_config)
 
     # Ensure the instance folder exists.
