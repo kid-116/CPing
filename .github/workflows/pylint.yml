@@ -33,7 +33,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r ./requirements.txt
+          pip install .
+          pip install .[lint]
+          pip install .[test]
       - name: Run pylint
         run: |
           pylint --recursive=y .

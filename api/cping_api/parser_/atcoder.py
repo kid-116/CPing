@@ -3,8 +3,10 @@ from typing import Any
 
 from bs4 import BeautifulSoup
 
-from constants import Website
-from models.contest import Contest
+from config import Website
+
+from cping_api.models.contest import Contest
+
 from . import utils
 
 

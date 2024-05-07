@@ -7,7 +7,9 @@
 2. Create a python virtual environment.
 3. Install dependencies.
     ```
-    pip install -r requirements.txt
+    pip install .
+    pip install .[test]
+    pip install .[lint]
     ```
 4. Authorize `gcloud` for the project.
     ```
@@ -17,7 +19,7 @@
 ### Running
 1. Run the server (in debug mode).
     ```
-    flask run --debug
+    flask --app cping_api run --debug
     ```
 
 ## Development
@@ -50,13 +52,14 @@
     export DOCKER_BUILDKIT=1
     ```
 
-#### Development
-1. Build image.
+2. Build image.
     ```
     cd api/
     docker build -t cping_flask_api:dev --target dev .
     ```
-2. Run image.
+Similarly, the docker image may be built for other targets such as `test` and `prod`.
+
+3. Run image.
 - dev
     ```
     docker run --rm \
@@ -78,5 +81,3 @@
         -p 80:80 \
         cping_flask_api:prod
     ```
-
-Similarly, the docker image may be built for other targets such as `test` and `prod`.

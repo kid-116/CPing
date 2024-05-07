@@ -1,18 +1,18 @@
-import os
-
-import dotenv
+from flask import Flask
 from flask.testing import FlaskClient
 import pytest
 
-from app import app
-import constants
-
-dotenv.load_dotenv()
+from config import Config
+import cping_api
 
 
 @pytest.fixture(scope='function')
-def client() -> FlaskClient:
-    os.environ['CONFIG_TYPE'] = 'config.TestingConfig'
+def app() -> Flask:
+    return cping_api.create_app()
+
+
+@pytest.fixture(scope='function')
+def client(app: Flask) -> FlaskClient:  # pylint: disable=redefined-outer-name
     test_client = app.test_client()
     assert isinstance(test_client, FlaskClient)
     return test_client
@@ -20,7 +20,6 @@ def client() -> FlaskClient:
 
 @pytest.fixture(scope='function')
 def signed_client(client: FlaskClient) -> FlaskClient:  # pylint: disable=redefined-outer-name
-    api_key = os.getenv(constants.API_KEY_ENV_VAR)
-    client.environ_base[
-        f'HTTP_{constants.AUTHORIZATION_HEADER.upper()}'] = f'Bearer {api_key}'
+    api_key = Config.API_KEY
+    client.environ_base[f"HTTP_{Config.HEADERS['AUTHORIZATION'].upper()}"] = f'Bearer {api_key}'
     return client
