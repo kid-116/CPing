@@ -48,6 +48,7 @@ class Config:
                     'NAME': 'name',
                     'START_TIME': 'start',
                     'LENGTH': 'length',
+                    'ID': 'id',
                 }
             }
         }

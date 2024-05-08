@@ -12,24 +12,31 @@ from .utils import Firestore
 # pylint: disable=too-few-public-methods
 class Contest:
 
-    def __init__(self, name: str, start: datetime.datetime, length: datetime.timedelta,
+    # pylint: disable=too-many-arguments
+    def __init__(self, id_: str, name: str, start: datetime.datetime, length: datetime.timedelta,
                  website: Website):
+        self.id_ = id_
         self.name = name
         self.start = start
         self.length = length
         self.website = website
+
+    # pylint: enable=too-many-arguments
 
     def to_firestore_dict(self) -> dict[str, str | int | datetime.datetime]:
         contest_fields = current_app.config['FIRESTORE']['MODELS']['CONTEST']['FIELDS']
         return {
             contest_fields['NAME']: self.name,
             contest_fields['START_TIME']: self.start,
-            contest_fields['LENGTH']: self.length.seconds,
+            contest_fields['LENGTH']: int(self.length.total_seconds()),
         }
 
     @staticmethod
     def from_firestore_doc(doc: firestore.DocumentSnapshot, website: Website) -> Contest:
         contest_fields = current_app.config['FIRESTORE']['MODELS']['CONTEST']['FIELDS']
+
+        id_ = doc.id
+        assert isinstance(id_, str)
 
         doc_dict = doc.to_dict()
         name = doc_dict[contest_fields['NAME']]
@@ -38,7 +45,7 @@ class Contest:
         assert isinstance(start, datetime.datetime)
         length = doc_dict[contest_fields['LENGTH']]
         assert isinstance(length, int)
-        return Contest(name, start, datetime.timedelta(seconds=length), website)
+        return Contest(id_, name, start, datetime.timedelta(seconds=length), website)
 
 
 class FirestoreWebsiteCache(Firestore):
@@ -55,13 +62,9 @@ class FirestoreWebsiteCache(Firestore):
             ['NAME'])
 
     def update(self, contests: list[Contest]) -> None:
-        # Delete old contests.
         batch = self.db.batch()
-        for doc in self.contests_col.get():
-            batch.delete(doc.reference)
-        # Add new contests.
         for contest in contests:
-            batch.set(self.contests_col.document(), contest.to_firestore_dict())
+            batch.set(self.contests_col.document(contest.id_), contest.to_firestore_dict())
         batch.commit()
 
     def get_contests(self) -> list[Contest]:
@@ -69,9 +72,3 @@ class FirestoreWebsiteCache(Firestore):
         for doc in self.contests_col.stream():
             contests.append(Contest.from_firestore_doc(doc, self.website))
         return contests
-
-    def get_last_updated(self) -> datetime.datetime:
-        last_updated = self.website_doc.get().to_dict()[
-            current_app.config['FIRESTORE']['COLLECTIONS']['CACHE']['FIELDS']['LAST_UPDATED']]
-        assert isinstance(last_updated, datetime.datetime)
-        return last_updated.astimezone(datetime.timezone.utc)

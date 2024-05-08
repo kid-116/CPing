@@ -21,6 +21,11 @@ def get_contests(soup: BeautifulSoup) -> list[Contest]:
     for row in soup.select('div.contestList>div.datatable table tbody tr[data-contestid]'):
         tds = row.find_all('td')
 
+        register_anchor = tds[5].find('a')
+        if not register_anchor:
+            continue
+        id_ = register_anchor['href'].split('/')[-1]
+
         name = tds[0].get_text().strip()
         if name.find('#TBA') != -1:
             continue
@@ -32,6 +37,6 @@ def get_contests(soup: BeautifulSoup) -> list[Contest]:
 
         length = parse_duration(tds[3].get_text().strip())
 
-        contests.append(Contest(name, start, length, Website.CODEFORCES))
+        contests.append(Contest(id_, name, start, length, Website.CODEFORCES))
 
     return contests

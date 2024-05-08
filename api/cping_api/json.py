@@ -11,12 +11,10 @@ class CPingJSONProvider(DefaultJSONProvider):
     def default(self, obj: Any) -> Any:
         if isinstance(obj, Contest):
             contest_fields = current_app.config['FIRESTORE']['MODELS']['CONTEST']['FIELDS']
-            return {
-                contest_fields['NAME']: obj.name,
-                contest_fields['START_TIME']: obj.start.isoformat(),
-                contest_fields['LENGTH']: obj.length.seconds,
-            }
-        return super().default(self, obj)  # type: ignore[call-arg]
+            contest_dict = obj.to_firestore_dict()
+            contest_dict[contest_fields['ID']] = obj.id_
+            return contest_dict
+        return super().default(obj)
 
 
 def setup(app: Flask) -> None:
