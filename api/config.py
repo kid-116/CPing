@@ -34,10 +34,7 @@ class Config:
     FIRESTORE = {
         'COLLECTIONS': {
             'CACHE': {
-                'NAME': 'cache',
-                'FIELDS': {
-                    'LAST_UPDATED': 'last_updated',
-                },
+                'NAME': os.getenv('DATABASE_NAME') or 'cache_test',
                 'COLLECTIONS': {
                     'CONTEST': {
                         'NAME': 'contests',
@@ -51,6 +48,7 @@ class Config:
                     'NAME': 'name',
                     'START_TIME': 'start',
                     'LENGTH': 'length',
+                    'ID': 'id',
                 }
             }
         }

@@ -19,11 +19,12 @@ def parse_duration(duration: str) -> timedelta:
 
 def parse_row(row: Any) -> Contest:
     tds = row.find_all('td')
+    id_ = tds[1].a['href'].split('/')[-1]
     name = tds[1].a.get_text()
     # +0900 is added since the time is in JST.
     start = utils.parse_datetime(f"{tds[0].find('a')['href'][57:70]} +0900")
     length = parse_duration(tds[2].get_text())
-    return Contest(name, start, length, Website.ATCODER)
+    return Contest(id_, name, start, length, Website.ATCODER)
 
 
 def get_contests(soup: BeautifulSoup) -> list[Contest]:
