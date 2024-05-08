@@ -12,6 +12,7 @@ dependencies = [
     "lxml",
     "python-dateutil",
     "python-dotenv",
+    "scrapingant-client",
     "selenium",
 ]
 
