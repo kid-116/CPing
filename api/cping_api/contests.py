@@ -9,7 +9,7 @@ from flask import Blueprint, Response
 
 from config import Config, Website
 from cping_api.models.contest import Contest, FirestoreWebsiteCache
-from cping_api.parser_ import atcoder, codeforces
+from cping_api.parser_ import atcoder, codechef, codeforces
 from cping_api.scraper import Scraper
 
 bp = Blueprint('contests', __name__, url_prefix='/api/contests')
@@ -24,6 +24,7 @@ def get_contests_util(website: Website) -> list[Contest]:
     parser_map: dict[Website, Callable[[BeautifulSoup], list[Contest]]] = {
         Website.CODEFORCES: codeforces.get_contests,
         Website.ATCODER: atcoder.get_contests,
+        Website.CODECHEF: codechef.get_contests,
     }
 
     parse = parser_map[website]

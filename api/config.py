@@ -11,6 +11,7 @@ dotenv.load_dotenv()
 class Website(Enum):
     CODEFORCES = 1, 'CODEFORCES'
     ATCODER = 2, 'ATCODER'
+    CODECHEF = 3, 'CODECHEF'
 
 
 @dataclass
@@ -24,6 +25,7 @@ class Config:
     CONTESTS_PAGE_URL = {
         Website.CODEFORCES: 'https://codeforces.com/contests?complete=true',
         Website.ATCODER: 'https://atcoder.jp/contests',
+        Website.CODECHEF: 'https://www.codechef.com/contests',
     }
 
     SCRAPING_CACHE_CONFIGS = {
