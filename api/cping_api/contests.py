@@ -3,6 +3,7 @@ from typing import Callable
 
 from bs4 import BeautifulSoup
 import cachetools
+from firebase_admin import messaging  # type: ignore[import-untyped]
 import flask
 from flask import current_app
 from flask import Blueprint, Response
@@ -56,6 +57,15 @@ def get_contests() -> tuple[Response | str, HTTPStatus]:
 
     if flask.request.args.get(current_app.config['QUERY_PARAMS']['CACHE_CONTESTS']) is not None:
         cache = FirestoreWebsiteCache(website)
-        cache.update(contests)
+        message_changes = flask.request.args.get(
+            current_app.config['QUERY_PARAMS']['MESSAGE_CHANGES']) is not None
+        changes = cache.update(contests, find_changes=message_changes)
+        if changes:
+            message = messaging.Message(
+                data={'body': ','.join([contest.get_uid() for contest in changes])},
+                topic=current_app.config['MESSAGING']['TOPICS']['CONTESTS_CACHE_CHANGE'],
+            )
+            response = messaging.send(message)
+            print(response)
 
     return flask.jsonify(contests), HTTPStatus.OK

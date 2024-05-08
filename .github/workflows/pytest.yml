@@ -40,11 +40,13 @@ jobs:
       - name: Run tests
         env:
           DATABASE_NAME: ${{ (github.event_name == 'schedule') && 'cache' || 'cache_test' }}
+          CONTESTS_CACHE_CHANGE_TOPIC: ${{ (github.event_name == 'schedule') && vars.CONTESTS_CACHE_CHANGE_TOPIC || 'contestsCacheChangeCITest' }}
         run: |
           docker run --rm \
           --env API_KEY=${{secrets.API_KEY}} \
           --env DATABASE_NAME=${{env.DATABASE_NAME}} \
           --env SCRAPING_ANT_TOKEN=${{secrets.SCRAPING_ANT_TOKEN}} \
+          --env CONTESTS_CACHE_CHANGE_TOPIC=${{env.CONTESTS_CACHE_CHANGE_TOPIC}} \
           --mount type=bind,source=${{steps.auth.outputs.credentials_file_path}},target=${{steps.auth.outputs.credentials_file_path}} \
           --env GOOGLE_APPLICATION_CREDENTIALS=${{steps.auth.outputs.credentials_file_path}} \
           --env GOOGLE_CLOUD_PROJECT=${{vars.GCLOUD_PROJECT}} \

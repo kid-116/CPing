@@ -1,4 +1,4 @@
-from datetime import timedelta
+import datetime
 from typing import Any
 
 from bs4 import BeautifulSoup
@@ -10,11 +10,11 @@ from cping_api.models.contest import Contest
 from . import utils
 
 
-def parse_duration(duration: str) -> timedelta:
+def parse_duration(duration: str) -> datetime.timedelta:
     hours, minutes = list(map(int, duration.split(':')))
     days = hours // 24
     hours = hours % 24
-    return timedelta(days=days, hours=hours, minutes=minutes)
+    return datetime.timedelta(days=days, hours=hours, minutes=minutes)
 
 
 def parse_row(row: Any) -> Contest:
