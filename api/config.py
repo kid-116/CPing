@@ -20,6 +20,7 @@ class Config:
         'WEBSITE_NAME': 'website',
         'CACHE_CONTESTS': 'cache',
         'FETCH_CACHED_CONTESTS': 'cached',
+        'MESSAGE_CHANGES': 'message_changes'
     }
 
     CONTESTS_PAGE_URL = {
@@ -66,4 +67,11 @@ class Config:
         'TOKEN': os.getenv('SCRAPING_ANT_TOKEN'),
         'PROXY_COUNTRY': 'us',
         'WEBSITES': [Website.CODECHEF]
+    }
+
+    MESSAGING = {
+        'TOPICS': {
+            'CONTESTS_CACHE_CHANGE':
+                os.getenv('CONTESTS_CACHE_CHANGE_TOPIC') or 'contestsCacheChangeTest',
+        }
     }

@@ -10,7 +10,7 @@ from config import Website
 
 @pytest.mark.parametrize('website', [e.name.lower() for e in Website])
 def test_firebase_caching(signed_client: FlaskClient, website: str) -> None:
-    response = signed_client.get(f'/api/contests/?website={website}&cache')
+    response = signed_client.get(f'/api/contests/?website={website}&cache&message_changes')
     assert response.status_code == HTTPStatus.OK
 
 

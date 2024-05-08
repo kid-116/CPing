@@ -1,5 +1,6 @@
 from __future__ import annotations
 import datetime
+from typing import Any, Optional
 
 from firebase_admin import firestore  # type: ignore[import-untyped]
 from flask import current_app
@@ -47,6 +48,21 @@ class Contest:
         assert isinstance(length, int)
         return Contest(id_, name, start, datetime.timedelta(seconds=length), website)
 
+    def __eq__(self, obj: Any) -> bool:
+        if isinstance(obj, Contest):
+            return self.id_ == obj.id_ and \
+                self.name == obj.name and \
+                self.start == obj.start and \
+                self.length == obj.length and \
+                self.website == obj.website
+        raise NotImplementedError
+
+    def __ne__(self, obj: Any) -> bool:
+        return not self.__eq__(obj)
+
+    def get_uid(self) -> str:
+        return f'{self.website.value[1]}:{self.id_}'
+
 
 class FirestoreWebsiteCache(Firestore):
 
@@ -61,11 +77,30 @@ class FirestoreWebsiteCache(Firestore):
             current_app.config['FIRESTORE']['COLLECTIONS']['CACHE']['COLLECTIONS']['CONTEST']
             ['NAME'])
 
-    def update(self, contests: list[Contest]) -> None:
+    def update(self,
+               contests: list[Contest],
+               find_changes: bool = False) -> Optional[list[Contest]]:
+        changes = None
+        if find_changes:
+            changes = self.find_changes(contests)
+
         batch = self.db.batch()
         for contest in contests:
             batch.set(self.contests_col.document(contest.id_), contest.to_firestore_dict())
         batch.commit()
+
+        return changes
+
+    def find_changes(self, contests: list[Contest]) -> list[Contest]:
+        cached_contests = self.get_contests()
+        cached_contest = {contest.id_: contest for contest in cached_contests}
+
+        changes = []
+        for contest in contests:
+            if cached_contest.get(contest.id_):
+                if cached_contest[contest.id_] != contest:
+                    changes.append(contest)
+        return changes
 
     def get_contests(self) -> list[Contest]:
         contests = []
