@@ -62,12 +62,6 @@ class FirestoreWebsiteCache(Firestore):
         # Add new contests.
         for contest in contests:
             batch.set(self.contests_col.document(), contest.to_firestore_dict())
-        # Update timestamp.
-        batch.update(
-            self.website_doc, {
-                current_app.config['FIRESTORE']['COLLECTIONS']['CACHE']['FIELDS']['LAST_UPDATED']:
-                    datetime.datetime.now().astimezone(datetime.timezone.utc)
-            })
         batch.commit()
 
     def get_contests(self) -> list[Contest]:
