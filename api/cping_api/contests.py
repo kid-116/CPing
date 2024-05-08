@@ -18,8 +18,7 @@ bp = Blueprint('contests', __name__, url_prefix='/api/contests')
 @cachetools.cached(cache=cachetools.TTLCache(maxsize=Config.SCRAPING_CACHE_CONFIGS['SIZE'],
                                              ttl=Config.SCRAPING_CACHE_CONFIGS['TIME']))
 def get_contests_util(website: Website) -> list[Contest]:
-    url = current_app.config['CONTESTS_PAGE_URL'][website]
-    soup = Scraper().get(url)
+    soup = Scraper().get(website)
 
     parser_map: dict[Website, Callable[[BeautifulSoup], list[Contest]]] = {
         Website.CODEFORCES: codeforces.get_contests,

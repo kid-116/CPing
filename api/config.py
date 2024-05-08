@@ -61,3 +61,9 @@ class Config:
     }
 
     API_KEY = os.getenv('API_KEY')
+
+    SCRAPING_ANT = {
+        'TOKEN': os.getenv('SCRAPING_ANT_TOKEN'),
+        'PROXY_COUNTRY': 'us',
+        'WEBSITES': [Website.CODECHEF]
+    }

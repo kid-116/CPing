@@ -40,7 +40,9 @@ def parse_row(row: Any) -> Contest:
     name = tds[1].find_all('div')[1].get_text()
 
     date, time = tds[2].find_all('p')
-    start = utils.parse_datetime(f'{date.get_text()} {time.get_text()}')
+    # The timezone annotation (+0000) is hardcoded because in the production environment,
+    # the proxy is based in UTC timezone.
+    start = utils.parse_datetime(f'{date.get_text()} {time.get_text()} +0000')
 
     length = parse_duration(tds[3])
 
