@@ -3,12 +3,13 @@ from typing import Callable
 
 from bs4 import BeautifulSoup
 import cachetools
-from firebase_admin import messaging  # type: ignore[import-untyped]
 import flask
 from flask import current_app
 from flask import Blueprint, Response
 
 from config import Config, Website
+
+from cping_api.cloud_messaging import Messenger
 from cping_api.models.contest import Contest, FirestoreWebsiteCache
 from cping_api.parser_ import atcoder, codechef, codeforces
 from cping_api.scraper import Scraper
@@ -61,11 +62,6 @@ def get_contests() -> tuple[Response | str, HTTPStatus]:
             current_app.config['QUERY_PARAMS']['MESSAGE_CHANGES']) is not None
         changes = cache.update(contests, find_changes=message_changes)
         if changes:
-            message = messaging.Message(
-                data={'body': ','.join([contest.get_uid() for contest in changes])},
-                topic=current_app.config['MESSAGING']['TOPICS']['CONTESTS_CACHE_CHANGE'],
-            )
-            response = messaging.send(message)
-            print(response)
+            Messenger.signal_contests_cache_changes(changes)
 
     return flask.jsonify(contests), HTTPStatus.OK
