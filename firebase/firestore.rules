@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /userData/{email} {
+      allow read, write: if
+          request.auth.token.email == email;
+    }
+
+    match /cache/{site}/contests/{contest} {
+			allow read: if request.auth != null;
+    }
+  }
+}
