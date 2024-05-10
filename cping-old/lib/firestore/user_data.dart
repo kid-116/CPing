@@ -15,7 +15,7 @@ class UserDatabase {
   }) async {
     final email = FirebaseAuth.instance.currentUser!.email;
     DocumentReference newContestDoc =
-      userCollection.doc(email).collection('registeredContests').doc();
+        userCollection.doc(email).collection('registeredContests').doc();
 
     int days = length.inDays;
     int hours = length.inHours - days * 24;
@@ -33,9 +33,7 @@ class UserDatabase {
       "length": lengthMap
     };
 
-    await newContestDoc
-        .set(data)
-        .catchError((e) => debugPrint(e));
+    await newContestDoc.set(data).catchError((e) => debugPrint(e));
 
     return newContestDoc.id;
   }
@@ -43,7 +41,7 @@ class UserDatabase {
   static Stream<QuerySnapshot> readContests() {
     final email = FirebaseAuth.instance.currentUser!.email;
     CollectionReference registeredContests =
-      userCollection.doc(email).collection('registeredContests');
+        userCollection.doc(email).collection('registeredContests');
     return registeredContests.snapshots();
   }
 
@@ -52,10 +50,8 @@ class UserDatabase {
   }) async {
     final email = FirebaseAuth.instance.currentUser!.email;
     DocumentReference registeredContest =
-      userCollection.doc(email).collection('registeredContests').doc(docId);
+        userCollection.doc(email).collection('registeredContests').doc(docId);
 
-    await registeredContest
-        .delete()
-        .catchError((e) => debugPrint(e));
+    await registeredContest.delete().catchError((e) => debugPrint(e));
   }
 }
