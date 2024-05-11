@@ -19,7 +19,7 @@ defaults:
     working-directory: ./api
 
 jobs:
-  lint:
+  py-lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
