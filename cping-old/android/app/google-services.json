@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "846569139481",
+    "project_id": "cping-7e228",
+    "storage_bucket": "cping-7e228.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846569139481:android:38a3dfcaefbcd12984a988",
+        "android_client_info": {
+          "package_name": "com.neumannics.cping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846569139481-7qccckk5ej59cin6ni6sdgamio1gqn3j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neumannics.cping",
+            "certificate_hash": "bf8a619416ee6a27008c8226a5e073dbc4661448"
+          }
+        },
+        {
+          "client_id": "846569139481-sebc60nlbsigmhb633b6k4gojsgac481.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdZMzl5Q9ebbCVECLdbB6K9M6OOBj4uiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846569139481-sebc60nlbsigmhb633b6k4gojsgac481.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
