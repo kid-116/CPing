@@ -1,0 +1,52 @@
+[project]
+name = "cping_api"
+version = "0.0.0"
+description = "API for CPing."
+readme = "README.md"
+dependencies = [
+    "cachetools",
+    "bs4",
+    "firebase-admin",
+    "flask",
+    "flask-http-middleware",
+    "lxml",
+    "python-dateutil",
+    "python-dotenv",
+    "scrapingant-client",
+    "selenium",
+]
+
+[project.optional-dependencies]
+lint = ["mypy", "pylint", "pylint[spelling]", "yapf"]
+test = ["pytest"]
+prod = ["uwsgi"]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.module]
+name = "cping_api"
+
+[tool.mypy]
+non_interactive = true
+install_types = true
+strict = true
+exclude = "build|venv"
+
+[tool.pylint]
+ignore = ["venv", "build"]
+[tool.pylint.'MESSAGES CONTROL']
+disable="missing-module-docstring,missing-function-docstring,missing-class-docstring,missing-function-docstring"
+[tool.pylint.'SPELLING']
+spelling-dict='en_US'
+spelling-private-dict-file='private-dictionary.txt'
+
+[tool.yapf]
+based_on_style = "google"
+column_limit = 100
+[tool.yapfignore]
+ignore_patterns = ["venv/**"]
+
+[tool.pytest.ini_options]
+pythonpath = "."

@@ -3,10 +3,19 @@ name: API Tests
 on:
   push:
     branches:
-    - main
+      - main
+    paths:
+      - api/**
+      - .github/workflows/**
   pull_request:
     branches:
-    - main
+      - main
+    paths:
+      - api/**
+      - .github/workflows/**
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0,6,12,18 * * *"
 
 defaults:
   run:
@@ -17,12 +26,28 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10']
+        python-version: ["3.10"]
     steps:
       - uses: actions/checkout@v3
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v0.4.0"
+        with:
+          credentials_json: "${{secrets.FIREBASE_CREDENTIALS}}"
       - name: Build image
         run: |
-          docker build -t cping_flask_api:test --target test .
+          docker build -t cping_flask_api --target test .
       - name: Run tests
+        env:
+          DATABASE_NAME: ${{ (github.event_name == 'schedule') && 'cache' || 'cache_test' }}
+          CONTESTS_CACHE_CHANGE_TOPIC: ${{ (github.event_name == 'schedule') && vars.CONTESTS_CACHE_CHANGE_TOPIC || 'contestsCacheChangeCITest' }}
         run: |
-          docker run --rm cping_flask_api:test
+          docker run --rm \
+          --env API_KEY=${{secrets.API_KEY}} \
+          --env DATABASE_NAME=${{env.DATABASE_NAME}} \
+          --env SCRAPING_ANT_TOKEN=${{secrets.SCRAPING_ANT_TOKEN}} \
+          --env CONTESTS_CACHE_CHANGE_TOPIC=${{env.CONTESTS_CACHE_CHANGE_TOPIC}} \
+          --mount type=bind,source=${{steps.auth.outputs.credentials_file_path}},target=${{steps.auth.outputs.credentials_file_path}} \
+          --env GOOGLE_APPLICATION_CREDENTIALS=${{steps.auth.outputs.credentials_file_path}} \
+          --env GOOGLE_CLOUD_PROJECT=${{vars.GCLOUD_PROJECT}} \
+            cping_flask_api

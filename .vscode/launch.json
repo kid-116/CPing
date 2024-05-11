@@ -13,7 +13,10 @@
                 "FLASK_DEBUG": "1"
             },
             "args": [
+                "--app",
+                "cping_api",
                 "run",
+                "--debug",
             ],
             "jinja": true,
             "autoStartBrowser": false

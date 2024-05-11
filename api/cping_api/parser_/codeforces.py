@@ -2,8 +2,10 @@ from datetime import timedelta
 
 from bs4 import BeautifulSoup
 
-from constants import Website
-from models.contest import Contest
+from config import Website
+
+from cping_api.models.contest import Contest
+
 from . import utils
 
 
@@ -16,9 +18,13 @@ def parse_duration(duration: str) -> timedelta:
 
 def get_contests(soup: BeautifulSoup) -> list[Contest]:
     contests = []
-    for row in soup.select(
-            'div.contestList>div.datatable table tbody tr[data-contestid]'):
+    for row in soup.select('div.contestList>div.datatable table tbody tr[data-contestid]'):
         tds = row.find_all('td')
+
+        register_anchor = tds[5].find('a')
+        if not register_anchor:
+            continue
+        id_ = register_anchor['href'].split('/')[-1]
 
         name = tds[0].get_text().strip()
         if name.find('#TBA') != -1:
@@ -31,6 +37,6 @@ def get_contests(soup: BeautifulSoup) -> list[Contest]:
 
         length = parse_duration(tds[3].get_text().strip())
 
-        contests.append(Contest(name, start, length, Website.CODEFORCES))
+        contests.append(Contest(id_, name, start, length, Website.CODEFORCES))
 
     return contests

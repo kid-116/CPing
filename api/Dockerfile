@@ -12,17 +12,20 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 
 RUN --mount=type=cache,target=/root/.cache \
-    pip install -r ./requirements.txt
+    pip install .
 
 
 FROM base as dev
 
-ENTRYPOINT [ "flask", "run", "--debug", "-h", "0.0.0.0" ]
+ENTRYPOINT [ "flask", "--app", "cping_api", "run", "--debug", "-h", "0.0.0.0" ]
 
 ENV GCLOUD_PROJECT=cping-7e228
 
 
 FROM base as test
+
+RUN --mount=type=cache,target=/root/.cache \
+    pip install .[test]
 
 ENTRYPOINT [ "pytest" ]
 
@@ -31,7 +34,7 @@ FROM base as prod
 
 RUN apt-get -y install nginx
 
-COPY nginx.conf /etc/nginx
+COPY conf/nginx.conf /etc/nginx
 
-RUN chmod +x ./start.sh
-ENTRYPOINT [ "./start.sh" ]
+RUN service nginx start
+ENTRYPOINT [ "uwsgi", "--ini", "conf/uwsgi.ini" ]

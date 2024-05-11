@@ -4,3 +4,11 @@ __pycache__/
 .mypy_cache/
 
 firebase_admin_key.json
+
+.env
+
+instance/
+
+dist/
+build/
+*.egg-info/
