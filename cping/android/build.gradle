@@ -1,3 +1,6 @@
+ext {
+    buildToolsVersion = '34.0.0'
+}
 allprojects {
     repositories {
         google()
