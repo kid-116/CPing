@@ -38,3 +38,5 @@ jobs:
         run: dart format -o show --set-exit-if-changed .
       - name: Run Flutter analysis
         run: flutter analyze
+      - name: Test build
+        run: flutter build appbundle
