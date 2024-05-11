@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> {
             // elevation: 0,
             title: Text(
               'Home'.toUpperCase(),
-              style: darkTheme.textTheme.headline1,
+              style: darkTheme.textTheme.displayLarge,
             ),
           ),
           body: Container(

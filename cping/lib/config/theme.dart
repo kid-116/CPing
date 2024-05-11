@@ -13,7 +13,7 @@ ThemeData darkTheme = ThemeData(
       brightness: Brightness.dark,
     ),
     textTheme: TextTheme(
-        headline1: GoogleFonts.poppins(
+        displayLarge: GoogleFonts.poppins(
       color: Colors.white,
       fontSize: 36,
       fontWeight: FontWeight.w800,

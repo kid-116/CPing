@@ -71,7 +71,7 @@ class _WebsitePageState extends State<WebsitePage> {
                   onPressed: () => Navigator.of(context).pop(),
                   icon: const Icon(Icons.arrow_back_ios, color: Colors.white)),
               Text(widget.name.toUpperCase(),
-                  style: darkTheme.textTheme.headline1)
+                  style: darkTheme.textTheme.displayLarge)
             ],
           ),
         ),
