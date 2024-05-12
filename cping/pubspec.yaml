@@ -47,6 +47,7 @@ dependencies:
   iconify_flutter: ^0.0.5
   intl: ^0.19.0
   googleapis: ^13.1.0
+  firebase_messaging: ^14.9.2
 
 dev_dependencies:
   flutter_test:
