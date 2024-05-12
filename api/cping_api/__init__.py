@@ -5,6 +5,8 @@ from typing import Any, Optional
 import firebase_admin  # type: ignore[import-untyped]
 from flask import Flask
 
+from cping_api import cloud_messaging
+
 from . import json, auth, contests
 
 
@@ -31,5 +33,7 @@ def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
         return 'Welcome to CPing\'s API server!', HTTPStatus.OK
 
     app.register_blueprint(contests.bp)
+
+    app.cli.add_command(cloud_messaging.send_test_message_command)
 
     return app
