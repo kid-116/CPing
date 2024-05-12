@@ -3,6 +3,7 @@ from typing import Optional
 
 import click
 from firebase_admin import messaging  # type: ignore[import-untyped]
+from firebase_admin.messaging import Message, Notification  # type: ignore[import-untyped]
 from flask import current_app
 
 from config import Config, Website
@@ -17,9 +18,12 @@ class Messenger:
     def signal_contests_cache_changes(contests: list[Contest], topic: Optional[str] = None) -> str:
         if not topic:
             topic = current_app.config['MESSAGING']['TOPICS']['CONTESTS_CACHE_CHANGE']
-        message = messaging.Message(
-            data={'body': ','.join([contest.get_uid() for contest in contests])},
+        body = ','.join([contest.get_uid() for contest in contests])
+        message = Message(
+            data={'body': body},
             topic=topic,
+            notification=Notification(title='Important Update About Your Contests',
+                                      body='Heads up! Some contest details have changed.'),
         )
         message_id = messaging.send(message)
         assert isinstance(message_id, str)
