@@ -5,6 +5,11 @@ service cloud.firestore {
       allow read, write: if
           request.auth.token.email == email;
     }
+    match /userData/{email}/registeredContests/{contest} {
+      allow read, write: if
+          request.auth.token.email == email;
+    }
+
 
     match /cache/{site}/contests/{contest} {
 			allow read: if request.auth != null;
