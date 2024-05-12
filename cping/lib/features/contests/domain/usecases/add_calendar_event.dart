@@ -14,8 +14,8 @@ class AddToCalendar implements UseCase<Map<String, String>, Params> {
 
   @override
   Future<Either<Failure, Map<String, String>>> call(Params params) async {
-    return await repository.addEvent(
-        params.title, params.startTime, params.length, params.isRegistered);
+    return await repository.addEvent(params.title, params.startTime,
+        params.length, params.isRegistered, params.site, params.contestId);
   }
 }
 
@@ -24,11 +24,15 @@ class Params extends Equatable {
   final DateTime startTime;
   final int length;
   final ValueNotifier<String> isRegistered;
+  final String site;
+  final String contestId;
   Params(
       {required this.title,
       required this.startTime,
       required this.length,
-      required this.isRegistered});
+      required this.isRegistered,
+      required this.site,
+      required this.contestId});
   @override
   List<Object?> get props => throw UnimplementedError();
 }

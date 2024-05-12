@@ -25,8 +25,6 @@ class ContestsBloc extends Bloc<ContestsEvent, ContestsState> {
         contests.fold((l) {
           emit(ContestsError(error: l.toString()));
         }, (r) {
-          print("Contests: ");
-          print(r);
           emit(ContestsLoaded(contests: r));
         });
       }

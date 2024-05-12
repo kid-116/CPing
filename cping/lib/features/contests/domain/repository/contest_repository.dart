@@ -8,7 +8,14 @@ import '../../../../core/error/failures.dart';
 abstract class ContestsRepository {
   Future<Either<Failure, List<Contest>>> getAllContests(int platformId);
   Future<Either<Failure, List<Contest>>> getRegisteredContests();
-  Future<Either<Failure, Map<String, String>>> addEvent(String name,
-      DateTime startTime, int length, ValueNotifier<String> isRegistered);
+  Future<Either<Failure, Map<String, String>>> addEvent(
+      String name,
+      DateTime startTime,
+      int length,
+      ValueNotifier<String> isRegistered,
+      String site,
+      String contestId);
+  Future<Either<Failure, bool>> deleteEvent(
+      String calendarID, String contestId, ValueNotifier<String> isRegistered);
   // Future<Either<Failure, bool>> registerContest(String contestId);
 }

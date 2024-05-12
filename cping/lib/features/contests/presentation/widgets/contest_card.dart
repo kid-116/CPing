@@ -2,6 +2,8 @@ import 'package:cping/config/theme.dart';
 import 'package:cping/features/contests/data/datasources/contest_remote_datasource.dart';
 import 'package:cping/features/contests/data/repositories/contest_repository_impl.dart';
 import 'package:cping/features/contests/domain/usecases/add_calendar_event.dart';
+import 'package:cping/features/contests/domain/usecases/delete_calendar_event.dart'
+    as dce;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -163,15 +165,17 @@ class _ContestCardState extends State<ContestCard> {
                             size: 30, color: darkTheme.indicatorColor),
                         color: darkTheme.indicatorColor,
                         onPressed: () async {
-                          AddToCalendar getContests = AddToCalendar(
+                          AddToCalendar addToCalendar = AddToCalendar(
                               ContestsRepositoryImpl(
                                   remoteDataSource:
                                       ContestsRemoteDataSourceImpl()));
-                          final result = await getContests.call(Params(
+                          final result = await addToCalendar.call(Params(
                               title: widget.contest.name,
                               startTime: widget.contest.start,
                               length: widget.contest.length.inSeconds,
-                              isRegistered: isRegistered));
+                              isRegistered: isRegistered,
+                              site: widget.contest.site,
+                              contestId: widget.contest.id));
                           result.fold(
                             (l) {
                               showActionSnackBar(
@@ -192,19 +196,28 @@ class _ContestCardState extends State<ContestCard> {
                             size: 30, color: darkTheme.highlightColor),
                         color: darkTheme.highlightColor,
                         onPressed: () async {
-                          // try {
-                          //   CalendarClient client = CalendarClient();
-                          //   await client.delete(widget.contest.calendarId);
-                          //   UserDatabase.deleteContest(
-                          //       docId: widget.contest.docId);
-                          //   setState(() {
-                          //     widget.contest.calendarId = 'null';
-                          //   });
-                          // } catch (e) {
-                          //   debugPrint(e.toString());
-                          // }
-                          // showActionSnackBar(
-                          //     "Contest removed from your calender");
+                          try {
+                            dce.DeleteFromCalendar deleteFromCalendar =
+                                dce.DeleteFromCalendar(ContestsRepositoryImpl(
+                                    remoteDataSource:
+                                        ContestsRemoteDataSourceImpl()));
+                            final result = await deleteFromCalendar.call(
+                                dce.Params(
+                                    calendarId: widget.contest.calendarId,
+                                    contestId: widget.contest.docId,
+                                    isRegistered: isRegistered));
+                            result.fold((l) {
+                              showActionSnackBar(
+                                  "Error deleting contest from your calender");
+                            }, (r) {
+                              showActionSnackBar(
+                                  "Contest deleted from your calender");
+                            });
+                          } catch (e) {
+                            debugPrint(e.toString());
+                          }
+                          showActionSnackBar(
+                              "Contest removed from your calender");
                         },
                       );
                     } else if (value == "loading") {

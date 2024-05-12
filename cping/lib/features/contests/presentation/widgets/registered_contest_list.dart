@@ -12,9 +12,11 @@ Expanded listRegisteredContests() {
         final collection = snapshot.data?.docs;
         List<Contest> contests = <Contest>[];
 
+        // Todo
         collection?.forEach((json) {
-          Contest contest =
-              Contest.fromJson(json.data() as Map<String, dynamic>, json.id);
+          print(json.data());
+          Contest contest = Contest.fromJson(
+              json.data() as Map<String, dynamic>, json.id, null);
           if (contest.end.isBefore(DateTime.now()) ||
               contest.calendarId == 'null') {
             // UserDatabase.deleteContest(docId: contest.docId);

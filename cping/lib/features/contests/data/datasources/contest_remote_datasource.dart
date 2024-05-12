@@ -10,8 +10,15 @@ import '../../../../../core/error/exceptions.dart';
 abstract class ContestsRemoteDataSource {
   Future<List<Contest>> getAllContests(int platformId);
   Future<List<Contest>> getRegisteredContests();
-  Future<Map<String, String>> addEvent(String name, DateTime startTime,
-      int length, ValueNotifier<String> isRegistered);
+  Future<Map<String, String>> addEvent(
+      String name,
+      DateTime startTime,
+      int length,
+      ValueNotifier<String> isRegistered,
+      String site,
+      String contestId);
+  Future<bool> deleteEvent(
+      String calendarID, String contestId, ValueNotifier<String> isRegistered);
 }
 
 class ContestsRemoteDataSourceImpl implements ContestsRemoteDataSource {
@@ -40,8 +47,14 @@ class ContestsRemoteDataSourceImpl implements ContestsRemoteDataSource {
     }
   }
 
-  Future<Map<String, String>> addEvent(String name, DateTime startTime,
-      int length, ValueNotifier<String> isRegistered) async {
+  @override
+  Future<Map<String, String>> addEvent(
+      String name,
+      DateTime startTime,
+      int length,
+      ValueNotifier<String> isRegistered,
+      String site,
+      String contestId) async {
     try {
       isRegistered.value = "loading";
       final timeDifference = Duration(seconds: length);
@@ -56,17 +69,34 @@ class ContestsRemoteDataSourceImpl implements ContestsRemoteDataSource {
       );
 
       final docId = await FirestoreService.addContest(
-        calendarId: contest['id'].toString(),
-        start: startTime,
-        name: name,
-        length: length,
-      );
+          calendarId: contest['id'].toString(),
+          contestId: contestId,
+          site: site,
+          name: name,
+          startTime: startTime,
+          length: length);
       Map<String, String> result = {
         'contestId': contest['id'].toString(),
         'docId': docId,
+        'name': name,
       };
       isRegistered.value = "true";
       return result;
+    } on SocketException {
+      throw NetworkException();
+    }
+  }
+
+  @override
+  Future<bool> deleteEvent(String calendarId, String contestId,
+      ValueNotifier<String> isRegistered) async {
+    try {
+      isRegistered.value = "loading";
+      CalendarClient client = CalendarClient();
+      await client.delete(calendarId);
+      await FirestoreService.deleteContest(docId: contestId);
+      isRegistered.value = "false";
+      return true;
     } on SocketException {
       throw NetworkException();
     }

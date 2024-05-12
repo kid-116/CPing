@@ -46,10 +46,26 @@ class ContestsRepositoryImpl implements ContestsRepository {
       String name,
       DateTime startTime,
       int length,
-      ValueNotifier<String> isRegistered) async {
+      ValueNotifier<String> isRegistered,
+      String site,
+      String contestId) async {
     try {
       final result = await remoteDataSource.addEvent(
-          name, startTime, length, isRegistered);
+          name, startTime, length, isRegistered, site, contestId);
+      return Right(result);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on NetworkException {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> deleteEvent(String calendarId, String contestId,
+      ValueNotifier<String> isRegistered) async {
+    try {
+      final result = await remoteDataSource.deleteEvent(
+          calendarId, contestId, isRegistered);
       return Right(result);
     } on ServerException {
       return Left(ServerFailure());
